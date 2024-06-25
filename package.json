@@ -1,6 +1,6 @@
 {
   "name": "unplugin-isolated-decl",
-  "version": "0.0.1-beta.1",
+  "version": "0.0.1-beta.2",
   "packageManager": "pnpm@9.4.0",
   "description": "Generate isolated declaration.",
   "type": "module",
