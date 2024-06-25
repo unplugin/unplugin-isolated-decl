@@ -67,4 +67,4 @@ build({
 
 ## License
 
-[MIT](./LICENSE) License © 2023-PRESENT [三咲智子](https://github.com/sxzz)
+[MIT](./LICENSE) License © 2024-PRESENT [三咲智子](https://github.com/sxzz)
