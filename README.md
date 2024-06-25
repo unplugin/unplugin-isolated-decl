@@ -2,7 +2,12 @@
 
 [![Unit Test](https://github.com/unplugin/unplugin-isolated-decl/actions/workflows/unit-test.yml/badge.svg)](https://github.com/unplugin/unplugin-isolated-decl/actions/workflows/unit-test.yml)
 
-Generate isolated declaration.
+⚡️ A blazing-fast tool for generating isolated declarations, powered by Oxc!
+
+## Features
+
+- 🚀 **Fast**: Blazing-fast `.d.ts` generator, powered by Oxc.
+- 🎯 **Isolated**: Generate isolated declarations for each file.
 
 ## Installation
 
