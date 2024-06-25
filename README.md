@@ -8,6 +8,7 @@
 
 - 🚀 **Fast**: Blazing-fast `.d.ts` generator, powered by Oxc.
 - 🎯 **Isolated**: Generate isolated declarations for each file.
+- ✨ **Bundler Support**: Works with Vite, Rollup, and esbuild.
 
 ## Installation
 
