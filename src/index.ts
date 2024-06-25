@@ -103,11 +103,10 @@ export const plugin: UnpluginInstance<Options | undefined, false> =
       rollup: {
         options(rollupOptions) {
           let outBase = ''
-          const input = rollupOptions.input
+          let input = rollupOptions.input
+          input = typeof input === 'string' ? [input] : input
           if (Array.isArray(input)) {
             outBase = lowestCommonAncestor(...input)
-          } else if (typeof input === 'string') {
-            outBase = path.dirname(input)
           }
 
           if (!contexts.length) contexts.push({} as any)
@@ -124,7 +123,8 @@ export const plugin: UnpluginInstance<Options | undefined, false> =
 export default plugin
 
 function lowestCommonAncestor(...filepaths: string[]) {
-  if (filepaths.length <= 1) return ''
+  if (filepaths.length === 0) return ''
+  if (filepaths.length === 1) return path.dirname(filepaths[0])
   const [first, ...rest] = filepaths
   let ancestor = first.split(path.sep)
   for (const filepath of rest) {
