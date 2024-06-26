@@ -40,6 +40,10 @@
       "require": "./dist/rollup.cjs",
       "import": "./dist/rollup.js"
     },
+    "./rolldown": {
+      "require": "./dist/rolldown.cjs",
+      "import": "./dist/rolldown.js"
+    },
     "./esbuild": {
       "require": "./dist/esbuild.cjs",
       "import": "./dist/esbuild.js"
@@ -67,8 +71,7 @@
   "scripts": {
     "lint": "eslint --cache .",
     "lint:fix": "pnpm run lint --fix",
-    "build": "tsup",
-    "dev": "tsup --watch",
+    "build": "tsdown",
     "test": "vitest",
     "typecheck": "tsc --noEmit",
     "release": "bumpp && pnpm publish",
@@ -83,13 +86,13 @@
   "devDependencies": {
     "@sxzz/eslint-config": "^3.13.0",
     "@sxzz/prettier-config": "^2.0.2",
-    "@types/node": "^20.14.8",
+    "@types/node": "^20.14.9",
     "bumpp": "^9.4.1",
     "eslint": "^9.5.0",
     "fast-glob": "^3.3.2",
     "prettier": "^3.3.2",
     "rollup": "^4.18.0",
-    "tsup": "^8.1.0",
+    "tsdown": "^0.2.0",
     "tsx": "^4.15.7",
     "typescript": "^5.5.2",
     "vite": "^5.3.1",

@@ -16,17 +16,34 @@ declare module 'unplugin' {
 }
 
 export const plugin: UnpluginInstance<Options | undefined, false> =
-  createUnplugin((rawOptions = {}) => {
+  createUnplugin((rawOptions = {}, { framework }) => {
     const options = resolveOptions(rawOptions)
     const filter = createFilter(options.include, options.exclude)
 
     interface Context {
       outBase: string
-      outDir: string
       outExt: string
     }
     const contexts: Context[] = []
     let id = 0
+    const emitFiles: Record<string, string> = {}
+
+    function emit(
+      ctx: UnpluginBuildContext,
+      filename: string,
+      source: string,
+      outExt: string,
+    ) {
+      if (framework === 'esbuild') {
+        ctx.emitFile({
+          type: 'asset',
+          fileName: filename.replace(/\.(.?)ts$/, `.d.${outExt}`),
+          source,
+        })
+      } else {
+        emitFiles[filename.replace(/\.(.?)[jt]s$/, '')] = source
+      }
+    }
 
     const rollup: Partial<Plugin> = {
       options(rollupOptions) {
@@ -40,8 +57,25 @@ export const plugin: UnpluginInstance<Options | undefined, false> =
         if (!contexts.length) contexts.push({} as any)
         contexts[0] = {
           outExt: options.outExt,
-          outDir: options.outDir,
           outBase,
+        }
+      },
+      renderStart(outputOptions) {
+        if (typeof outputOptions.entryFileNames !== 'string') {
+          return this.error('entryFileNames must be a string')
+        }
+
+        const entryFileNames = outputOptions.entryFileNames.replace(
+          /\.(.)?[jt]s$/,
+          (_, s) => `.d.${s || ''}ts`,
+        )
+
+        for (const [filename, source] of Object.entries(emitFiles)) {
+          this.emitFile({
+            type: 'asset',
+            fileName: entryFileNames.replace('[name]', filename),
+            source,
+          })
         }
       },
     }
@@ -58,24 +92,12 @@ export const plugin: UnpluginInstance<Options | undefined, false> =
 
         const { sourceText, errors } = isolatedDeclaration(id, code)
         if (errors.length) {
-          throw new AggregateError(
-            errors,
-            'TypeScript Isolated Declarations Error',
-          )
-        }
-        if (!context.outDir) {
-          throw new Error('outDir is not set')
+          this.error(errors[0])
+          return
         }
 
-        const outFile = path
-          .relative(context.outBase, id)
-          .replace(/\.(.?)ts$/, `.d.${context.outExt}`)
-
-        this.emitFile({
-          type: 'asset',
-          fileName: outFile,
-          source: sourceText,
-        })
+        const outFile = path.relative(context.outBase, id)
+        emit(this, outFile, sourceText, context.outExt)
       },
 
       esbuild: {
@@ -91,10 +113,6 @@ export const plugin: UnpluginInstance<Options | undefined, false> =
             throw new Error('unsupported entryPoints, must be an string[]')
 
           const outBase = lowestCommonAncestor(...entries)
-          const outDir = esbuildOptions.outdir || options.outDir
-          if (!outDir) {
-            throw new Error('outDir is not set')
-          }
 
           const jsExt = esbuildOptions.outExtension?.['.js']
           let outExt: string
@@ -114,7 +132,6 @@ export const plugin: UnpluginInstance<Options | undefined, false> =
           contexts.push({
             outBase,
             outExt,
-            outDir,
           })
         },
       },
