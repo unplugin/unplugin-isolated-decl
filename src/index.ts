@@ -7,6 +7,7 @@ import {
 import { isolatedDeclaration } from 'oxc-transform'
 import { createFilter } from '@rollup/pluginutils'
 import { type Options, resolveOptions } from './core/options'
+import type { Plugin } from 'rollup'
 
 declare module 'unplugin' {
   interface UnpluginBuildContext {
@@ -26,6 +27,24 @@ export const plugin: UnpluginInstance<Options | undefined, false> =
     }
     const contexts: Context[] = []
     let id = 0
+
+    const rollup: Partial<Plugin> = {
+      options(rollupOptions) {
+        let outBase = ''
+        let input = rollupOptions.input
+        input = typeof input === 'string' ? [input] : input
+        if (Array.isArray(input)) {
+          outBase = lowestCommonAncestor(...input)
+        }
+
+        if (!contexts.length) contexts.push({} as any)
+        contexts[0] = {
+          outExt: options.outExt,
+          outDir: options.outDir,
+          outBase,
+        }
+      },
+    }
 
     return {
       name: 'unplugin-isolated-decl',
@@ -100,23 +119,9 @@ export const plugin: UnpluginInstance<Options | undefined, false> =
         },
       },
 
-      rollup: {
-        options(rollupOptions) {
-          let outBase = ''
-          let input = rollupOptions.input
-          input = typeof input === 'string' ? [input] : input
-          if (Array.isArray(input)) {
-            outBase = lowestCommonAncestor(...input)
-          }
-
-          if (!contexts.length) contexts.push({} as any)
-          contexts[0] = {
-            outExt: options.outExt,
-            outDir: options.outDir,
-            outBase,
-          }
-        },
-      },
+      rollup,
+      rolldown: rollup,
+      vite: rollup,
     }
   })
 
