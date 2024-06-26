@@ -36,10 +36,6 @@
       "require": "./dist/vite.cjs",
       "import": "./dist/vite.js"
     },
-    "./webpack": {
-      "require": "./dist/webpack.cjs",
-      "import": "./dist/webpack.js"
-    },
     "./rollup": {
       "require": "./dist/rollup.cjs",
       "import": "./dist/rollup.js"
