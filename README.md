@@ -16,6 +16,8 @@
 npm i -D unplugin-isolated-decl
 ```
 
+## Usage
+
 <details>
 <summary>Vite</summary><br>
 
@@ -36,6 +38,20 @@ export default defineConfig({
 ```ts
 // rollup.config.js
 import UnpluginIsolatedDecl from 'unplugin-isolated-decl/rollup'
+
+export default {
+  plugins: [UnpluginIsolatedDecl()],
+}
+```
+
+<br></details>
+
+<details>
+<summary>Rolldown</summary><br>
+
+```ts
+// rolldown.config.js
+import UnpluginIsolatedDecl from 'unplugin-isolated-decl/rolldown'
 
 export default {
   plugins: [UnpluginIsolatedDecl()],
