@@ -79,7 +79,6 @@
   },
   "dependencies": {
     "@rollup/pluginutils": "^5.1.0",
-    "magic-string": "^0.30.10",
     "oxc-transform": "^0.15.1",
     "unplugin": "^1.10.1"
   },
@@ -88,6 +87,7 @@
     "@sxzz/prettier-config": "^2.0.2",
     "@types/node": "^20.14.9",
     "bumpp": "^9.4.1",
+    "esbuild": "^0.21.5",
     "eslint": "^9.5.0",
     "fast-glob": "^3.3.2",
     "prettier": "^3.3.2",

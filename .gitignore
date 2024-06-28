@@ -4,3 +4,4 @@ dist
 *.log
 .vercel
 .eslintcache
+temp

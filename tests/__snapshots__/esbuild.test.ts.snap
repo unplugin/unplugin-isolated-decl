@@ -1,13 +1,7 @@
 // Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
 
-exports[`rollup 1`] = `
-[
-  "// main.js
-
-",
-  "// main.d.ts
-export type Str = string;
+exports[`esbuild 1`] = `
+"export type Str = string;
 export declare function hello(s: Str): Str;
-",
-]
+"
 `;

@@ -1,9 +1,6 @@
 import path from 'node:path'
-import {
-  type UnpluginBuildContext,
-  type UnpluginInstance,
-  createUnplugin,
-} from 'unplugin'
+import { mkdir, writeFile } from 'node:fs/promises'
+import { type UnpluginInstance, createUnplugin } from 'unplugin'
 import { isolatedDeclaration } from 'oxc-transform'
 import { createFilter } from '@rollup/pluginutils'
 import { type Options, resolveOptions } from './core/options'
@@ -16,51 +13,24 @@ declare module 'unplugin' {
 }
 
 export const plugin: UnpluginInstance<Options | undefined, false> =
-  createUnplugin((rawOptions = {}, { framework }) => {
+  createUnplugin((rawOptions = {}, meta) => {
     const options = resolveOptions(rawOptions)
     const filter = createFilter(options.include, options.exclude)
 
-    interface Context {
-      outBase: string
-      outExt: string
-    }
-    const contexts: Context[] = []
-    let id = 0
-    const emitFiles: Record<string, string> = {}
-
-    function emit(
-      ctx: UnpluginBuildContext,
-      filename: string,
-      source: string,
-      outExt: string,
-    ) {
-      if (framework === 'esbuild') {
-        ctx.emitFile({
-          type: 'asset',
-          fileName: filename.replace(/\.(.?)ts$/, `.d.${outExt}`),
-          source,
-        })
-      } else {
-        emitFiles[filename.replace(/\.(.?)[jt]s$/, '')] = source
-      }
+    const outputFiles: Record<string, string> = {}
+    function addOutput(filename: string, source: string) {
+      outputFiles[filename.replace(/\.(.?)[jt]s$/, '')] = source
     }
 
     const rollup: Partial<Plugin> = {
-      options(rollupOptions) {
+      renderStart(outputOptions, inputOptions) {
         let outBase = ''
-        let input = rollupOptions.input
+        let input = inputOptions.input
         input = typeof input === 'string' ? [input] : input
         if (Array.isArray(input)) {
           outBase = lowestCommonAncestor(...input)
         }
 
-        if (!contexts.length) contexts.push({} as any)
-        contexts[0] = {
-          outExt: options.outExt,
-          outBase,
-        }
-      },
-      renderStart(outputOptions) {
         if (typeof outputOptions.entryFileNames !== 'string') {
           return this.error('entryFileNames must be a string')
         }
@@ -70,10 +40,13 @@ export const plugin: UnpluginInstance<Options | undefined, false> =
           (_, s) => `.d.${s || ''}ts`,
         )
 
-        for (const [filename, source] of Object.entries(emitFiles)) {
+        for (const [filename, source] of Object.entries(outputFiles)) {
           this.emitFile({
             type: 'asset',
-            fileName: entryFileNames.replace('[name]', filename),
+            fileName: entryFileNames.replace(
+              '[name]',
+              path.relative(outBase, filename),
+            ),
             source,
           })
         }
@@ -88,20 +61,19 @@ export const plugin: UnpluginInstance<Options | undefined, false> =
       },
 
       transform(code, id): undefined {
-        const context = contexts[this.id || 0]
-
         const { sourceText, errors } = isolatedDeclaration(id, code)
         if (errors.length) {
           this.error(errors[0])
           return
         }
-
-        const outFile = path.relative(context.outBase, id)
-        emit(this, outFile, sourceText, context.outExt)
+        addOutput(id, sourceText)
       },
 
-      esbuild: {
-        config(this: UnpluginBuildContext, esbuildOptions) {
+      // esbuild only
+      async buildEnd() {
+        if (meta.framework === 'esbuild') {
+          const esbuildOptions = meta.build!.initialOptions
+
           const entries = esbuildOptions.entryPoints
           if (
             !(
@@ -113,7 +85,6 @@ export const plugin: UnpluginInstance<Options | undefined, false> =
             throw new Error('unsupported entryPoints, must be an string[]')
 
           const outBase = lowestCommonAncestor(...entries)
-
           const jsExt = esbuildOptions.outExtension?.['.js']
           let outExt: string
           switch (jsExt) {
@@ -128,17 +99,32 @@ export const plugin: UnpluginInstance<Options | undefined, false> =
               break
           }
 
-          this.id = id++
-          contexts.push({
-            outBase,
-            outExt,
-          })
-        },
+          const build = meta.build!
+          if (
+            build.initialOptions.outdir &&
+            (build.initialOptions.write ?? true)
+          )
+            for (const [filename, source] of Object.entries(outputFiles)) {
+              const outFile = `${path.relative(outBase, filename)}.d.${outExt}`
+
+              const filePath = path.resolve(
+                build.initialOptions.outdir,
+                outFile,
+              )
+              await mkdir(path.dirname(filePath), { recursive: true })
+              await writeFile(filePath, source)
+            }
+        }
       },
 
+      // esbuild,
       rollup,
       rolldown: rollup,
-      vite: rollup,
+      vite: {
+        apply: 'build',
+        enforce: 'pre',
+        ...rollup,
+      },
     }
   })
 

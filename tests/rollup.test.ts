@@ -4,16 +4,12 @@ import { rollup } from 'rollup'
 import UnpluginIsolatedDecl from '../src/rollup'
 
 test('rollup', async () => {
+  const input = path.resolve(__dirname, 'fixtures/main.ts')
   const dist = path.resolve(__dirname, 'temp')
 
   const bundle = await rollup({
-    input: path.resolve(__dirname, '../src/index.ts'),
-    plugins: [
-      UnpluginIsolatedDecl({
-        outDir: dist,
-      }),
-      { name: 'raw', transform: () => '' },
-    ],
+    input,
+    plugins: [UnpluginIsolatedDecl(), { name: 'raw', transform: () => '' }],
     logLevel: 'silent',
   })
 
@@ -21,8 +17,9 @@ test('rollup', async () => {
     dir: dist,
   })
   expect(
-    result.output.map((asset) =>
-      asset.type === 'chunk' ? asset.code : asset.source,
+    result.output.map(
+      (asset) =>
+        `// ${asset.fileName}\n${asset.type === 'chunk' ? asset.code : asset.source}`,
     ),
   ).toMatchSnapshot()
 })
