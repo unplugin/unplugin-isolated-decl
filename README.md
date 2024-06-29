@@ -7,7 +7,8 @@
 ## Features
 
 - 🚀 **Fast**: Blazing-fast `.d.ts` generator, powered by Oxc.
-- 🎯 **Isolated**: Generate isolated declarations for each file.
+- 🎨 **Transformer**: Support Oxc, SWC, and TypeScript transformer.
+- 📦 **Zero Config**: No configuration required, works out of the box.
 - ✨ **Bundler Support**: Works with Vite, Rollup, and esbuild.
 
 ## Installation
@@ -73,6 +74,23 @@ build({
 ```
 
 <br></details>
+
+## Options
+
+```ts
+export interface Options {
+  include?: FilterPattern
+  exclude?: FilterPattern
+  enforce?: 'pre' | 'post' | undefined
+  /**
+   * If you use swc or typescript, you need to install `@swc/core` or `typescript` yourself.
+   * @default oxc
+   */
+  transformer?: 'oxc' | 'swc' | 'typescript'
+  /** Only for typescript transformer */
+  transformOptions?: TranspileOptions
+}
+```
 
 ## Sponsors
 

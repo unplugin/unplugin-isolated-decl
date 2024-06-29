@@ -1,9 +1,14 @@
 import path from 'node:path'
 import { mkdir, writeFile } from 'node:fs/promises'
 import { type UnpluginInstance, createUnplugin } from 'unplugin'
-import { isolatedDeclaration } from 'oxc-transform'
 import { createFilter } from '@rollup/pluginutils'
 import { type Options, resolveOptions } from './core/options'
+import {
+  type TransformResult,
+  oxcTransform,
+  swcTransform,
+  tsTransform,
+} from './core/transformer'
 import type { Plugin } from 'rollup'
 
 export type { Options }
@@ -56,8 +61,23 @@ export const IsolatedDecl: UnpluginInstance<Options | undefined, false> =
         return filter(id)
       },
 
-      transform(code, id): undefined {
-        const { sourceText, errors } = isolatedDeclaration(id, code)
+      async transform(code, id): Promise<undefined> {
+        let result: TransformResult
+        switch (options.transformer) {
+          case 'oxc':
+            result = oxcTransform(id, code)
+            break
+          case 'swc':
+            result = await swcTransform(id, code)
+            break
+          case 'typescript':
+            result = await tsTransform(
+              id,
+              code,
+              (options as any).transformOptions,
+            )
+        }
+        const { sourceText, errors } = result
         if (errors.length) {
           this.error(errors[0])
           return

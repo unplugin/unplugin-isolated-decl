@@ -77,12 +77,25 @@
     "release": "bumpp && pnpm publish",
     "prepublishOnly": "pnpm run build"
   },
+  "peerDependencies": {
+    "@swc/core": "^1.6.6",
+    "typescript": "^5.5.2"
+  },
+  "peerDependenciesMeta": {
+    "@swc/core": {
+      "optional": true
+    },
+    "typescript": {
+      "optional": true
+    }
+  },
   "dependencies": {
     "@rollup/pluginutils": "^5.1.0",
     "oxc-transform": "^0.15.1",
     "unplugin": "^1.10.1"
   },
   "devDependencies": {
+    "@swc/core": "^1.6.6",
     "@sxzz/eslint-config": "^3.13.0",
     "@sxzz/prettier-config": "^2.0.2",
     "@types/node": "^20.14.9",
