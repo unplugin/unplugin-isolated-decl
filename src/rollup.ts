@@ -1,3 +1,3 @@
-import unplugin from './index'
+import { IsolatedDecl } from './index'
 
-export default unplugin.rollup as typeof unplugin.rollup
+export default IsolatedDecl.rollup as typeof IsolatedDecl.rollup

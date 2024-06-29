@@ -1,3 +1,3 @@
-import unplugin from './index'
+import { IsolatedDecl } from './index'
 
-export default unplugin.esbuild as typeof unplugin.esbuild
+export default IsolatedDecl.esbuild as typeof IsolatedDecl.esbuild

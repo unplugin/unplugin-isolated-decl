@@ -1,3 +1,3 @@
-import unplugin from './index'
+import { IsolatedDecl } from './index'
 
-export default unplugin.vite as typeof unplugin.vite
+export default IsolatedDecl.vite as typeof IsolatedDecl.vite

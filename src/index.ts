@@ -6,13 +6,9 @@ import { createFilter } from '@rollup/pluginutils'
 import { type Options, resolveOptions } from './core/options'
 import type { Plugin } from 'rollup'
 
-declare module 'unplugin' {
-  interface UnpluginBuildContext {
-    id: number
-  }
-}
+export type { Options }
 
-export const plugin: UnpluginInstance<Options | undefined, false> =
+export const IsolatedDecl: UnpluginInstance<Options | undefined, false> =
   createUnplugin((rawOptions = {}, meta) => {
     const options = resolveOptions(rawOptions)
     const filter = createFilter(options.include, options.exclude)
@@ -127,8 +123,6 @@ export const plugin: UnpluginInstance<Options | undefined, false> =
       },
     }
   })
-
-export default plugin
 
 function lowestCommonAncestor(...filepaths: string[]) {
   if (filepaths.length === 0) return ''
