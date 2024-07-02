@@ -91,8 +91,8 @@
   },
   "dependencies": {
     "@rollup/pluginutils": "^5.1.0",
-    "oxc-transform": "^0.15.1",
-    "unplugin": "^1.10.1"
+    "oxc-transform": "^0.16.3",
+    "unplugin": "^1.11.0"
   },
   "devDependencies": {
     "@swc/core": "^1.6.6",
@@ -100,14 +100,14 @@
     "@sxzz/prettier-config": "^2.0.2",
     "@types/node": "^20.14.9",
     "bumpp": "^9.4.1",
-    "esbuild": "^0.21.5",
-    "eslint": "^9.5.0",
+    "esbuild": "^0.23.0",
+    "eslint": "^9.6.0",
     "fast-glob": "^3.3.2",
     "prettier": "^3.3.2",
     "rollup": "^4.18.0",
-    "tsdown": "^0.2.2",
-    "tsx": "^4.15.8",
-    "typescript": "^5.5.2",
+    "tsdown": "^0.2.3",
+    "tsx": "^4.16.0",
+    "typescript": "^5.5.3",
     "vite": "^5.3.2",
     "vitest": "^1.6.0"
   },
