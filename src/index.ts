@@ -79,8 +79,12 @@ export const IsolatedDecl: UnpluginInstance<Options | undefined, false> =
         }
         const { sourceText, errors } = result
         if (errors.length) {
-          this.error(errors[0])
-          return
+          if (options.ignoreErrors) {
+            this.warn(errors[0])
+          } else {
+            this.error(errors[0])
+            return
+          }
         }
         addOutput(id, sourceText)
       },

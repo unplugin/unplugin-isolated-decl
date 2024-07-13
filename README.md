@@ -6,7 +6,7 @@
 
 ## Features
 
-- 🚀 **Fast**: Blazing-fast `.d.ts` generator, powered by Oxc.
+- 🚀 **Fast**: Generates `.d.ts` files significantly faster than `tsc`.
 - 🎨 **Transformer**: Support Oxc, SWC, and TypeScript transformer.
 - 📦 **Zero Config**: No configuration required, works out of the box.
 - ✨ **Bundler Support**: Works with Vite, Rollup, and esbuild.
@@ -89,6 +89,7 @@ export interface Options {
   transformer?: 'oxc' | 'swc' | 'typescript'
   /** Only for typescript transformer */
   transformOptions?: TranspileOptions
+  ignoreErrors?: boolean
 }
 ```
 

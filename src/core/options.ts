@@ -5,6 +5,7 @@ export type Options = {
   include?: FilterPattern
   exclude?: FilterPattern
   enforce?: 'pre' | 'post' | undefined
+  ignoreErrors?: boolean
 } & (
   | {
       /**
@@ -36,5 +37,6 @@ export function resolveOptions(options: Options): OptionsResolved {
     exclude: options.exclude || [/node_modules/],
     enforce: 'enforce' in options ? options.enforce : 'pre',
     transformer: options.transformer || 'oxc',
+    ignoreErrors: options.ignoreErrors || false,
   }
 }
