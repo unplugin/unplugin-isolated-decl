@@ -119,28 +119,25 @@ export const IsolatedDecl: UnpluginInstance<Options | undefined, false> =
                 break
             }
 
-            if (build.initialOptions.write ?? true) {
+            const write = build.initialOptions.write ?? true
+            if (write) {
               if (!build.initialOptions.outdir)
                 throw new Error('outdir is required when write is true')
-
-              for (const [filename, source] of Object.entries(outputFiles)) {
-                const outFile = `${path.relative(outBase, filename)}.d.${outExt}`
-
-                const filePath = path.resolve(
-                  build.initialOptions.outdir,
-                  outFile,
-                )
-                await mkdir(path.dirname(filePath), { recursive: true })
-                await writeFile(filePath, source)
-              }
             } else {
               result.outputFiles ||= []
-              const textEncoder = new TextEncoder()
+            }
 
-              for (const [filename, source] of Object.entries(outputFiles)) {
-                const outFile = `${path.relative(outBase, filename)}.d.${outExt}`
-                result.outputFiles.push({
-                  path: outFile,
+            const textEncoder = new TextEncoder()
+            for (const [filename, source] of Object.entries(outputFiles)) {
+              const outDir = build.initialOptions.outdir
+              const outFile = `${path.relative(outBase, filename)}.d.${outExt}`
+              const filePath = outDir ? path.resolve(outDir, outFile) : outFile
+              if (write) {
+                await mkdir(path.dirname(filePath), { recursive: true })
+                await writeFile(filePath, source)
+              } else {
+                result.outputFiles!.push({
+                  path: filePath,
                   contents: textEncoder.encode(source),
                   hash: '',
                   text: source,
