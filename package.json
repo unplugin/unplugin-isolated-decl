@@ -92,7 +92,7 @@
   "dependencies": {
     "@rollup/pluginutils": "^5.1.0",
     "oxc-transform": "^0.23.0",
-    "unplugin": "^1.11.1"
+    "unplugin": "^1.12.1"
   },
   "devDependencies": {
     "@swc/core": "^1.7.6",
