@@ -89,55 +89,67 @@ export const IsolatedDecl: UnpluginInstance<Options | undefined, false> =
         addOutput(id, sourceText)
       },
 
-      // esbuild only
-      async buildEnd() {
-        if (meta.framework === 'esbuild') {
-          const esbuildOptions = meta.build!.initialOptions
+      esbuild: {
+        setup(build) {
+          build.onEnd(async (result) => {
+            const esbuildOptions = build.initialOptions
 
-          const entries = esbuildOptions.entryPoints
-          if (
-            !(
-              entries &&
-              Array.isArray(entries) &&
-              entries.every((entry) => typeof entry === 'string')
-            )
-          )
-            throw new Error('unsupported entryPoints, must be an string[]')
-
-          const outBase = lowestCommonAncestor(...entries)
-          const jsExt = esbuildOptions.outExtension?.['.js']
-          let outExt: string
-          switch (jsExt) {
-            case '.cjs':
-              outExt = 'cts'
-              break
-            case '.mjs':
-              outExt = 'mts'
-              break
-            default:
-              outExt = 'ts'
-              break
-          }
-
-          const build = meta.build!
-          if (
-            build.initialOptions.outdir &&
-            (build.initialOptions.write ?? true)
-          )
-            for (const [filename, source] of Object.entries(outputFiles)) {
-              const outFile = `${path.relative(outBase, filename)}.d.${outExt}`
-
-              const filePath = path.resolve(
-                build.initialOptions.outdir,
-                outFile,
+            const entries = esbuildOptions.entryPoints
+            if (
+              !(
+                entries &&
+                Array.isArray(entries) &&
+                entries.every((entry) => typeof entry === 'string')
               )
-              await mkdir(path.dirname(filePath), { recursive: true })
-              await writeFile(filePath, source)
-            }
-        }
-      },
+            )
+              throw new Error('unsupported entryPoints, must be an string[]')
 
-      // esbuild,
+            const outBase = lowestCommonAncestor(...entries)
+            const jsExt = esbuildOptions.outExtension?.['.js']
+            let outExt: string
+            switch (jsExt) {
+              case '.cjs':
+                outExt = 'cts'
+                break
+              case '.mjs':
+                outExt = 'mts'
+                break
+              default:
+                outExt = 'ts'
+                break
+            }
+
+            if (build.initialOptions.write ?? true) {
+              if (!build.initialOptions.outdir)
+                throw new Error('outdir is required when write is true')
+
+              for (const [filename, source] of Object.entries(outputFiles)) {
+                const outFile = `${path.relative(outBase, filename)}.d.${outExt}`
+
+                const filePath = path.resolve(
+                  build.initialOptions.outdir,
+                  outFile,
+                )
+                await mkdir(path.dirname(filePath), { recursive: true })
+                await writeFile(filePath, source)
+              }
+            } else {
+              result.outputFiles ||= []
+              const textEncoder = new TextEncoder()
+
+              for (const [filename, source] of Object.entries(outputFiles)) {
+                const outFile = `${path.relative(outBase, filename)}.d.${outExt}`
+                result.outputFiles.push({
+                  path: outFile,
+                  contents: textEncoder.encode(source),
+                  hash: '',
+                  text: source,
+                })
+              }
+            }
+          })
+        },
+      },
       rollup,
       rolldown: rollup,
       vite: {

@@ -1,6 +1,12 @@
 // Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
 
-exports[`esbuild 1`] = `
+exports[`esbuild > generate mode 1`] = `
+"export type Str = string;
+export declare function hello(s: Str): Str;
+"
+`;
+
+exports[`esbuild > write mode 1`] = `
 "export type Str = string;
 export declare function hello(s: Str): Str;
 "
