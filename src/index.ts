@@ -1,20 +1,20 @@
-import path from 'node:path'
 import { mkdir, writeFile } from 'node:fs/promises'
-import { type UnpluginInstance, createUnplugin } from 'unplugin'
+import path from 'node:path'
 import { createFilter } from '@rollup/pluginutils'
-import { type Options, resolveOptions } from './core/options'
+import { createUnplugin, type UnpluginInstance } from 'unplugin'
+import { resolveOptions, type Options } from './core/options'
 import {
-  type TransformResult,
   oxcTransform,
   swcTransform,
   tsTransform,
+  type TransformResult,
 } from './core/transformer'
 import type { Plugin } from 'rollup'
 
 export type { Options }
 
 export const IsolatedDecl: UnpluginInstance<Options | undefined, false> =
-  createUnplugin((rawOptions = {}, meta) => {
+  createUnplugin((rawOptions = {}) => {
     const options = resolveOptions(rawOptions)
     const filter = createFilter(options.include, options.exclude)
 
@@ -151,7 +151,7 @@ export const IsolatedDecl: UnpluginInstance<Options | undefined, false> =
         },
       },
       rollup,
-      rolldown: rollup,
+      rolldown: rollup as any,
       vite: {
         apply: 'build',
         enforce: 'pre',

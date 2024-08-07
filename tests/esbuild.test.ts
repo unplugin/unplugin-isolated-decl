@@ -1,9 +1,9 @@
-import path from 'node:path'
 import { readFile } from 'node:fs/promises'
-import { describe, expect, test } from 'vitest'
+import path from 'node:path'
 import { build } from 'esbuild'
-import UnpluginIsolatedDecl from '../src/esbuild'
+import { describe, expect, test } from 'vitest'
 import { dependencies } from '../package.json'
+import UnpluginIsolatedDecl from '../src/esbuild'
 
 describe('esbuild', () => {
   const input = path.resolve(__dirname, 'fixtures/main.ts')

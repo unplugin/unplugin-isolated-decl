@@ -1,6 +1,6 @@
 import path from 'node:path'
-import { expect, test } from 'vitest'
 import { rollup } from 'rollup'
+import { expect, test } from 'vitest'
 import UnpluginIsolatedDecl from '../src/rollup'
 
 test('rollup', async () => {
