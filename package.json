@@ -91,22 +91,22 @@
   },
   "dependencies": {
     "@rollup/pluginutils": "^5.1.0",
-    "oxc-transform": "^0.23.0",
+    "oxc-transform": "^0.24.1",
     "unplugin": "^1.12.1"
   },
   "devDependencies": {
-    "@swc/core": "^1.7.6",
+    "@swc/core": "^1.7.10",
     "@sxzz/eslint-config": "^3.17.0",
     "@sxzz/prettier-config": "^2.0.2",
-    "@types/node": "^20.14.14",
+    "@types/node": "^20.14.15",
     "bumpp": "^9.4.2",
     "esbuild": "^0.23.0",
-    "eslint": "^9.8.0",
+    "eslint": "^9.9.0",
     "fast-glob": "^3.3.2",
     "prettier": "^3.3.3",
     "rollup": "^4.20.0",
-    "tsdown": "^0.2.3",
-    "tsx": "^4.16.5",
+    "tsdown": "^0.2.5",
+    "tsx": "^4.17.0",
     "typescript": "^5.5.4",
     "vite": "^5.4.0",
     "vitest": "^2.0.5"
