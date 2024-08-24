@@ -25,8 +25,11 @@ export const IsolatedDecl: UnpluginInstance<Options | undefined, false> =
     const filter = createFilter(options.include, options.exclude)
 
     const outputFiles: Record<string, string> = {}
+    function stripExt(filename: string) {
+      return filename.replace(/\.(.?)[jt]s$/, '')
+    }
     function addOutput(filename: string, source: string) {
-      outputFiles[filename.replace(/\.(.?)[jt]s$/, '')] = source
+      outputFiles[stripExt(filename)] = source
     }
 
     const rollup: Partial<Plugin> = {
@@ -200,14 +203,14 @@ export const IsolatedDecl: UnpluginInstance<Options | undefined, false> =
       }
       for (const i of typeImports) {
         const resolved = await resolve(i.source.value, id)
-        if (resolved) {
+        if (resolved && filter(resolved) && !outputFiles[stripExt(resolved)]) {
           let source: string
           try {
             source = await readFile(resolved, 'utf8')
           } catch {
             continue
           }
-          transform.call(this, source, resolved)
+          await transform.call(this, source, resolved)
         }
       }
     }

@@ -21,5 +21,8 @@ export { hello, num };",
   "// types.d.ts
 export type Num = number;
 ",
+  "// types2.d.ts
+export type Num2 = number;
+",
 ]
 `;

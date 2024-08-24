@@ -22,6 +22,9 @@ export declare let num: Num;
   "// types.d.ts
 export type Num = number;
 ",
+  "// types2.d.ts
+export type Num2 = number;
+",
 ]
 `;
 
@@ -43,6 +46,8 @@ export {
 };
 ",
   "export type Num = number;
+",
+  "export type Num2 = number;
 ",
 ]
 `;
