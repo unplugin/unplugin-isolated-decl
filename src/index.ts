@@ -1,7 +1,13 @@
-import { mkdir, writeFile } from 'node:fs/promises'
+import { mkdir, readFile, writeFile } from 'node:fs/promises'
 import path from 'node:path'
 import { createFilter } from '@rollup/pluginutils'
-import { createUnplugin, type UnpluginInstance } from 'unplugin'
+import { parseAsync } from 'oxc-parser'
+import {
+  createUnplugin,
+  type UnpluginBuildContext,
+  type UnpluginContext,
+  type UnpluginInstance,
+} from 'unplugin'
 import { resolveOptions, type Options } from './core/options'
 import {
   oxcTransform,
@@ -9,12 +15,12 @@ import {
   tsTransform,
   type TransformResult,
 } from './core/transformer'
-import type { Plugin } from 'rollup'
+import type { Plugin, PluginContext } from 'rollup'
 
 export type { Options }
 
 export const IsolatedDecl: UnpluginInstance<Options | undefined, false> =
-  createUnplugin((rawOptions = {}) => {
+  createUnplugin((rawOptions = {}, meta) => {
     const options = resolveOptions(rawOptions)
     const filter = createFilter(options.include, options.exclude)
 
@@ -61,32 +67,8 @@ export const IsolatedDecl: UnpluginInstance<Options | undefined, false> =
         return filter(id)
       },
 
-      async transform(code, id): Promise<undefined> {
-        let result: TransformResult
-        switch (options.transformer) {
-          case 'oxc':
-            result = oxcTransform(id, code)
-            break
-          case 'swc':
-            result = await swcTransform(id, code)
-            break
-          case 'typescript':
-            result = await tsTransform(
-              id,
-              code,
-              (options as any).transformOptions,
-            )
-        }
-        const { sourceText, errors } = result
-        if (errors.length) {
-          if (options.ignoreErrors) {
-            this.warn(errors[0])
-          } else {
-            this.error(errors[0])
-            return
-          }
-        }
-        addOutput(id, sourceText)
+      transform(code, id): Promise<undefined> {
+        return transform.call(this, code, id)
       },
 
       esbuild: {
@@ -154,6 +136,80 @@ export const IsolatedDecl: UnpluginInstance<Options | undefined, false> =
         enforce: 'pre',
         ...rollup,
       },
+    }
+
+    async function transform(
+      this: UnpluginBuildContext & UnpluginContext,
+      code: string,
+      id: string,
+    ): Promise<undefined> {
+      let result: TransformResult
+      switch (options.transformer) {
+        case 'oxc':
+          result = oxcTransform(id, code)
+          break
+        case 'swc':
+          result = await swcTransform(id, code)
+          break
+        case 'typescript':
+          result = await tsTransform(
+            id,
+            code,
+            (options as any).transformOptions,
+          )
+      }
+      const { sourceText, errors } = result
+      if (errors.length) {
+        if (options.ignoreErrors) {
+          this.warn(errors[0])
+        } else {
+          this.error(errors[0])
+          return
+        }
+      }
+      addOutput(id, sourceText)
+
+      let program: any
+      try {
+        program = JSON.parse(
+          (await parseAsync(code, { sourceFilename: id })).program,
+        )
+      } catch {
+        return
+      }
+      const typeImports = program.body.filter((node: any) => {
+        if (node.type !== 'ImportDeclaration') return false
+        if (node.importKind === 'type') return true
+        return (node.specifiers || []).every(
+          (spec: any) =>
+            spec.type === 'ImportSpecifier' && spec.importKind === 'type',
+        )
+      })
+
+      const resolve = async (id: string, importer: string) => {
+        if (meta.framework === 'esbuild') {
+          return (
+            await meta.build!.resolve(id, {
+              importer,
+              resolveDir: path.dirname(importer),
+              kind: 'import-statement',
+            })
+          ).path
+        }
+        return (await (this as any as PluginContext).resolve(id, importer))?.id
+      }
+      for (const i of typeImports) {
+        const resolved = await resolve(i.source.value, id)
+        if (resolved) {
+          let source: string
+          try {
+            source = await readFile(resolved, 'utf8')
+          } catch {
+            continue
+          }
+          transform.call(this, source, resolved)
+        }
+      }
     }
   })
 

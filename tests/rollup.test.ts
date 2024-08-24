@@ -1,5 +1,6 @@
 import path from 'node:path'
 import { rollup } from 'rollup'
+import esbuild from 'rollup-plugin-esbuild'
 import { expect, test } from 'vitest'
 import UnpluginIsolatedDecl from '../src/rollup'
 
@@ -9,7 +10,7 @@ test('rollup', async () => {
 
   const bundle = await rollup({
     input,
-    plugins: [UnpluginIsolatedDecl(), { name: 'raw', transform: () => '' }],
+    plugins: [UnpluginIsolatedDecl(), esbuild()],
     logLevel: 'silent',
   })
 

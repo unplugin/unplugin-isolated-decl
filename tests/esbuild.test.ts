@@ -1,4 +1,4 @@
-import { readFile } from 'node:fs/promises'
+import { readdir, readFile } from 'node:fs/promises'
 import path from 'node:path'
 import { build } from 'esbuild'
 import { describe, expect, test } from 'vitest'
@@ -18,11 +18,15 @@ describe('esbuild', () => {
       external: Object.keys(dependencies),
       platform: 'node',
       outdir: dist,
+      format: 'esm',
     })
-
-    expect(
-      await readFile(path.resolve(dist, 'main.d.ts'), 'utf8'),
-    ).toMatchSnapshot()
+    await expect(
+      Promise.all(
+        (await readdir(dist))
+          .sort()
+          .map((file) => readFile(path.resolve(dist, file), 'utf8')),
+      ),
+    ).resolves.toMatchSnapshot()
   })
 
   test('generate mode', async () => {
@@ -34,8 +38,11 @@ describe('esbuild', () => {
       external: Object.keys(dependencies),
       platform: 'node',
       write: false,
+      format: 'esm',
     })
 
-    expect(outputFiles[1].text).toMatchSnapshot()
+    expect(
+      outputFiles.map((file) => `// ${file.path}\n${file.text}`),
+    ).toMatchSnapshot()
   })
 })
