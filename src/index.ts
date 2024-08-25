@@ -216,13 +216,14 @@ export const IsolatedDecl: UnpluginInstance<Options | undefined, false> =
     }
   })
 
-function lowestCommonAncestor(...filepaths: string[]) {
+export function lowestCommonAncestor(...filepaths: string[]): string {
   if (filepaths.length === 0) return ''
   if (filepaths.length === 1) return path.dirname(filepaths[0])
+  filepaths = filepaths.map((p) => p.replaceAll('\\', '/'))
   const [first, ...rest] = filepaths
-  let ancestor = first.split(path.sep)
+  let ancestor = first.split('/')
   for (const filepath of rest) {
-    const directories = filepath.split(path.sep, ancestor.length)
+    const directories = filepath.split('/', ancestor.length)
     let index = 0
     for (const directory of directories) {
       if (directory === ancestor[index]) {
@@ -236,6 +237,6 @@ function lowestCommonAncestor(...filepaths: string[]) {
   }
 
   return ancestor.length <= 1 && ancestor[0] === ''
-    ? path.sep + ancestor[0]
-    : ancestor.join(path.sep)
+    ? `/${ancestor[0]}`
+    : ancestor.join('/')
 }
