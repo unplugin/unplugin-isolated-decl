@@ -25,9 +25,7 @@ export const IsolatedDecl: UnpluginInstance<Options | undefined, false> =
     const filter = createFilter(options.include, options.exclude)
 
     const outputFiles: Record<string, string> = {}
-    function stripExt(filename: string) {
-      return filename.replace(/\.(.?)[jt]s$/, '')
-    }
+
     function addOutput(filename: string, source: string) {
       outputFiles[stripExt(filename)] = source
     }
@@ -215,6 +213,10 @@ export const IsolatedDecl: UnpluginInstance<Options | undefined, false> =
       }
     }
   })
+
+function stripExt(filename: string) {
+  return filename.replace(/\.(.?)[jt]s$/, '')
+}
 
 export function lowestCommonAncestor(...filepaths: string[]): string {
   if (filepaths.length === 0) return ''
