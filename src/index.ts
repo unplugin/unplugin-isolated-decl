@@ -20,7 +20,7 @@ import type { Plugin, PluginContext } from 'rollup'
 export type { Options }
 
 export const IsolatedDecl: UnpluginInstance<Options | undefined, false> =
-  createUnplugin((rawOptions = {}, meta) => {
+  createUnplugin((rawOptions = {}) => {
     const options = resolveOptions(rawOptions)
     const filter = createFilter(options.include, options.exclude)
 
@@ -188,9 +188,10 @@ export const IsolatedDecl: UnpluginInstance<Options | undefined, false> =
       })
 
       const resolve = async (id: string, importer: string) => {
-        if (meta.framework === 'esbuild') {
+        const context = this.getNativeBuildContext?.()
+        if (context?.framework === 'esbuild') {
           return (
-            await meta.build!.resolve(id, {
+            await context.build.resolve(id, {
               importer,
               resolveDir: path.dirname(importer),
               kind: 'import-statement',
