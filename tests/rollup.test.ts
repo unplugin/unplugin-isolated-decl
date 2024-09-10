@@ -10,7 +10,12 @@ test('rollup', async () => {
 
   const bundle = await rollup({
     input,
-    plugins: [UnpluginIsolatedDecl(), esbuild()],
+    plugins: [
+      UnpluginIsolatedDecl({
+        extraOutdir: 'temp',
+      }),
+      esbuild(),
+    ],
     logLevel: 'silent',
   })
 

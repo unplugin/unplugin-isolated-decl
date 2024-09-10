@@ -15,6 +15,7 @@ import {
   tsTransform,
   type TransformResult,
 } from './core/transformer'
+import type { PluginBuild } from 'esbuild'
 import type { Plugin, PluginContext } from 'rollup'
 
 export type { Options }
@@ -43,10 +44,14 @@ export const IsolatedDecl: UnpluginInstance<Options | undefined, false> =
           return this.error('entryFileNames must be a string')
         }
 
-        const entryFileNames = outputOptions.entryFileNames.replace(
+        let entryFileNames = outputOptions.entryFileNames.replace(
           /\.(.)?[jt]s$/,
           (_, s) => `.d.${s || ''}ts`,
         )
+
+        if (options.extraOutdir) {
+          entryFileNames = path.join(options.extraOutdir, entryFileNames)
+        }
 
         for (const [filename, source] of Object.entries(outputFiles)) {
           this.emitFile({
@@ -69,66 +74,11 @@ export const IsolatedDecl: UnpluginInstance<Options | undefined, false> =
       },
 
       transform(code, id): Promise<undefined> {
-        return transform.call(this, code, id)
+        return transform(this, code, id)
       },
 
       esbuild: {
-        setup(build) {
-          build.onEnd(async (result) => {
-            const esbuildOptions = build.initialOptions
-
-            const entries = esbuildOptions.entryPoints
-            if (
-              !(
-                entries &&
-                Array.isArray(entries) &&
-                entries.every((entry) => typeof entry === 'string')
-              )
-            )
-              throw new Error('unsupported entryPoints, must be an string[]')
-
-            const outBase = lowestCommonAncestor(...entries)
-            const jsExt = esbuildOptions.outExtension?.['.js']
-            let outExt: string
-            switch (jsExt) {
-              case '.cjs':
-                outExt = 'cts'
-                break
-              case '.mjs':
-                outExt = 'mts'
-                break
-              default:
-                outExt = 'ts'
-                break
-            }
-
-            const write = build.initialOptions.write ?? true
-            if (write) {
-              if (!build.initialOptions.outdir)
-                throw new Error('outdir is required when write is true')
-            } else {
-              result.outputFiles ||= []
-            }
-
-            const textEncoder = new TextEncoder()
-            for (const [filename, source] of Object.entries(outputFiles)) {
-              const outDir = build.initialOptions.outdir
-              const outFile = `${path.relative(outBase, filename)}.d.${outExt}`
-              const filePath = outDir ? path.resolve(outDir, outFile) : outFile
-              if (write) {
-                await mkdir(path.dirname(filePath), { recursive: true })
-                await writeFile(filePath, source)
-              } else {
-                result.outputFiles!.push({
-                  path: filePath,
-                  contents: textEncoder.encode(source),
-                  hash: '',
-                  text: source,
-                })
-              }
-            }
-          })
-        },
+        setup: esbuildSetup,
       },
       rollup,
       rolldown: rollup as any,
@@ -140,7 +90,7 @@ export const IsolatedDecl: UnpluginInstance<Options | undefined, false> =
     }
 
     async function transform(
-      this: UnpluginBuildContext & UnpluginContext,
+      context: UnpluginBuildContext & UnpluginContext,
       code: string,
       id: string,
     ): Promise<undefined> {
@@ -162,9 +112,9 @@ export const IsolatedDecl: UnpluginInstance<Options | undefined, false> =
       const { code: sourceText, errors } = result
       if (errors.length) {
         if (options.ignoreErrors) {
-          this.warn(errors[0])
+          context.warn(errors[0])
         } else {
-          this.error(errors[0])
+          context.error(errors[0])
           return
         }
       }
@@ -187,21 +137,8 @@ export const IsolatedDecl: UnpluginInstance<Options | undefined, false> =
         )
       })
 
-      const resolve = async (id: string, importer: string) => {
-        const context = this.getNativeBuildContext?.()
-        if (context?.framework === 'esbuild') {
-          return (
-            await context.build.resolve(id, {
-              importer,
-              resolveDir: path.dirname(importer),
-              kind: 'import-statement',
-            })
-          ).path
-        }
-        return (await (this as any as PluginContext).resolve(id, importer))?.id
-      }
       for (const i of typeImports) {
-        const resolved = await resolve(i.source.value, id)
+        const resolved = await resolve(context, i.source.value, id)
         if (resolved && filter(resolved) && !outputFiles[stripExt(resolved)]) {
           let source: string
           try {
@@ -209,11 +146,89 @@ export const IsolatedDecl: UnpluginInstance<Options | undefined, false> =
           } catch {
             continue
           }
-          await transform.call(this, source, resolved)
+          await transform(context, source, resolved)
         }
       }
     }
+
+    function esbuildSetup(build: PluginBuild) {
+      build.onEnd(async (result) => {
+        const esbuildOptions = build.initialOptions
+
+        const entries = esbuildOptions.entryPoints
+        if (
+          !(
+            entries &&
+            Array.isArray(entries) &&
+            entries.every((entry) => typeof entry === 'string')
+          )
+        )
+          throw new Error('unsupported entryPoints, must be an string[]')
+
+        const outBase = lowestCommonAncestor(...entries)
+        const jsExt = esbuildOptions.outExtension?.['.js']
+        let outExt: string
+        switch (jsExt) {
+          case '.cjs':
+            outExt = 'cts'
+            break
+          case '.mjs':
+            outExt = 'mts'
+            break
+          default:
+            outExt = 'ts'
+            break
+        }
+
+        const write = build.initialOptions.write ?? true
+        if (write) {
+          if (!build.initialOptions.outdir)
+            throw new Error('outdir is required when write is true')
+        } else {
+          result.outputFiles ||= []
+        }
+
+        const textEncoder = new TextEncoder()
+        for (const [filename, source] of Object.entries(outputFiles)) {
+          const outDir = build.initialOptions.outdir
+          let outFile = `${path.relative(outBase, filename)}.d.${outExt}`
+          if (options.extraOutdir) {
+            outFile = path.join(options.extraOutdir, outFile)
+          }
+          const filePath = outDir ? path.resolve(outDir, outFile) : outFile
+          if (write) {
+            await mkdir(path.dirname(filePath), { recursive: true })
+            await writeFile(filePath, source)
+          } else {
+            result.outputFiles!.push({
+              path: filePath,
+              contents: textEncoder.encode(source),
+              hash: '',
+              text: source,
+            })
+          }
+        }
+      })
+    }
   })
+
+const resolve = async (
+  context: UnpluginBuildContext,
+  id: string,
+  importer: string,
+) => {
+  const nativeContext = context.getNativeBuildContext?.()
+  if (nativeContext?.framework === 'esbuild') {
+    return (
+      await nativeContext.build.resolve(id, {
+        importer,
+        resolveDir: path.dirname(importer),
+        kind: 'import-statement',
+      })
+    ).path
+  }
+  return (await (context as PluginContext).resolve(id, importer))?.id
+}
 
 function stripExt(filename: string) {
   return filename.replace(/\.(.?)[jt]s$/, '')

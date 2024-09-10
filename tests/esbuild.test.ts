@@ -12,7 +12,7 @@ describe('esbuild', () => {
     const dist = path.resolve(__dirname, 'temp')
     await build({
       entryPoints: [input],
-      plugins: [UnpluginIsolatedDecl()],
+      plugins: [UnpluginIsolatedDecl({ extraOutdir: 'temp' })],
       logLevel: 'silent',
       bundle: true,
       external: Object.keys(dependencies),
@@ -20,11 +20,13 @@ describe('esbuild', () => {
       outdir: dist,
       format: 'esm',
     })
+
+    const outDir = path.resolve(dist, 'temp')
     await expect(
       Promise.all(
-        (await readdir(dist))
+        (await readdir(outDir))
           .sort()
-          .map((file) => readFile(path.resolve(dist, file), 'utf8')),
+          .map((file) => readFile(path.resolve(outDir, file), 'utf8')),
       ),
     ).resolves.toMatchSnapshot()
   })
@@ -32,7 +34,7 @@ describe('esbuild', () => {
   test('generate mode', async () => {
     const { outputFiles } = await build({
       entryPoints: [input],
-      plugins: [UnpluginIsolatedDecl()],
+      plugins: [UnpluginIsolatedDecl({ extraOutdir: 'temp' })],
       logLevel: 'silent',
       bundle: true,
       external: Object.keys(dependencies),

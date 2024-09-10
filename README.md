@@ -90,6 +90,9 @@ export interface Options {
   /** Only for typescript transformer */
   transformOptions?: TranspileOptions
   ignoreErrors?: boolean
+
+  /** An extra directory layer for output files. */
+  extraOutdir?: string
 }
 ```
 

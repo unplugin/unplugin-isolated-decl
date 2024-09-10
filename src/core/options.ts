@@ -6,6 +6,8 @@ export type Options = {
   exclude?: FilterPattern
   enforce?: 'pre' | 'post' | undefined
   ignoreErrors?: boolean
+  /** An extra directory layer for output files. */
+  extraOutdir?: string
 } & (
   | {
       /**
@@ -28,7 +30,7 @@ type Overwrite<T, U> = Pick<T, Exclude<keyof T, keyof U>> & U
 
 export type OptionsResolved = Overwrite<
   Required<Options>,
-  Pick<Options, 'enforce'>
+  Pick<Options, 'enforce' | 'extraOutdir'>
 >
 
 export function resolveOptions(options: Options): OptionsResolved {
@@ -38,5 +40,6 @@ export function resolveOptions(options: Options): OptionsResolved {
     enforce: 'enforce' in options ? options.enforce : 'pre',
     transformer: options.transformer || 'oxc',
     ignoreErrors: options.ignoreErrors || false,
+    extraOutdir: options.extraOutdir,
   }
 }
