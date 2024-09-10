@@ -2,12 +2,12 @@ import { isolatedDeclaration } from 'oxc-transform'
 import type { TranspileOptions } from 'typescript'
 
 export interface TransformResult {
-  sourceText: string
+  code: string
   errors: Array<string>
 }
 
 export function oxcTransform(id: string, code: string): TransformResult {
-  return isolatedDeclaration(id, code)
+  return isolatedDeclaration(id, code, { sourcemap: false })
 }
 
 export async function swcTransform(
@@ -19,7 +19,7 @@ export async function swcTransform(
     swc = await import('@swc/core')
   } catch {
     return {
-      sourceText: '',
+      code: '',
       errors: [
         'SWC is required for transforming TypeScript, please install `@swc/core`.',
       ],
@@ -42,12 +42,12 @@ export async function swcTransform(
     // @ts-expect-error
     const output = JSON.parse(result.output)
     return {
-      sourceText: output.__swc_isolated_declarations__,
+      code: output.__swc_isolated_declarations__,
       errors: [],
     }
   } catch (error: any) {
     return {
-      sourceText: '',
+      code: '',
       errors: [error.toString()],
     }
   }
@@ -64,7 +64,7 @@ export async function tsTransform(
     ts = await import('typescript')
   } catch {
     return {
-      sourceText: '',
+      code: '',
       errors: [
         'TypeScript is required for transforming TypeScript, please install `typescript`.',
       ],
@@ -73,7 +73,7 @@ export async function tsTransform(
 
   if (!ts.transpileDeclaration) {
     return {
-      sourceText: '',
+      code: '',
       errors: [
         'TypeScript version is too low, please upgrade to TypeScript 5.5.2+.',
       ],
@@ -99,7 +99,7 @@ export async function tsTransform(
       ]
     : []
   return {
-    sourceText: outputText,
+    code: outputText,
     errors,
   }
 }

@@ -159,7 +159,7 @@ export const IsolatedDecl: UnpluginInstance<Options | undefined, false> =
             (options as any).transformOptions,
           )
       }
-      const { sourceText, errors } = result
+      const { code: sourceText, errors } = result
       if (errors.length) {
         if (options.ignoreErrors) {
           this.warn(errors[0])
