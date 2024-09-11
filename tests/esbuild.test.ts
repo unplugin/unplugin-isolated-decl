@@ -44,7 +44,9 @@ describe('esbuild', () => {
     })
 
     expect(
-      outputFiles.map((file) => `// ${file.path}\n${file.text}`),
+      outputFiles.map(
+        (file) => `// ${file.path.replaceAll('\\', '/')}\n${file.text}`,
+      ),
     ).toMatchSnapshot()
   })
 })

@@ -21,7 +21,7 @@ test('rolldown', async () => {
       .sort((a, b) => a.fileName.localeCompare(b.fileName))
       .map(
         (asset) =>
-          `// ${asset.fileName}\n${asset.type === 'chunk' ? asset.code : asset.source}`,
+          `// ${asset.fileName.replaceAll('\\', '/')}\n${asset.type === 'chunk' ? asset.code : asset.source}`,
       ),
   ).toMatchSnapshot()
 })

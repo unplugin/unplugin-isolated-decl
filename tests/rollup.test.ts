@@ -25,7 +25,7 @@ test('rollup', async () => {
   expect(
     result.output.map(
       (asset) =>
-        `// ${asset.fileName}\n${asset.type === 'chunk' ? asset.code : asset.source}`,
+        `// ${asset.fileName.replaceAll('\\', '/')}\n${asset.type === 'chunk' ? asset.code : asset.source}`,
     ),
   ).toMatchSnapshot()
 })
