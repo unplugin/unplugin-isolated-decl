@@ -1,4 +1,3 @@
-import { isolatedDeclaration } from 'oxc-transform'
 import type { TranspileOptions } from 'typescript'
 
 export interface TransformResult {
@@ -6,7 +5,11 @@ export interface TransformResult {
   errors: Array<string>
 }
 
-export function oxcTransform(id: string, code: string): TransformResult {
+export async function oxcTransform(
+  id: string,
+  code: string,
+): Promise<TransformResult> {
+  const { isolatedDeclaration } = await import('oxc-transform')
   return isolatedDeclaration(id, code, { sourcemap: false })
 }
 

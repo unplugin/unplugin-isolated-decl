@@ -97,7 +97,7 @@ export const IsolatedDecl: UnpluginInstance<Options | undefined, false> =
       let result: TransformResult
       switch (options.transformer) {
         case 'oxc':
-          result = oxcTransform(id, code)
+          result = await oxcTransform(id, code)
           break
         case 'swc':
           result = await swcTransform(id, code)
