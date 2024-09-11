@@ -1,6 +1,6 @@
 {
   "name": "unplugin-isolated-decl",
-  "version": "0.5.1",
+  "version": "0.5.2",
   "packageManager": "pnpm@9.10.0",
   "description": "A blazing-fast tool for generating isolated declarations, powered by Oxc.",
   "type": "module",
