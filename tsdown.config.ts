@@ -5,5 +5,9 @@ export default defineConfig({
   entry: ['./src/*.ts'],
   format: ['cjs', 'esm'],
   clean: true,
-  plugins: [IsolatedDecl()],
+  plugins: [
+    IsolatedDecl({
+      autoAddExts: true,
+    }),
+  ],
 })

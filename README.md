@@ -93,7 +93,25 @@ export interface Options {
 
   /** An extra directory layer for output files. */
   extraOutdir?: string
+  /** Automatically add `.js` extension to resolve in `Node16` + ESM mode. */
+  autoAddExts?: boolean
 }
+```
+
+### `autoAddExts`
+
+Automatically add `.js` extension to resolve in Node 16+ ESM mode.
+
+```ts
+// index.d.ts
+import {} from './foo'
+```
+
+With `autoAddExts`, it will be transformed to:
+
+```ts
+// index.d.ts
+import {} from './foo.js'
 ```
 
 ## Sponsors
@@ -107,3 +125,7 @@ export interface Options {
 ## License
 
 [MIT](./LICENSE) License © 2024-PRESENT [三咲智子](https://github.com/sxzz)
+
+```
+
+```

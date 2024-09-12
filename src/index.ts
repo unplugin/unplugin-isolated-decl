@@ -1,6 +1,7 @@
 import { mkdir, readFile, writeFile } from 'node:fs/promises'
 import path from 'node:path'
 import { createFilter } from '@rollup/pluginutils'
+import MagicString from 'magic-string'
 import { parseAsync } from 'oxc-parser'
 import {
   createUnplugin,
@@ -15,6 +16,7 @@ import {
   tsTransform,
   type TransformResult,
 } from './core/transformer'
+import type { TSESTree } from '@typescript-eslint/typescript-estree'
 import type { PluginBuild } from 'esbuild'
 import type { Plugin, PluginContext } from 'rollup'
 
@@ -94,6 +96,41 @@ export const IsolatedDecl: UnpluginInstance<Options | undefined, false> =
       code: string,
       id: string,
     ): Promise<undefined> {
+      let program: TSESTree.Program | undefined
+      try {
+        program = JSON.parse(
+          (await parseAsync(code, { sourceFilename: id })).program,
+        )
+      } catch {}
+
+      if (options.autoAddExts && program) {
+        const imports = program.body.filter(
+          (node) =>
+            node.type === 'ImportDeclaration' ||
+            node.type === 'ExportAllDeclaration' ||
+            node.type === 'ExportNamedDeclaration',
+        )
+        const s = new MagicString(code)
+        for (const i of imports) {
+          if (!i.source || path.basename(i.source.value).includes('.')) {
+            continue
+          }
+
+          const resolved = await resolve(context, i.source.value, id)
+          if (!resolved || resolved.external) continue
+          if (resolved.id.endsWith('.ts')) {
+            s.overwrite(
+              // @ts-expect-error
+              i.source.start,
+              // @ts-expect-error
+              i.source.end,
+              JSON.stringify(`${i.source.value}.js`),
+            )
+          }
+        }
+        code = s.toString()
+      }
+
       let result: TransformResult
       switch (options.transformer) {
         case 'oxc':
@@ -120,25 +157,45 @@ export const IsolatedDecl: UnpluginInstance<Options | undefined, false> =
       }
       addOutput(id, sourceText)
 
-      let program: any
-      try {
-        program = JSON.parse(
-          (await parseAsync(code, { sourceFilename: id })).program,
-        )
-      } catch {
-        return
-      }
-      const typeImports = program.body.filter((node: any) => {
-        if (node.type !== 'ImportDeclaration') return false
-        if (node.importKind === 'type') return true
-        return (node.specifiers || []).every(
-          (spec: any) =>
-            spec.type === 'ImportSpecifier' && spec.importKind === 'type',
-        )
-      })
+      if (!program) return
+      const typeImports = program.body.filter(
+        (
+          node,
+        ): node is
+          | TSESTree.ImportDeclaration
+          | TSESTree.ExportNamedDeclaration
+          | TSESTree.ExportAllDeclaration => {
+          if (node.type === 'ImportDeclaration') {
+            if (node.importKind === 'type') return true
+            return (
+              node.specifiers &&
+              node.specifiers.every(
+                (spec) =>
+                  spec.type === 'ImportSpecifier' && spec.importKind === 'type',
+              )
+            )
+          }
+          if (
+            node.type === 'ExportNamedDeclaration' ||
+            node.type === 'ExportAllDeclaration'
+          ) {
+            if (node.exportKind === 'type') return true
+            return (
+              node.type === 'ExportNamedDeclaration' &&
+              node.specifiers &&
+              node.specifiers.every(
+                (spec) =>
+                  spec.type === 'ExportSpecifier' && spec.exportKind === 'type',
+              )
+            )
+          }
+          return false
+        },
+      )
 
       for (const i of typeImports) {
-        const resolved = await resolve(context, i.source.value, id)
+        if (!i.source) continue
+        const resolved = (await resolve(context, i.source.value, id))?.id
         if (resolved && filter(resolved) && !outputFiles[stripExt(resolved)]) {
           let source: string
           try {
@@ -212,22 +269,23 @@ export const IsolatedDecl: UnpluginInstance<Options | undefined, false> =
     }
   })
 
-const resolve = async (
+async function resolve(
   context: UnpluginBuildContext,
   id: string,
   importer: string,
-) => {
+): Promise<{ id: string; external: boolean } | undefined> {
   const nativeContext = context.getNativeBuildContext?.()
   if (nativeContext?.framework === 'esbuild') {
-    return (
-      await nativeContext.build.resolve(id, {
-        importer,
-        resolveDir: path.dirname(importer),
-        kind: 'import-statement',
-      })
-    ).path
+    const resolved = await nativeContext.build.resolve(id, {
+      importer,
+      resolveDir: path.dirname(importer),
+      kind: 'import-statement',
+    })
+    return { id: resolved.path, external: resolved.external }
   }
-  return (await (context as PluginContext).resolve(id, importer))?.id
+  const resolved = await (context as PluginContext).resolve(id, importer)
+  if (!resolved) return
+  return { id: resolved.id, external: !!resolved.external }
 }
 
 function stripExt(filename: string) {
