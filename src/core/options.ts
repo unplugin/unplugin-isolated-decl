@@ -11,14 +11,15 @@ export type Options = {
 } & (
   | {
       /**
-       * `@swc/core` should be installed yourself if you want to use `swc` transformer.
+       * `oxc-transform` or `@swc/core` should be installed yourself
+       * if you want to use `oxc` or `swc` transformer.
        */
       transformer?: 'oxc' | 'swc'
     }
   | {
       /**
        * `typescript` should be installed yourself.
-       * @default oxc
+       * @default 'typescript'
        */
       transformer: 'typescript'
       /** Only for typescript transformer */
@@ -38,7 +39,7 @@ export function resolveOptions(options: Options): OptionsResolved {
     include: options.include || [/\.[cm]?ts$/],
     exclude: options.exclude || [/node_modules/],
     enforce: 'enforce' in options ? options.enforce : 'pre',
-    transformer: options.transformer || 'oxc',
+    transformer: options.transformer || 'typescript',
     ignoreErrors: options.ignoreErrors || false,
     extraOutdir: options.extraOutdir,
   }

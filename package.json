@@ -79,10 +79,14 @@
   },
   "peerDependencies": {
     "@swc/core": "^1.6.6",
+    "oxc-transform": "^0.28.0",
     "typescript": "^5.5.2"
   },
   "peerDependenciesMeta": {
     "@swc/core": {
+      "optional": true
+    },
+    "oxc-transform": {
       "optional": true
     },
     "typescript": {
@@ -92,7 +96,6 @@
   "dependencies": {
     "@rollup/pluginutils": "^5.1.0",
     "oxc-parser": "^0.27.0",
-    "oxc-transform": "^0.27.0",
     "unplugin": "^1.14.0"
   },
   "devDependencies": {
@@ -104,6 +107,7 @@
     "esbuild": "^0.23.1",
     "eslint": "^9.10.0",
     "fast-glob": "^3.3.2",
+    "oxc-transform": "^0.27.0",
     "prettier": "^3.3.3",
     "rolldown": "nightly",
     "rollup": "^4.21.2",

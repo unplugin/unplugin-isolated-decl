@@ -14,7 +14,7 @@ export {
 };
 ",
   "// temp/main.d.ts
-import { type Num } from "./types";
+import { type Num } from './types';
 export type Str = string;
 export declare function hello(s: Str): Str;
 export declare let num: Num;
@@ -30,7 +30,7 @@ export type Num2 = number;
 
 exports[`esbuild > write mode 1`] = `
 [
-  "import { type Num } from "./types";
+  "import { type Num } from './types';
 export type Str = string;
 export declare function hello(s: Str): Str;
 export declare let num: Num;

@@ -5,22 +5,36 @@ export interface TransformResult {
   errors: Array<string>
 }
 
+function tryImport<T>(pkg: string): Promise<T | null> {
+  try {
+    return import(pkg)
+  } catch {
+    return Promise.resolve(null)
+  }
+}
+
 export async function oxcTransform(
   id: string,
   code: string,
 ): Promise<TransformResult> {
-  const { isolatedDeclaration } = await import('oxc-transform')
-  return isolatedDeclaration(id, code, { sourcemap: false })
+  const oxc = await tryImport<typeof import('oxc-transform')>('oxc-transform')
+  if (!oxc) {
+    return {
+      code: '',
+      errors: [
+        'oxc-transform is required for transforming TypeScript, please install `oxc-transform`.',
+      ],
+    }
+  }
+  return oxc.isolatedDeclaration(id, code, { sourcemap: false })
 }
 
 export async function swcTransform(
   id: string,
   code: string,
 ): Promise<TransformResult> {
-  let swc: typeof import('@swc/core')
-  try {
-    swc = await import('@swc/core')
-  } catch {
+  const swc = await tryImport<typeof import('@swc/core')>('@swc/core')
+  if (!swc) {
     return {
       code: '',
       errors: [
@@ -61,11 +75,8 @@ export async function tsTransform(
   code: string,
   transformOptions?: TranspileOptions,
 ): Promise<TransformResult> {
-  let ts: typeof import('typescript')
-
-  try {
-    ts = await import('typescript')
-  } catch {
+  const ts = await tryImport<typeof import('typescript')>('typescript')
+  if (!ts) {
     return {
       code: '',
       errors: [

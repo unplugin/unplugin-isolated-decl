@@ -9,7 +9,12 @@ test('rolldown', async () => {
 
   const bundle = await rolldown({
     input,
-    plugins: [UnpluginIsolatedDecl({ extraOutdir: 'temp' })],
+    plugins: [
+      UnpluginIsolatedDecl({
+        extraOutdir: 'temp',
+        transformer: 'oxc',
+      }),
+    ],
     logLevel: 'silent',
   })
 
