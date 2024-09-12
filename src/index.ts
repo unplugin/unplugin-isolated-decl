@@ -55,13 +55,17 @@ export const IsolatedDecl: UnpluginInstance<Options | undefined, false> =
           entryFileNames = path.join(options.extraOutdir, entryFileNames)
         }
 
-        for (const [filename, source] of Object.entries(outputFiles)) {
+        for (let [outname, source] of Object.entries(outputFiles)) {
+          const fileName = entryFileNames.replace(
+            '[name]',
+            path.relative(outBase, outname),
+          )
+          if (options.patchCjsDefaultExport && fileName.endsWith('.d.cts')) {
+            source = patchCjsDefaultExport(source)
+          }
           this.emitFile({
             type: 'asset',
-            fileName: entryFileNames.replace(
-              '[name]',
-              path.relative(outBase, filename),
-            ),
+            fileName,
             source,
           })
         }
@@ -246,13 +250,16 @@ export const IsolatedDecl: UnpluginInstance<Options | undefined, false> =
         }
 
         const textEncoder = new TextEncoder()
-        for (const [filename, source] of Object.entries(outputFiles)) {
+        for (let [filename, source] of Object.entries(outputFiles)) {
           const outDir = build.initialOptions.outdir
           let outFile = `${path.relative(outBase, filename)}.d.${outExt}`
           if (options.extraOutdir) {
             outFile = path.join(options.extraOutdir, outFile)
           }
           const filePath = outDir ? path.resolve(outDir, outFile) : outFile
+          if (options.patchCjsDefaultExport && filePath.endsWith('.d.cts')) {
+            source = patchCjsDefaultExport(source)
+          }
           if (write) {
             await mkdir(path.dirname(filePath), { recursive: true })
             await writeFile(filePath, source)
@@ -290,6 +297,13 @@ async function resolve(
 
 function stripExt(filename: string) {
   return filename.replace(/\.(.?)[jt]s$/, '')
+}
+
+function patchCjsDefaultExport(source: string) {
+  return source.replace(
+    /(?<=(?:[;}]|^)\s*export\s*)(?:\{\s*([\w$]+)\s*as\s+default\s*\}|default\s+([\w$]+))/,
+    (_, s1, s2) => `= ${s1 || s2}`,
+  )
 }
 
 export function lowestCommonAncestor(...filepaths: string[]): string {

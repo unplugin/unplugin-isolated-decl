@@ -10,6 +10,8 @@ export type Options = {
   extraOutdir?: string
   /** Automatically add `.js` extension to resolve in `Node16` + ESM mode. */
   autoAddExts?: boolean
+  /** Patch `export default` in `.d.cts` to `export = ` */
+  patchCjsDefaultExport?: boolean
 } & (
   | {
       /**
@@ -45,5 +47,6 @@ export function resolveOptions(options: Options): OptionsResolved {
     ignoreErrors: options.ignoreErrors || false,
     extraOutdir: options.extraOutdir,
     autoAddExts: options.autoAddExts || false,
+    patchCjsDefaultExport: options.patchCjsDefaultExport || false,
   }
 }
