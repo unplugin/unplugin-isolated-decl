@@ -104,7 +104,7 @@
     "@sxzz/eslint-config": "^4.2.0",
     "@sxzz/prettier-config": "^2.0.2",
     "@types/node": "^22.5.5",
-    "@typescript-eslint/typescript-estree": "^8.5.0",
+    "@typescript-eslint/typescript-estree": "^8.6.0",
     "bumpp": "^9.5.2",
     "esbuild": "^0.23.1",
     "eslint": "^9.10.0",
@@ -117,7 +117,7 @@
     "tsdown": "^0.2.16",
     "tsx": "^4.19.1",
     "typescript": "^5.6.2",
-    "vite": "^5.4.5",
+    "vite": "^5.4.6",
     "vitest": "^2.1.1"
   },
   "engines": {
