@@ -47,7 +47,7 @@ export const IsolatedDecl: UnpluginInstance<Options | undefined, false> =
         }
 
         let entryFileNames = outputOptions.entryFileNames.replace(
-          /\.(.)?[jt]s$/,
+          /\.(.)?[jt]sx?$/,
           (_, s) => `.d.${s || ''}ts`,
         )
 
@@ -122,7 +122,7 @@ export const IsolatedDecl: UnpluginInstance<Options | undefined, false> =
 
           const resolved = await resolve(context, i.source.value, id)
           if (!resolved || resolved.external) continue
-          if (resolved.id.endsWith('.ts')) {
+          if (resolved.id.endsWith('.ts') || resolved.id.endsWith('.tsx')) {
             s.overwrite(
               // @ts-expect-error
               i.source.start,
@@ -296,7 +296,7 @@ async function resolve(
 }
 
 function stripExt(filename: string) {
-  return filename.replace(/\.(.?)[jt]s$/, '')
+  return filename.replace(/\.(.?)[jt]sx?$/, '')
 }
 
 function patchCjsDefaultExport(source: string) {

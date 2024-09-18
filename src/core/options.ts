@@ -40,7 +40,7 @@ export type OptionsResolved = Overwrite<
 
 export function resolveOptions(options: Options): OptionsResolved {
   return {
-    include: options.include || [/\.[cm]?ts$/],
+    include: options.include || [/\.[cm]?tsx?$/],
     exclude: options.exclude || [/node_modules/],
     enforce: 'enforce' in options ? options.enforce : 'pre',
     transformer: options.transformer || 'typescript',

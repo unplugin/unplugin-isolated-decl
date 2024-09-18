@@ -3,12 +3,19 @@
 exports[`esbuild > generate mode 1`] = `
 [
   "// <stdout>
+// tests/fixtures/component.tsx
+function Component() {
+  return /* @__PURE__ */ React.createElement("div", null, "I'm a div in a tsx component!");
+}
+
 // tests/fixtures/main.ts
 function hello(s) {
   return "hello" + s;
 }
+var c = Component;
 var num = 1;
 export {
+  c,
   hello,
   num
 };
@@ -17,6 +24,7 @@ export {
 import { type Num } from './types';
 export type Str = string;
 export declare function hello(s: Str): Str;
+export declare let c: React.JSX.Element;
 export declare let num: Num;
 ",
   "// temp/types.d.ts
@@ -25,14 +33,20 @@ export type Num = number;
   "// temp/types2.d.ts
 export type Num2 = number;
 ",
+  "// temp/component.d.ts
+export declare function Component(): React.JSX.Element;
+",
 ]
 `;
 
 exports[`esbuild > write mode 1`] = `
 [
+  "export declare function Component(): React.JSX.Element;
+",
   "import { type Num } from './types';
 export type Str = string;
 export declare function hello(s: Str): Str;
+export declare let c: React.JSX.Element;
 export declare let num: Num;
 ",
   "export type Num = number;

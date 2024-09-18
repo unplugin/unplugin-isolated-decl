@@ -3,19 +3,31 @@
 exports[`rolldown 1`] = `
 [
   "// main.js
+import { jsx as _jsx } from "react/jsx-runtime";
 
+//#region tests/fixtures/component.tsx
+function Component() {
+	return _jsx("div", { children: "I'm a div in a tsx component!" });
+}
+
+//#endregion
 //#region tests/fixtures/main.ts
 function hello(s) {
 	return "hello" + s;
 }
+let c = Component;
 let num = 1;
 
 //#endregion
-export { hello, num };",
+export { c, hello, num };",
+  "// temp/component.d.ts
+export declare function Component(): React.JSX.Element;
+",
   "// temp/main.d.ts
 import { type Num } from "./types";
 export type Str = string;
 export declare function hello(s: Str): Str;
+export declare let c: React.JSX.Element;
 export declare let num: Num;
 ",
   "// temp/types.d.ts
