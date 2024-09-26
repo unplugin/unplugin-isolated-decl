@@ -40,6 +40,8 @@ export const IsolatedDecl: UnpluginInstance<Options | undefined, false> =
         input = typeof input === 'string' ? [input] : input
         if (Array.isArray(input)) {
           outBase = lowestCommonAncestor(...input)
+        } else if (typeof input === 'object') {
+          outBase = lowestCommonAncestor(...Object.values(input))
         }
 
         if (typeof outputOptions.entryFileNames !== 'string') {
