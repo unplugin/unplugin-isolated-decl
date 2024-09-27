@@ -35,12 +35,14 @@ export const IsolatedDecl: UnpluginInstance<Options | undefined, false> =
 
     const rollup: Partial<Plugin> = {
       renderStart(outputOptions, inputOptions) {
-        let outBase = ''
-        let input = inputOptions.input
-        input = typeof input === 'string' ? [input] : input
-        if (Array.isArray(input)) {
-          outBase = lowestCommonAncestor(...input)
-        }
+        const { input } = inputOptions
+        const normalizedInput =
+          typeof input === 'string'
+            ? [input]
+            : Array.isArray(input)
+              ? input
+              : Object.values(input)
+        const outBase = lowestCommonAncestor(...normalizedInput)
 
         if (typeof outputOptions.entryFileNames !== 'string') {
           return this.error('entryFileNames must be a string')
