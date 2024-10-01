@@ -83,8 +83,8 @@ export interface Options {
   exclude?: FilterPattern
   enforce?: 'pre' | 'post' | undefined
   /**
-   * If you use swc or typescript, you need to install `@swc/core` or `typescript` yourself.
-   * @default oxc
+   * You need to install one of the supported transformers yourself.
+   * @default typescript
    */
   transformer?: 'oxc' | 'swc' | 'typescript'
   /** Only for typescript transformer */
@@ -114,6 +114,15 @@ With `autoAddExts`, it will be transformed to:
 import {} from './foo.js'
 ```
 
+### `patchCjsDefaultExport`
+
+Patch `export default` in `.d.cts` to `export =`
+
+---
+
+> [!NOTE]
+> For the exhaustive set of options check [options](src/core/options.ts)
+
 ## Sponsors
 
 <p align="center">
@@ -125,7 +134,3 @@ import {} from './foo.js'
 ## License
 
 [MIT](./LICENSE) License © 2024-PRESENT [三咲智子](https://github.com/sxzz)
-
-```
-
-```
