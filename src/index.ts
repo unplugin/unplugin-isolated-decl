@@ -36,12 +36,17 @@ export const IsolatedDecl: UnpluginInstance<Options | undefined, false> =
     const rollup: Partial<Plugin> = {
       renderStart(outputOptions, inputOptions) {
         const { input } = inputOptions
-        const normalizedInput =
-          typeof input === 'string'
-            ? [input]
-            : Array.isArray(input)
-              ? input
-              : Object.values(input)
+        const inputMap = !Array.isArray(input)
+          ? Object.fromEntries(
+              Object.entries(input).map(([k, v]) => [
+                path.resolve(stripExt(v)),
+                k,
+              ]),
+            )
+          : undefined
+        const normalizedInput = Array.isArray(input)
+          ? input
+          : Object.values(input)
         const outBase = lowestCommonAncestor(...normalizedInput)
 
         if (typeof outputOptions.entryFileNames !== 'string') {
@@ -58,10 +63,9 @@ export const IsolatedDecl: UnpluginInstance<Options | undefined, false> =
         }
 
         for (let [outname, source] of Object.entries(outputFiles)) {
-          const fileName = entryFileNames.replace(
-            '[name]',
-            path.relative(outBase, outname),
-          )
+          const name: string =
+            inputMap?.[outname] || path.relative(outBase, outname)
+          const fileName = entryFileNames.replace('[name]', name)
           if (options.patchCjsDefaultExport && fileName.endsWith('.d.cts')) {
             source = patchCjsDefaultExport(source)
           }
