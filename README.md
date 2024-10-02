@@ -2,7 +2,7 @@
 
 [![Unit Test](https://github.com/unplugin/unplugin-isolated-decl/actions/workflows/unit-test.yml/badge.svg)](https://github.com/unplugin/unplugin-isolated-decl/actions/workflows/unit-test.yml)
 
-⚡️ A blazing-fast tool for generating isolated declarations, powered by Oxc!
+⚡️ A blazing-fast tool for generating isolated declarations.
 
 ## Features
 
