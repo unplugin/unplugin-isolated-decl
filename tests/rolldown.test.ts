@@ -4,8 +4,8 @@ import { expect, test } from 'vitest'
 import UnpluginIsolatedDecl from '../src/rolldown'
 
 test('rolldown', async () => {
-  const input = path.resolve(__dirname, 'fixtures/main.ts')
-  const dist = path.resolve(__dirname, 'temp')
+  const input = path.resolve(__dirname, 'fixtures/basic/main.ts')
+  const dist = path.resolve(__dirname, 'temp/rolldown/basic')
 
   const bundle = await rolldown({
     input,

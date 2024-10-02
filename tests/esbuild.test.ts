@@ -6,13 +6,13 @@ import { dependencies } from '../package.json'
 import UnpluginIsolatedDecl from '../src/esbuild'
 
 describe('esbuild', () => {
-  const input = path.resolve(__dirname, 'fixtures/main.ts')
+  const input = path.resolve(__dirname, 'fixtures/basic/main.ts')
 
   test('write mode', async () => {
-    const dist = path.resolve(__dirname, 'temp')
+    const dist = path.resolve(__dirname, 'temp/esbuild/basic')
     await build({
       entryPoints: [input],
-      plugins: [UnpluginIsolatedDecl({ extraOutdir: 'temp' })],
+      plugins: [UnpluginIsolatedDecl({ extraOutdir: 'extraOutdir' })],
       logLevel: 'silent',
       bundle: true,
       external: Object.keys(dependencies),
@@ -21,7 +21,7 @@ describe('esbuild', () => {
       format: 'esm',
     })
 
-    const outDir = path.resolve(dist, 'temp')
+    const outDir = path.resolve(dist, 'extraOutdir')
     await expect(
       Promise.all(
         (await readdir(outDir))

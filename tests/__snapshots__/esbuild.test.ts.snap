@@ -3,12 +3,12 @@
 exports[`esbuild > generate mode 1`] = `
 [
   "// <stdout>
-// tests/fixtures/component.tsx
+// tests/fixtures/basic/component.tsx
 function Component() {
   return /* @__PURE__ */ React.createElement("div", null, "I'm a div in a tsx component!");
 }
 
-// tests/fixtures/main.ts
+// tests/fixtures/basic/main.ts
 function hello(s) {
   return "hello" + s;
 }
