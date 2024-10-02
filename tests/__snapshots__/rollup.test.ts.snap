@@ -1,6 +1,6 @@
 // Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
 
-exports[`rollup 1`] = `
+exports[`rollup > generate basic 1`] = `
 [
   "// main.js
 function Component() {
@@ -30,6 +30,59 @@ export type Num2 = number;
 ",
   "// temp/component.d.ts
 export declare function Component(): React.JSX.Element;
+",
+]
+`;
+
+exports[`rollup > write entry-points 1`] = `
+[
+  "// b/index.d.ts
+export { ComponentB } from "./ComponentB/ComponentB";
+",
+  "// b/index.js
+export { ComponentB } from './ComponentB/ComponentB/index.js';
+",
+  "// b/ComponentB/ComponentB/index.d.ts
+import React from "react";
+interface ComponentBProps {
+    test: string;
+}
+export declare function ComponentB(props: ComponentBProps): React.JSX.Element;
+export {};
+",
+  "// b/ComponentB/ComponentB/index.js
+import React from 'react';
+
+function ComponentB(props) {
+  const { test } = props;
+  return /* @__PURE__ */ React.createElement(React.Fragment, null, "ComponentB: ", test);
+}
+
+export { ComponentB };
+",
+  "// a/index.d.ts
+export { ComponentA } from "./ComponentA/ComponentA";
+",
+  "// a/index.js
+export { ComponentA } from './ComponentA/ComponentA/index.js';
+",
+  "// a/ComponentA/ComponentA/index.d.ts
+import React from "react";
+interface ComponentAProps {
+    test: string;
+}
+export declare function ComponentA(props: ComponentAProps): React.JSX.Element;
+export {};
+",
+  "// a/ComponentA/ComponentA/index.js
+import React from 'react';
+
+function ComponentA(props) {
+  const { test } = props;
+  return /* @__PURE__ */ React.createElement(React.Fragment, null, "ComponentA: ", test);
+}
+
+export { ComponentA };
 ",
 ]
 `;
