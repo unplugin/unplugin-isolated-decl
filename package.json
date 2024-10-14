@@ -79,7 +79,7 @@
   },
   "peerDependencies": {
     "@swc/core": "^1.6.6",
-    "oxc-transform": "^0.28.0",
+    "oxc-transform": ">=0.28.0",
     "typescript": "^5.5.2"
   },
   "peerDependenciesMeta": {
