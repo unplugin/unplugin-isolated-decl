@@ -1,7 +1,7 @@
 {
   "name": "unplugin-isolated-decl",
   "version": "0.6.7",
-  "packageManager": "pnpm@9.12.1",
+  "packageManager": "pnpm@9.12.2",
   "description": "A blazing-fast tool for generating isolated declarations.",
   "type": "module",
   "keywords": [
@@ -96,20 +96,20 @@
   "dependencies": {
     "@rollup/pluginutils": "^5.1.2",
     "magic-string": "^0.30.12",
-    "oxc-parser": "^0.31.0",
+    "oxc-parser": "^0.32.0",
     "unplugin": "^1.14.1"
   },
   "devDependencies": {
-    "@swc/core": "^1.7.35",
+    "@swc/core": "^1.7.36",
     "@sxzz/eslint-config": "^4.4.0",
     "@sxzz/prettier-config": "^2.0.2",
-    "@types/node": "^22.7.5",
-    "@typescript-eslint/typescript-estree": "^8.8.1",
+    "@types/node": "^22.7.7",
+    "@typescript-eslint/typescript-estree": "^8.10.0",
     "bumpp": "^9.7.1",
     "esbuild": "^0.24.0",
-    "eslint": "^9.12.0",
+    "eslint": "^9.13.0",
     "fast-glob": "^3.3.2",
-    "oxc-transform": "^0.31.0",
+    "oxc-transform": "^0.32.0",
     "prettier": "^3.3.3",
     "rolldown": "nightly",
     "rollup": "^4.24.0",
