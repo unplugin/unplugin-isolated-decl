@@ -16,7 +16,7 @@ import {
   tsTransform,
   type TransformResult,
 } from './core/transformer'
-import type { TSESTree } from '@typescript-eslint/typescript-estree'
+import type * as OxcTypes from '@oxc-project/types'
 import type { PluginBuild } from 'esbuild'
 import type { Plugin, PluginContext } from 'rollup'
 
@@ -106,11 +106,9 @@ export const IsolatedDecl: UnpluginInstance<Options | undefined, false> =
       code: string,
       id: string,
     ): Promise<undefined> {
-      let program: TSESTree.Program | undefined
+      let program: OxcTypes.Program | undefined
       try {
-        program = JSON.parse(
-          (await parseAsync(code, { sourceFilename: id })).program,
-        )
+        program = (await parseAsync(code, { sourceFilename: id })).program
       } catch {}
 
       if (options.autoAddExts && program) {
@@ -130,9 +128,7 @@ export const IsolatedDecl: UnpluginInstance<Options | undefined, false> =
           if (!resolved || resolved.external) continue
           if (resolved.id.endsWith('.ts') || resolved.id.endsWith('.tsx')) {
             s.overwrite(
-              // @ts-expect-error
               i.source.start,
-              // @ts-expect-error
               i.source.end,
               JSON.stringify(`${i.source.value}.js`),
             )
@@ -172,13 +168,13 @@ export const IsolatedDecl: UnpluginInstance<Options | undefined, false> =
         (
           node,
         ): node is
-          | TSESTree.ImportDeclaration
-          | TSESTree.ExportNamedDeclaration
-          | TSESTree.ExportAllDeclaration => {
+          | OxcTypes.ImportDeclaration
+          | OxcTypes.ExportNamedDeclaration
+          | OxcTypes.ExportAllDeclaration => {
           if (node.type === 'ImportDeclaration') {
             if (node.importKind === 'type') return true
             return (
-              node.specifiers &&
+              !!node.specifiers &&
               node.specifiers.every(
                 (spec) =>
                   spec.type === 'ImportSpecifier' && spec.importKind === 'type',
