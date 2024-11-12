@@ -100,6 +100,7 @@
     "unplugin": "^1.15.0"
   },
   "devDependencies": {
+    "@farmfe/core": "nightly",
     "@oxc-project/types": "^0.36.0",
     "@swc/core": "^1.9.2",
     "@sxzz/eslint-config": "^4.4.1",
