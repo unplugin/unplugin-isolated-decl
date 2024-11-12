@@ -1,5 +1,5 @@
-import { defineConfig } from '@farmfe/core';
-import UnpluginIsolatedDecl from 'unplugin-isolated-decl/vite'
+import { defineConfig } from '@farmfe/core'
+// import UnpluginIsolatedDecl from 'unplugin-isolated-decl/vite'
 
 export default defineConfig({
   compilation: {
@@ -7,10 +7,10 @@ export default defineConfig({
       index: 'src/index.ts',
     },
     output: {
-      targetEnv: 'node'
-    }
+      targetEnv: 'node',
+    },
   },
-  vitePlugins: [UnpluginIsolatedDecl({
-    transformer: 'oxc'
-  })]
-});
+  // plugins: [UnpluginIsolatedDecl({
+  //   transformer: 'oxc'
+  // })]
+})
