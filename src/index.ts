@@ -16,10 +16,10 @@ import {
   tsTransform,
   type TransformResult,
 } from './core/transformer'
+import type { JsPlugin, ResolvedCompilation } from '@farmfe/core'
 import type * as OxcTypes from '@oxc-project/types'
 import type { PluginBuild } from 'esbuild'
 import type { Plugin, PluginContext } from 'rollup'
-
 export type { Options }
 
 export const IsolatedDecl: UnpluginInstance<Options | undefined, false> =
@@ -32,7 +32,6 @@ export const IsolatedDecl: UnpluginInstance<Options | undefined, false> =
     function addOutput(filename: string, source: string) {
       outputFiles[stripExt(filename)] = source
     }
-
     const rollup: Partial<Plugin> = {
       renderStart(outputOptions, inputOptions) {
         const { input } = inputOptions
@@ -47,6 +46,7 @@ export const IsolatedDecl: UnpluginInstance<Options | undefined, false> =
         const normalizedInput = Array.isArray(input)
           ? input
           : Object.values(input)
+
         const outBase = lowestCommonAncestor(...normalizedInput)
 
         if (typeof outputOptions.entryFileNames !== 'string') {
@@ -77,12 +77,78 @@ export const IsolatedDecl: UnpluginInstance<Options | undefined, false> =
         }
       },
     }
+    let pluginContext: UnpluginBuildContext
+    const farm: Partial<JsPlugin> = {
+      renderStart: {
+        executor(config: ResolvedCompilation) {
+          const { input = {}, output = {} } = config
+          const inputMap =
+            !Array.isArray(input) && input
+              ? Object.fromEntries(
+                  Object.entries(input).map(([k, v]) => [
+                    path.resolve(stripExt(v as string)),
+                    k,
+                  ]),
+                )
+              : undefined
+          const normalizedInput =
+            Array.isArray(input) && input ? input : Object.values(input)
+          const outBase = lowestCommonAncestor(...normalizedInput)
 
+          if (output && typeof output.entryFilename !== 'string') {
+            return console.error('entryFileName must be a string')
+          }
+          const extMap = new Map([
+            ['cjs', 'cjs'],
+            ['esm', 'js'],
+          ])
+          if (output.entryFilename) {
+            output.entryFilename = output.entryFilename.replace(
+              '[ext]',
+              extMap.get(output.format || 'esm') || 'js',
+            )
+            let entryFileNames = output.entryFilename.replace(
+              /\.(.)?[jt]sx?$/,
+              (_, s) => `.d.${s || ''}ts`,
+            )
+
+            if (options.extraOutdir) {
+              entryFileNames = path.join(options.extraOutdir, entryFileNames)
+            }
+
+            for (let [outname, source] of Object.entries(outputFiles)) {
+              const name: string =
+                inputMap?.[outname] || path.relative(outBase, outname)
+
+              const fileName = entryFileNames.replace('[entryName]', name)
+
+              if (
+                options.patchCjsDefaultExport &&
+                fileName.endsWith('.d.cts')
+              ) {
+                source = patchCjsDefaultExport(source)
+              }
+
+              pluginContext.emitFile({
+                type: 'asset',
+                fileName,
+                source,
+              })
+            }
+          }
+        },
+      },
+    }
     return {
       name: 'unplugin-isolated-decl',
 
       transformInclude(id) {
         return filter(id)
+      },
+
+      buildStart() {
+        // eslint-disable-next-line @typescript-eslint/no-this-alias
+        pluginContext = this
       },
 
       transform(code, id): Promise<undefined> {
@@ -99,6 +165,7 @@ export const IsolatedDecl: UnpluginInstance<Options | undefined, false> =
         enforce: 'pre',
         ...rollup,
       },
+      farm,
     }
 
     async function transform(
@@ -110,7 +177,6 @@ export const IsolatedDecl: UnpluginInstance<Options | undefined, false> =
       try {
         program = (await parseAsync(code, { sourceFilename: id })).program
       } catch {}
-
       if (options.autoAddExts && program) {
         const imports = program.body.filter(
           (node) =>
@@ -123,7 +189,6 @@ export const IsolatedDecl: UnpluginInstance<Options | undefined, false> =
           if (!i.source || path.basename(i.source.value).includes('.')) {
             continue
           }
-
           const resolved = await resolve(context, i.source.value, id)
           if (!resolved || resolved.external) continue
           if (resolved.id.endsWith('.ts') || resolved.id.endsWith('.tsx')) {
