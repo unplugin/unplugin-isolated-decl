@@ -20,6 +20,7 @@ import type { JsPlugin, ResolvedCompilation } from '@farmfe/core'
 import type * as OxcTypes from '@oxc-project/types'
 import type { PluginBuild } from 'esbuild'
 import type { Plugin, PluginContext } from 'rollup'
+
 export type { Options }
 
 export const IsolatedDecl: UnpluginInstance<Options | undefined, false> =
@@ -32,6 +33,7 @@ export const IsolatedDecl: UnpluginInstance<Options | undefined, false> =
     function addOutput(filename: string, source: string) {
       outputFiles[stripExt(filename)] = source
     }
+
     const rollup: Partial<Plugin> = {
       renderStart(outputOptions, inputOptions) {
         const { input } = inputOptions
@@ -46,7 +48,6 @@ export const IsolatedDecl: UnpluginInstance<Options | undefined, false> =
         const normalizedInput = Array.isArray(input)
           ? input
           : Object.values(input)
-
         const outBase = lowestCommonAncestor(...normalizedInput)
 
         if (typeof outputOptions.entryFileNames !== 'string') {
@@ -177,6 +178,7 @@ export const IsolatedDecl: UnpluginInstance<Options | undefined, false> =
       try {
         program = (await parseAsync(code, { sourceFilename: id })).program
       } catch {}
+
       if (options.autoAddExts && program) {
         const imports = program.body.filter(
           (node) =>
@@ -189,6 +191,7 @@ export const IsolatedDecl: UnpluginInstance<Options | undefined, false> =
           if (!i.source || path.basename(i.source.value).includes('.')) {
             continue
           }
+
           const resolved = await resolve(context, i.source.value, id)
           if (!resolved || resolved.external) continue
           if (resolved.id.endsWith('.ts') || resolved.id.endsWith('.tsx')) {
