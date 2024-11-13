@@ -1,3 +1,3 @@
 import { IsolatedDecl } from './index'
 
-export default IsolatedDecl.farm as typeof IsolatedDecl.farm
+export const farm = IsolatedDecl.farm as typeof IsolatedDecl.farm

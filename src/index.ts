@@ -78,7 +78,7 @@ export const IsolatedDecl: UnpluginInstance<Options | undefined, false> =
         }
       },
     }
-    let pluginContext: UnpluginBuildContext
+    let farmPluginContext: UnpluginBuildContext
     const farm: Partial<JsPlugin> = {
       renderStart: {
         executor(config: ResolvedCompilation) {
@@ -130,7 +130,7 @@ export const IsolatedDecl: UnpluginInstance<Options | undefined, false> =
                 source = patchCjsDefaultExport(source)
               }
 
-              pluginContext.emitFile({
+              farmPluginContext.emitFile({
                 type: 'asset',
                 fileName,
                 source,
@@ -149,7 +149,7 @@ export const IsolatedDecl: UnpluginInstance<Options | undefined, false> =
 
       buildStart() {
         // eslint-disable-next-line @typescript-eslint/no-this-alias
-        pluginContext = this
+        farmPluginContext = this
       },
 
       transform(code, id): Promise<undefined> {
