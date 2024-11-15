@@ -1,5 +1,5 @@
 import { expect, test } from 'vitest'
-import { lowestCommonAncestor } from '../src'
+import { lowestCommonAncestor } from '../src/core/utils'
 
 test('lowestCommonAncestor', () => {
   expect(lowestCommonAncestor('/a/b', '/a')).toBe('/a')
