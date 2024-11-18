@@ -1,3 +1,4 @@
+/* eslint-disable import/no-default-export */
 import { IsolatedDecl } from './index'
 
-export const farm = IsolatedDecl.farm as typeof IsolatedDecl.farm
+export default IsolatedDecl.farm as typeof IsolatedDecl.farm

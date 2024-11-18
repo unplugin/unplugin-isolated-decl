@@ -103,39 +103,36 @@ export const IsolatedDecl: UnpluginInstance<Options | undefined, false> =
             ['cjs', 'cjs'],
             ['esm', 'js'],
           ])
-          if (output.entryFilename) {
-            output.entryFilename = output.entryFilename.replace(
-              '[ext]',
-              extMap.get(output.format || 'esm') || 'js',
-            )
-            let entryFileNames = output.entryFilename.replace(
-              /\.(.)?[jt]sx?$/,
-              (_, s) => `.d.${s || ''}ts`,
-            )
+          output.entryFilename = '[entryName].[ext]'
 
-            if (options.extraOutdir) {
-              entryFileNames = path.join(options.extraOutdir, entryFileNames)
+          output.entryFilename = output.entryFilename.replace(
+            '[ext]',
+            extMap.get(output.format || 'esm') || 'js',
+          )
+
+          let entryFileNames = output.entryFilename.replace(
+            /\.(.)?[jt]sx?$/,
+            (_, s) => `.d.${s || ''}ts`,
+          )
+
+          if (options.extraOutdir) {
+            entryFileNames = path.join(options.extraOutdir, entryFileNames)
+          }
+
+          for (let [outname, source] of Object.entries(outputFiles)) {
+            const name: string =
+              inputMap?.[outname] || path.relative(outBase, outname)
+
+            const fileName = entryFileNames.replace('[entryName]', name)
+
+            if (options.patchCjsDefaultExport && fileName.endsWith('.d.cts')) {
+              source = patchCjsDefaultExport(source)
             }
-
-            for (let [outname, source] of Object.entries(outputFiles)) {
-              const name: string =
-                inputMap?.[outname] || path.relative(outBase, outname)
-
-              const fileName = entryFileNames.replace('[entryName]', name)
-
-              if (
-                options.patchCjsDefaultExport &&
-                fileName.endsWith('.d.cts')
-              ) {
-                source = patchCjsDefaultExport(source)
-              }
-
-              farmPluginContext.emitFile({
-                type: 'asset',
-                fileName,
-                source,
-              })
-            }
+            farmPluginContext.emitFile({
+              type: 'asset',
+              fileName,
+              source,
+            })
           }
         },
       },
@@ -178,8 +175,7 @@ export const IsolatedDecl: UnpluginInstance<Options | undefined, false> =
       try {
         program = (await parseAsync(code, { sourceFilename: id })).program
       } catch {}
-
-      if (options.autoAddExts && program) {
+      if (program) {
         const imports = program.body.filter(
           (node) =>
             node.type === 'ImportDeclaration' ||
@@ -223,9 +219,9 @@ export const IsolatedDecl: UnpluginInstance<Options | undefined, false> =
       const { code: sourceText, errors } = result
       if (errors.length) {
         if (options.ignoreErrors) {
-          context.warn(errors[0])
+          context.warn(errors[0].toString())
         } else {
-          context.error(errors[0])
+          context.error(errors[0].toString())
           return
         }
       }
@@ -352,17 +348,34 @@ async function resolve(
   importer: string,
 ): Promise<{ id: string; external: boolean } | undefined> {
   const nativeContext = context.getNativeBuildContext?.()
-  if (nativeContext?.framework === 'esbuild') {
-    const resolved = await nativeContext.build.resolve(id, {
-      importer,
-      resolveDir: path.dirname(importer),
-      kind: 'import-statement',
-    })
-    return { id: resolved.path, external: resolved.external }
+  switch (nativeContext?.framework) {
+    case 'esbuild': {
+      const resolved = await nativeContext?.build.resolve(id, {
+        importer,
+        resolveDir: path.dirname(importer),
+        kind: 'import-statement',
+      })
+      return {
+        id: resolved?.path,
+        external: resolved?.external,
+      }
+    }
+    case 'farm': {
+      const resolved = await nativeContext?.context.resolve(
+        { source: id, importer, kind: 'import' },
+        {
+          meta: {},
+          caller: 'unplugin-isolated-decl',
+        },
+      )
+      return { id: resolved.resolvedPath, external: !!resolved.external }
+    }
+    default: {
+      const resolved = await (context as PluginContext).resolve(id, importer)
+      if (!resolved) return
+      return { id: resolved.id, external: !!resolved.external }
+    }
   }
-  const resolved = await (context as PluginContext).resolve(id, importer)
-  if (!resolved) return
-  return { id: resolved.id, external: !!resolved.external }
 }
 
 function stripExt(filename: string) {
