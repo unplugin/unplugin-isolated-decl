@@ -34,6 +34,7 @@ export const IsolatedDecl: UnpluginInstance<Options | undefined, false> =
     const options = resolveOptions(rawOptions)
     const filter = createFilter(options.include, options.exclude)
 
+    let farmPluginContext: UnpluginBuildContext
     const outputFiles: Record<string, string> = {}
     function addOutput(filename: string, source: string) {
       outputFiles[stripExt(filename)] = source
@@ -42,7 +43,6 @@ export const IsolatedDecl: UnpluginInstance<Options | undefined, false> =
     const rollup: Partial<Plugin> = {
       renderStart: rollupRenderStart,
     }
-    let farmPluginContext: UnpluginBuildContext
     const farm: Partial<JsPlugin> = {
       renderStart: {
         executor(config) {
@@ -63,15 +63,18 @@ export const IsolatedDecl: UnpluginInstance<Options | undefined, false> =
           if (output && typeof output.entryFilename !== 'string') {
             return console.error('entryFileName must be a string')
           }
-          const extMap = new Map([
+          const extFormatMap = new Map([
             ['cjs', 'cjs'],
             ['esm', 'js'],
+            ['mjs', 'js'],
           ])
+
+          // TODO format normalizeName `entryFilename` `filenames`
           output.entryFilename = '[entryName].[ext]'
 
           output.entryFilename = output.entryFilename.replace(
             '[ext]',
-            extMap.get(output.format || 'esm') || 'js',
+            extFormatMap.get(output.format || 'esm') || 'js',
           )
 
           let entryFileNames = output.entryFilename.replace(
