@@ -45,8 +45,8 @@ export const IsolatedDecl: UnpluginInstance<Options | undefined, false> =
     let farmPluginContext: UnpluginBuildContext
     const farm: Partial<JsPlugin> = {
       renderStart: {
-        executor(config: ResolvedCompilation) {
-          const { input = {}, output = {} } = config
+        executor(config) {
+          const { input = {}, output = {} } = config as ResolvedCompilation
           const inputMap =
             !Array.isArray(input) && input
               ? Object.fromEntries(
