@@ -134,7 +134,7 @@ export const IsolatedDecl: UnpluginInstance<Options | undefined, false> =
       try {
         program = (await parseAsync(code, { sourceFilename: id })).program
       } catch {}
-      if (program) {
+      if (options.autoAddExts && program) {
         const imports = program.body.filter(
           (node) =>
             node.type === 'ImportDeclaration' ||
@@ -178,9 +178,9 @@ export const IsolatedDecl: UnpluginInstance<Options | undefined, false> =
       const { code: sourceText, errors } = result
       if (errors.length) {
         if (options.ignoreErrors) {
-          context.warn(errors[0].toString())
+          context.warn(errors[0])
         } else {
-          context.error(errors[0].toString())
+          context.error(errors[0])
           return
         }
       }
