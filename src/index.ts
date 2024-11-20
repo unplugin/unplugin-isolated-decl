@@ -19,8 +19,8 @@ import {
 import { lowestCommonAncestor, stripExt } from './core/utils'
 import type {
   JsPlugin,
-  ResolvedCompilation,
   NormalizedConfig,
+  ResolvedCompilation,
 } from '@farmfe/core'
 import type * as OxcTypes from '@oxc-project/types'
 import type { PluginBuild } from 'esbuild'
