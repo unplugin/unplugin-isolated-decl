@@ -1,0 +1,22 @@
+{
+  "name": "@unplugin/isolated-decl",
+  "version": "0.6.8",
+  "exports": {
+    "./index": "./src/index.ts",
+    "./api": "./src/api.ts",
+    "./esbuild": "./src/esbuild.ts",
+    "./rollup": "./src/rollup.ts",
+    "./rolldown": "./src/rolldown.ts",
+    "./vite": "./src/vite.ts",
+    "./farm": "./src/farm.ts"
+  },
+  "publish": {
+    "include": [
+      "src",
+      "package.json",
+      "jsr.json",
+      "README.md",
+      "LICENSE"
+    ]
+  }
+}
