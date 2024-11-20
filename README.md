@@ -9,7 +9,7 @@
 - 🚀 **Fast**: Generates `.d.ts` files significantly faster than `tsc`.
 - 🎨 **Transformer**: Support Oxc, SWC, and TypeScript transformer.
 - 📦 **Zero Config**: No configuration required, works out of the box.
-- ✨ **Bundler Support**: Works with Vite, Rollup, and esbuild.
+- ✨ **Bundler Support**: Works with Vite, Rollup, esbuild and Farm.
 
 ## Installation
 
@@ -74,6 +74,20 @@ import { build } from 'esbuild'
 
 build({
   plugins: [require('unplugin-isolated-decl/esbuild')()],
+})
+```
+
+<br></details>
+
+<details>
+<summary>Farm</summary><br>
+
+```ts
+// farm.config.ts
+import UnpluginIsolatedDecl from 'unplugin-isolated-decl/farm'
+
+export default defineConfig({
+  plugins: [UnpluginIsolatedDecl()],
 })
 ```
 
