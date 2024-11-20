@@ -1,4 +1,4 @@
-# unplugin-isolated-decl [![npm](https://img.shields.io/npm/v/unplugin-isolated-decl.svg)](https://npmjs.com/package/unplugin-isolated-decl)
+# unplugin-isolated-decl [![npm](https://img.shields.io/npm/v/unplugin-isolated-decl.svg)](https://npmjs.com/package/unplugin-isolated-decl) [![jsr](https://jsr.io/badges/@unplugin/isolated-decl)](https://jsr.io/@unplugin/isolated-decl)
 
 [![Unit Test](https://github.com/unplugin/unplugin-isolated-decl/actions/workflows/unit-test.yml/badge.svg)](https://github.com/unplugin/unplugin-isolated-decl/actions/workflows/unit-test.yml)
 
@@ -14,7 +14,11 @@
 ## Installation
 
 ```bash
+# npm
 npm i -D unplugin-isolated-decl
+
+# jsr
+npx jsr add -D @unplugin/isolated-decl
 ```
 
 ## Usage
