@@ -17,6 +17,11 @@ import {
   type TransformResult,
 } from './core/transformer'
 import { lowestCommonAncestor, stripExt } from './core/utils'
+import type {
+  JsPlugin,
+  NormalizedConfig,
+  ResolvedCompilation,
+} from '@farmfe/core'
 import type * as OxcTypes from '@oxc-project/types'
 import type { PluginBuild } from 'esbuild'
 import type {
@@ -33,6 +38,7 @@ export const IsolatedDecl: UnpluginInstance<Options | undefined, false> =
     const options = resolveOptions(rawOptions)
     const filter = createFilter(options.include, options.exclude)
 
+    let farmPluginContext: UnpluginBuildContext
     const outputFiles: Record<string, string> = {}
     function addOutput(filename: string, source: string) {
       outputFiles[stripExt(filename)] = source
@@ -41,9 +47,16 @@ export const IsolatedDecl: UnpluginInstance<Options | undefined, false> =
     const rollup: Partial<Plugin> = {
       renderStart: rollupRenderStart,
     }
-
+    const farm: Partial<JsPlugin> = {
+      renderStart: { executor: farmRenderStart },
+    }
     return {
       name: 'unplugin-isolated-decl',
+
+      buildStart() {
+        // eslint-disable-next-line @typescript-eslint/no-this-alias
+        farmPluginContext = this
+      },
 
       transformInclude: (id) => filter(id),
       transform(code, id): Promise<undefined> {
@@ -58,6 +71,7 @@ export const IsolatedDecl: UnpluginInstance<Options | undefined, false> =
         enforce: 'pre',
         ...rollup,
       },
+      farm,
     }
 
     async function transform(
@@ -69,7 +83,6 @@ export const IsolatedDecl: UnpluginInstance<Options | undefined, false> =
       try {
         program = (await parseAsync(code, { sourceFilename: id })).program
       } catch {}
-
       if (options.autoAddExts && program) {
         const imports = program.body.filter(
           (node) =>
@@ -220,6 +233,66 @@ export const IsolatedDecl: UnpluginInstance<Options | undefined, false> =
       }
     }
 
+    function farmRenderStart(
+      config: NormalizedConfig['compilationConfig']['config'],
+    ) {
+      const { input = {}, output = {} } = config as ResolvedCompilation
+      const inputMap =
+        !Array.isArray(input) && input
+          ? Object.fromEntries(
+              Object.entries(input).map(([k, v]) => [
+                path.resolve(stripExt(v as string)),
+                k,
+              ]),
+            )
+          : undefined
+      const normalizedInput =
+        Array.isArray(input) && input ? input : Object.values(input)
+      const outBase = lowestCommonAncestor(...normalizedInput)
+
+      if (output && typeof output.entryFilename !== 'string') {
+        return console.error('entryFileName must be a string')
+      }
+      const extFormatMap = new Map([
+        ['cjs', 'cjs'],
+        ['esm', 'js'],
+        ['mjs', 'js'],
+      ])
+
+      // TODO format normalizeName `entryFilename` `filenames`
+      output.entryFilename = '[entryName].[ext]'
+
+      output.entryFilename = output.entryFilename.replace(
+        '[ext]',
+        extFormatMap.get(output.format || 'esm') || 'js',
+      )
+
+      let entryFileNames = output.entryFilename.replace(
+        /\.(.)?[jt]sx?$/,
+        (_, s) => `.d.${s || ''}ts`,
+      )
+
+      if (options.extraOutdir) {
+        entryFileNames = path.join(options.extraOutdir, entryFileNames)
+      }
+
+      for (let [outname, source] of Object.entries(outputFiles)) {
+        const name: string =
+          inputMap?.[outname] || path.relative(outBase, outname)
+
+        const fileName = entryFileNames.replace('[entryName]', name)
+
+        if (options.patchCjsDefaultExport && fileName.endsWith('.d.cts')) {
+          source = patchCjsDefaultExport(source)
+        }
+        farmPluginContext.emitFile({
+          type: 'asset',
+          fileName,
+          source,
+        })
+      }
+    }
+
     function esbuildSetup(build: PluginBuild) {
       build.onEnd(async (result) => {
         const esbuildOptions = build.initialOptions
@@ -290,17 +363,34 @@ async function resolve(
   importer: string,
 ): Promise<{ id: string; external: boolean } | undefined> {
   const nativeContext = context.getNativeBuildContext?.()
-  if (nativeContext?.framework === 'esbuild') {
-    const resolved = await nativeContext.build.resolve(id, {
-      importer,
-      resolveDir: path.dirname(importer),
-      kind: 'import-statement',
-    })
-    return { id: resolved.path, external: resolved.external }
+  switch (nativeContext?.framework) {
+    case 'esbuild': {
+      const resolved = await nativeContext?.build.resolve(id, {
+        importer,
+        resolveDir: path.dirname(importer),
+        kind: 'import-statement',
+      })
+      return {
+        id: resolved?.path,
+        external: resolved?.external,
+      }
+    }
+    case 'farm': {
+      const resolved = await nativeContext?.context.resolve(
+        { source: id, importer, kind: 'import' },
+        {
+          meta: {},
+          caller: 'unplugin-isolated-decl',
+        },
+      )
+      return { id: resolved.resolvedPath, external: !!resolved.external }
+    }
+    default: {
+      const resolved = await (context as PluginContext).resolve(id, importer)
+      if (!resolved) return
+      return { id: resolved.id, external: !!resolved.external }
+    }
   }
-  const resolved = await (context as PluginContext).resolve(id, importer)
-  if (!resolved) return
-  return { id: resolved.id, external: !!resolved.external }
 }
 
 function patchCjsDefaultExport(source: string) {

@@ -1,7 +1,7 @@
 {
   "compilerOptions": {
     "target": "esnext",
-    "lib": ["es2022"],
+    "lib": ["es2022", "dom"],
     "moduleDetection": "force",
     "module": "preserve",
     "moduleResolution": "bundler",
