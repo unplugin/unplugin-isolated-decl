@@ -17,7 +17,11 @@ import {
   type TransformResult,
 } from './core/transformer'
 import { lowestCommonAncestor, stripExt } from './core/utils'
-import type { JsPlugin, ResolvedCompilation } from '@farmfe/core'
+import type {
+  JsPlugin,
+  ResolvedCompilation,
+  NormalizedConfig,
+} from '@farmfe/core'
 import type * as OxcTypes from '@oxc-project/types'
 import type { PluginBuild } from 'esbuild'
 import type {
@@ -44,65 +48,7 @@ export const IsolatedDecl: UnpluginInstance<Options | undefined, false> =
       renderStart: rollupRenderStart,
     }
     const farm: Partial<JsPlugin> = {
-      renderStart: {
-        executor(config) {
-          const { input = {}, output = {} } = config as ResolvedCompilation
-          const inputMap =
-            !Array.isArray(input) && input
-              ? Object.fromEntries(
-                  Object.entries(input).map(([k, v]) => [
-                    path.resolve(stripExt(v as string)),
-                    k,
-                  ]),
-                )
-              : undefined
-          const normalizedInput =
-            Array.isArray(input) && input ? input : Object.values(input)
-          const outBase = lowestCommonAncestor(...normalizedInput)
-
-          if (output && typeof output.entryFilename !== 'string') {
-            return console.error('entryFileName must be a string')
-          }
-          const extFormatMap = new Map([
-            ['cjs', 'cjs'],
-            ['esm', 'js'],
-            ['mjs', 'js'],
-          ])
-
-          // TODO format normalizeName `entryFilename` `filenames`
-          output.entryFilename = '[entryName].[ext]'
-
-          output.entryFilename = output.entryFilename.replace(
-            '[ext]',
-            extFormatMap.get(output.format || 'esm') || 'js',
-          )
-
-          let entryFileNames = output.entryFilename.replace(
-            /\.(.)?[jt]sx?$/,
-            (_, s) => `.d.${s || ''}ts`,
-          )
-
-          if (options.extraOutdir) {
-            entryFileNames = path.join(options.extraOutdir, entryFileNames)
-          }
-
-          for (let [outname, source] of Object.entries(outputFiles)) {
-            const name: string =
-              inputMap?.[outname] || path.relative(outBase, outname)
-
-            const fileName = entryFileNames.replace('[entryName]', name)
-
-            if (options.patchCjsDefaultExport && fileName.endsWith('.d.cts')) {
-              source = patchCjsDefaultExport(source)
-            }
-            farmPluginContext.emitFile({
-              type: 'asset',
-              fileName,
-              source,
-            })
-          }
-        },
-      },
+      renderStart: { executor: farmRenderStart },
     }
     return {
       name: 'unplugin-isolated-decl',
@@ -280,6 +226,66 @@ export const IsolatedDecl: UnpluginInstance<Options | undefined, false> =
           source = patchCjsDefaultExport(source)
         }
         this.emitFile({
+          type: 'asset',
+          fileName,
+          source,
+        })
+      }
+    }
+
+    function farmRenderStart(
+      config: NormalizedConfig['compilationConfig']['config'],
+    ) {
+      const { input = {}, output = {} } = config as ResolvedCompilation
+      const inputMap =
+        !Array.isArray(input) && input
+          ? Object.fromEntries(
+              Object.entries(input).map(([k, v]) => [
+                path.resolve(stripExt(v as string)),
+                k,
+              ]),
+            )
+          : undefined
+      const normalizedInput =
+        Array.isArray(input) && input ? input : Object.values(input)
+      const outBase = lowestCommonAncestor(...normalizedInput)
+
+      if (output && typeof output.entryFilename !== 'string') {
+        return console.error('entryFileName must be a string')
+      }
+      const extFormatMap = new Map([
+        ['cjs', 'cjs'],
+        ['esm', 'js'],
+        ['mjs', 'js'],
+      ])
+
+      // TODO format normalizeName `entryFilename` `filenames`
+      output.entryFilename = '[entryName].[ext]'
+
+      output.entryFilename = output.entryFilename.replace(
+        '[ext]',
+        extFormatMap.get(output.format || 'esm') || 'js',
+      )
+
+      let entryFileNames = output.entryFilename.replace(
+        /\.(.)?[jt]sx?$/,
+        (_, s) => `.d.${s || ''}ts`,
+      )
+
+      if (options.extraOutdir) {
+        entryFileNames = path.join(options.extraOutdir, entryFileNames)
+      }
+
+      for (let [outname, source] of Object.entries(outputFiles)) {
+        const name: string =
+          inputMap?.[outname] || path.relative(outBase, outname)
+
+        const fileName = entryFileNames.replace('[entryName]', name)
+
+        if (options.patchCjsDefaultExport && fileName.endsWith('.d.cts')) {
+          source = patchCjsDefaultExport(source)
+        }
+        farmPluginContext.emitFile({
           type: 'asset',
           fileName,
           source,

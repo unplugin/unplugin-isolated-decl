@@ -83,6 +83,6 @@ describe('rollup', () => {
       })()
     })
 
-    expect(Promise.all(fileSystemOutput)).resolves.toMatchSnapshot()
+    expect(await Promise.all(fileSystemOutput)).toMatchSnapshot()
   })
 })
