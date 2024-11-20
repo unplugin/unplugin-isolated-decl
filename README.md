@@ -79,7 +79,7 @@ build({
 <summary>Farm</summary><br>
 
 ```ts
-// vite.config.ts
+// farm.config.ts
 import UnpluginIsolatedDecl from 'unplugin-isolated-decl/farm'
 
 export default defineConfig({
