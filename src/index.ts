@@ -1,3 +1,8 @@
+/**
+ * This entry file is for main unplugin.
+ * @module
+ */
+
 import { mkdir, readFile, writeFile } from 'node:fs/promises'
 import path from 'node:path'
 import { createFilter } from '@rollup/pluginutils'
@@ -33,6 +38,9 @@ import type {
 
 export type { Options }
 
+/**
+ * The main unplugin instance.
+ */
 export const IsolatedDecl: UnpluginInstance<Options | undefined, false> =
   createUnplugin((rawOptions = {}) => {
     const options = resolveOptions(rawOptions)

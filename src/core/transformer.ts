@@ -13,6 +13,9 @@ function tryImport<T>(pkg: string): Promise<T | null> {
   }
 }
 
+/**
+ * Transform isolated declarations with `oxc-transform`.
+ */
 export async function oxcTransform(
   id: string,
   code: string,
@@ -29,6 +32,9 @@ export async function oxcTransform(
   return oxc.isolatedDeclaration(id, code, { sourcemap: false })
 }
 
+/**
+ * Transform isolated declarations with `@swc/core`.
+ */
 export async function swcTransform(
   id: string,
   code: string,
@@ -70,6 +76,9 @@ export async function swcTransform(
   }
 }
 
+/**
+ * Transform isolated declarations with `typescript`.
+ */
 export async function tsTransform(
   id: string,
   code: string,

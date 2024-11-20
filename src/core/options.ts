@@ -1,6 +1,9 @@
 import type { FilterPattern } from '@rollup/pluginutils'
 import type { TranspileOptions } from 'typescript'
 
+/**
+ * Represents the options for the plugin.
+ */
 export type Options = {
   include?: FilterPattern
   exclude?: FilterPattern
