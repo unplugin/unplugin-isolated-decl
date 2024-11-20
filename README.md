@@ -9,7 +9,7 @@
 - 🚀 **Fast**: Generates `.d.ts` files significantly faster than `tsc`.
 - 🎨 **Transformer**: Support Oxc, SWC, and TypeScript transformer.
 - 📦 **Zero Config**: No configuration required, works out of the box.
-- ✨ **Bundler Support**: Works with Vite, Rollup, esbuild and Farm.
+- ✨ **Bundler Support**: Works with Vite, Rollup, esbuild and Farm. (PR of Webpack/Rspack support is welcome)
 
 ## Installation
 
