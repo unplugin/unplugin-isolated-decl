@@ -6,6 +6,7 @@
 import { mkdir, readFile, writeFile } from 'node:fs/promises'
 import path from 'node:path'
 import { createFilter } from '@rollup/pluginutils'
+import Debug from 'debug'
 import MagicString from 'magic-string'
 import { parseAsync } from 'oxc-parser'
 import {
@@ -36,7 +37,11 @@ import type {
   PluginContext,
 } from 'rollup'
 
+const debug = Debug('unplugin-isolated-decl')
+
 export type { Options }
+
+export type * from './core/types'
 
 /**
  * The main unplugin instance.
@@ -117,6 +122,9 @@ export const IsolatedDecl: UnpluginInstance<Options | undefined, false> =
         code = s.toString()
       }
 
+      const label = debug.enabled && `[${options.transformer}]`
+      debug(label, 'transform', id)
+
       let result: TransformResult
       switch (options.transformer) {
         case 'oxc':
@@ -133,6 +141,12 @@ export const IsolatedDecl: UnpluginInstance<Options | undefined, false> =
           )
       }
       const { code: sourceText, errors } = result
+      debug(
+        label,
+        'transformed',
+        id,
+        errors.length ? 'with errors' : 'successfully',
+      )
       if (errors.length) {
         if (options.ignoreErrors) {
           context.warn(errors[0])
@@ -143,7 +157,10 @@ export const IsolatedDecl: UnpluginInstance<Options | undefined, false> =
       }
       addOutput(id, sourceText)
 
-      if (!program) return
+      if (!program) {
+        debug('cannot parse', id)
+        return
+      }
       const typeImports = program.body.filter(
         (
           node,
@@ -189,6 +206,7 @@ export const IsolatedDecl: UnpluginInstance<Options | undefined, false> =
           } catch {
             continue
           }
+          debug('transform type import:', resolved)
           await transform(context, source, resolved)
         }
       }
@@ -233,6 +251,7 @@ export const IsolatedDecl: UnpluginInstance<Options | undefined, false> =
         if (options.patchCjsDefaultExport && fileName.endsWith('.d.cts')) {
           source = patchCjsDefaultExport(source)
         }
+        debug('[rollup] emit dts file:', fileName)
         this.emitFile({
           type: 'asset',
           fileName,
@@ -293,6 +312,7 @@ export const IsolatedDecl: UnpluginInstance<Options | undefined, false> =
         if (options.patchCjsDefaultExport && fileName.endsWith('.d.cts')) {
           source = patchCjsDefaultExport(source)
         }
+        debug('[farm] emit dts file:', fileName)
         farmPluginContext.emitFile({
           type: 'asset',
           fileName,
@@ -352,7 +372,9 @@ export const IsolatedDecl: UnpluginInstance<Options | undefined, false> =
           if (write) {
             await mkdir(path.dirname(filePath), { recursive: true })
             await writeFile(filePath, source)
+            debug('[esbuild] write dts file:', filePath)
           } else {
+            debug('[esbuild] emit dts file:', filePath)
             result.outputFiles!.push({
               path: filePath,
               contents: textEncoder.encode(source),
