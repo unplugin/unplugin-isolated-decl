@@ -150,7 +150,8 @@ export const IsolatedDecl: UnpluginInstance<Options | undefined, false> =
           const resolved = await resolve(context, i.source.value, id)
           if (!resolved || resolved.external) continue
           if (resolved.id.endsWith('.ts') || resolved.id.endsWith('.tsx')) {
-            i.source.value = `${i.source.value}.js`
+            i.source.value = `${((i.source as any).originalValue =
+              i.source.value)}.js`
             s.overwrite(i.source.start + 1, i.source.end - 1, i.source.value)
           }
         }
@@ -194,7 +195,13 @@ export const IsolatedDecl: UnpluginInstance<Options | undefined, false> =
       )
       for (const i of typeImports) {
         if (!i.source) continue
-        const resolved = (await resolve(context, i.source.value, id))?.id
+        const resolved = (
+          await resolve(
+            context,
+            (i.source as any).originalValue || i.source.value,
+            id,
+          )
+        )?.id
         if (resolved && filter(resolved) && !outputFiles[stripExt(resolved)]) {
           let source: string
           try {

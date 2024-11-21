@@ -41,6 +41,7 @@ describe('rollup', () => {
       plugins: [
         UnpluginIsolatedDecl({
           extraOutdir: 'temp',
+          autoAddExts: true,
         }),
         esbuild(),
       ],
