@@ -23,13 +23,54 @@ export declare let c: React.JSX.Element;
 export declare let num: Num;
 ",
   "// temp/types.d.ts
-export type Num = number;
+import type { Num2 } from './types2';
+export type Num = Num2;
 ",
   "// temp/types2.d.ts
 export type Num2 = number;
 ",
   "// temp/component.d.ts
 export declare function Component(): React.JSX.Element;
+",
+]
+`;
+
+exports[`rollup > write entry-points (#34) 1`] = `
+[
+  "// bar.d.ts
+export * as baz from './foo/bar/baz.js';
+export type CustomType = 'unimportant' | 'only' | 'showcase';
+",
+  "// bar.js
+export { b as baz } from './index-B_ebAVVP.js';
+",
+  "// index-B_ebAVVP.js
+function important() {
+  console.log("very! important function");
+}
+
+var baz = /*#__PURE__*/Object.freeze({
+  __proto__: null,
+  important: important
+});
+
+export { baz as b, important as i };
+",
+  "// index.d.ts
+export declare function foo(): void;
+export * from './foo/bar/baz.js';
+",
+  "// index.js
+export { i as important } from './index-B_ebAVVP.js';
+
+function foo() {
+  console.log("important function");
+}
+
+export { foo };
+",
+  "// foo/bar/baz.d.ts
+export declare function important(): void;
 ",
 ]
 `;

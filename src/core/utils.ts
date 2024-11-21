@@ -1,4 +1,7 @@
 import path from 'node:path'
+import Debug from 'debug'
+
+export const debug: Debug.Debugger = Debug('unplugin-isolated-decl')
 
 export function lowestCommonAncestor(...filepaths: string[]): string {
   if (filepaths.length === 0) return ''
@@ -27,4 +30,22 @@ export function lowestCommonAncestor(...filepaths: string[]): string {
 
 export function stripExt(filename: string): string {
   return filename.replace(/\.(.?)[jt]sx?$/, '')
+}
+
+export function resolveEntry(input: string[] | Record<string, string>): {
+  map: Record<string, string> | undefined
+  outBase: string
+} {
+  const map = !Array.isArray(input)
+    ? Object.fromEntries(
+        Object.entries(input).map(([k, v]) => [
+          path.resolve(stripExt(v as string)),
+          k,
+        ]),
+      )
+    : undefined
+  const arr = Array.isArray(input) && input ? input : Object.values(input)
+  const outBase = lowestCommonAncestor(...arr)
+
+  return { map, outBase }
 }

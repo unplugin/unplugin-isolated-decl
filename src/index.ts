@@ -6,7 +6,6 @@
 import { mkdir, readFile, writeFile } from 'node:fs/promises'
 import path from 'node:path'
 import { createFilter } from '@rollup/pluginutils'
-import Debug from 'debug'
 import MagicString from 'magic-string'
 import { parseAsync } from 'oxc-parser'
 import {
@@ -15,6 +14,7 @@ import {
   type UnpluginContext,
   type UnpluginInstance,
 } from 'unplugin'
+import { filterImports, patchEntryAlias, type OxcImport } from './core/ast'
 import { resolveOptions, type Options } from './core/options'
 import {
   oxcTransform,
@@ -22,7 +22,12 @@ import {
   tsTransform,
   type TransformResult,
 } from './core/transformer'
-import { lowestCommonAncestor, stripExt } from './core/utils'
+import {
+  debug,
+  lowestCommonAncestor,
+  resolveEntry,
+  stripExt,
+} from './core/utils'
 import type {
   JsPlugin,
   NormalizedConfig,
@@ -37,11 +42,13 @@ import type {
   PluginContext,
 } from 'rollup'
 
-const debug = Debug('unplugin-isolated-decl')
-
 export type { Options }
 
-export type * from './core/types'
+interface Output {
+  source: string
+  imports: OxcImport[]
+  s?: MagicString
+}
 
 /**
  * The main unplugin instance.
@@ -52,9 +59,12 @@ export const IsolatedDecl: UnpluginInstance<Options | undefined, false> =
     const filter = createFilter(options.include, options.exclude)
 
     let farmPluginContext: UnpluginBuildContext
-    const outputFiles: Record<string, string> = {}
-    function addOutput(filename: string, source: string) {
-      outputFiles[stripExt(filename)] = source
+
+    const outputFiles: Record<string, Output> = {}
+    function addOutput(filename: string, output: Output) {
+      const name = stripExt(filename)
+      debug('Add output:', name)
+      outputFiles[name] = output
     }
 
     const rollup: Partial<Plugin> = {
@@ -63,6 +73,7 @@ export const IsolatedDecl: UnpluginInstance<Options | undefined, false> =
     const farm: Partial<JsPlugin> = {
       renderStart: { executor: farmRenderStart },
     }
+
     return {
       name: 'unplugin-isolated-decl',
 
@@ -92,36 +103,6 @@ export const IsolatedDecl: UnpluginInstance<Options | undefined, false> =
       code: string,
       id: string,
     ): Promise<undefined> {
-      let program: OxcTypes.Program | undefined
-      try {
-        program = (await parseAsync(code, { sourceFilename: id })).program
-      } catch {}
-      if (options.autoAddExts && program) {
-        const imports = program.body.filter(
-          (node) =>
-            node.type === 'ImportDeclaration' ||
-            node.type === 'ExportAllDeclaration' ||
-            node.type === 'ExportNamedDeclaration',
-        )
-        const s = new MagicString(code)
-        for (const i of imports) {
-          if (!i.source || path.basename(i.source.value).includes('.')) {
-            continue
-          }
-
-          const resolved = await resolve(context, i.source.value, id)
-          if (!resolved || resolved.external) continue
-          if (resolved.id.endsWith('.ts') || resolved.id.endsWith('.tsx')) {
-            s.overwrite(
-              i.source.start,
-              i.source.end,
-              JSON.stringify(`${i.source.value}.js`),
-            )
-          }
-        }
-        code = s.toString()
-      }
-
       const label = debug.enabled && `[${options.transformer}]`
       debug(label, 'transform', id)
 
@@ -140,7 +121,7 @@ export const IsolatedDecl: UnpluginInstance<Options | undefined, false> =
             (options as any).transformOptions,
           )
       }
-      const { code: sourceText, errors } = result
+      let { code: dts, errors } = result
       debug(
         label,
         'transformed',
@@ -155,12 +136,28 @@ export const IsolatedDecl: UnpluginInstance<Options | undefined, false> =
           return
         }
       }
-      addOutput(id, sourceText)
 
-      if (!program) {
-        debug('cannot parse', id)
-        return
+      const { program } = await parseAsync(dts, { sourceFilename: id })
+      const imports = filterImports(program)
+
+      let s: MagicString | undefined
+      if (options.autoAddExts) {
+        s = new MagicString(dts)
+
+        for (const i of imports) {
+          if (path.basename(i.source.value).includes('.')) continue
+
+          const resolved = await resolve(context, i.source.value, id)
+          if (!resolved || resolved.external) continue
+          if (resolved.id.endsWith('.ts') || resolved.id.endsWith('.tsx')) {
+            i.source.value = `${i.source.value}.js`
+            s.overwrite(i.source.start + 1, i.source.end - 1, i.source.value)
+          }
+        }
+        dts = s.toString()
       }
+      addOutput(id, { source: dts, s, imports })
+
       const typeImports = program.body.filter(
         (
           node,
@@ -195,7 +192,6 @@ export const IsolatedDecl: UnpluginInstance<Options | undefined, false> =
           return false
         },
       )
-
       for (const i of typeImports) {
         if (!i.source) continue
         const resolved = (await resolve(context, i.source.value, id))?.id
@@ -234,12 +230,28 @@ export const IsolatedDecl: UnpluginInstance<Options | undefined, false> =
         entryFileNames = path.join(options.extraOutdir, entryFileNames)
       }
 
-      for (let [outname, source] of Object.entries(outputFiles)) {
-        const name: string = map?.[outname] || path.relative(outBase, outname)
-        const fileName = entryFileNames.replace('[name]', name)
+      for (let [outname, { source, s, imports }] of Object.entries(
+        outputFiles,
+      )) {
+        const entryAlias = map?.[outname]
+        const relativeName = path.relative(outBase, outname)
+        const fileName = entryFileNames.replace(
+          '[name]',
+          entryAlias || relativeName,
+        )
+
+        if (entryAlias && entryAlias !== relativeName) {
+          const offset = path.relative(
+            path.dirname(path.resolve(outBase, fileName)),
+            path.dirname(outname),
+          )
+          source = patchEntryAlias(source, s, imports, outname, offset)
+        }
+
         if (options.patchCjsDefaultExport && fileName.endsWith('.d.cts')) {
           source = patchCjsDefaultExport(source)
         }
+
         debug('[rollup] emit dts file:', fileName)
         this.emitFile({
           type: 'asset',
@@ -282,13 +294,28 @@ export const IsolatedDecl: UnpluginInstance<Options | undefined, false> =
         entryFileNames = path.join(options.extraOutdir, entryFileNames)
       }
 
-      for (let [outname, source] of Object.entries(outputFiles)) {
-        const name: string = map?.[outname] || path.relative(outBase, outname)
-        const fileName = entryFileNames.replace('[entryName]', name)
+      for (let [outname, { source, s, imports }] of Object.entries(
+        outputFiles,
+      )) {
+        const entryAlias = map?.[outname]
+        const relativeName = path.relative(outBase, outname)
+        const fileName = entryFileNames.replace(
+          '[name]',
+          entryAlias || relativeName,
+        )
+
+        if (entryAlias && entryAlias !== relativeName) {
+          const offset = path.relative(
+            path.dirname(path.resolve(outBase, fileName)),
+            path.dirname(outname),
+          )
+          source = patchEntryAlias(source, s, imports, outname, offset)
+        }
 
         if (options.patchCjsDefaultExport && fileName.endsWith('.d.cts')) {
           source = patchCjsDefaultExport(source)
         }
+
         debug('[farm] emit dts file:', fileName)
         farmPluginContext.emitFile({
           type: 'asset',
@@ -338,7 +365,7 @@ export const IsolatedDecl: UnpluginInstance<Options | undefined, false> =
         }
 
         const textEncoder = new TextEncoder()
-        for (let [filename, source] of Object.entries(outputFiles)) {
+        for (let [filename, { source }] of Object.entries(outputFiles)) {
           const outDir = build.initialOptions.outdir
           let outFile = `${path.relative(outBase, filename)}.d.${outExt}`
           if (options.extraOutdir) {
@@ -365,24 +392,6 @@ export const IsolatedDecl: UnpluginInstance<Options | undefined, false> =
       })
     }
   })
-
-function resolveEntry(input: string[] | Record<string, string>): {
-  map: Record<string, string> | undefined
-  outBase: string
-} {
-  const map = !Array.isArray(input)
-    ? Object.fromEntries(
-        Object.entries(input).map(([k, v]) => [
-          path.resolve(stripExt(v as string)),
-          k,
-        ]),
-      )
-    : undefined
-  const arr = Array.isArray(input) && input ? input : Object.values(input)
-  const outBase = lowestCommonAncestor(...arr)
-
-  return { map, outBase }
-}
 
 async function resolve(
   context: UnpluginBuildContext,

@@ -85,4 +85,60 @@ describe('rollup', () => {
 
     expect(await Promise.all(fileSystemOutput)).toMatchSnapshot()
   })
+
+  test('write entry-points (#34)', async () => {
+    const input =
+      //   [
+      //   path.resolve(__dirname, 'fixtures/entry-points2/index.ts'),
+      //   path.resolve(__dirname, 'fixtures/entry-points2/foo/bar/index.ts'),
+      // ]
+      {
+        index: path.resolve(__dirname, 'fixtures/entry-points2/index.ts'),
+        bar: path.resolve(__dirname, 'fixtures/entry-points2/foo/bar/index.ts'),
+      }
+    const dist = path.resolve(__dirname, `${TEST_SANDBOX_FOLDER}/entry-points2`)
+
+    const bundle = await rollup({
+      input,
+      plugins: [
+        UnpluginIsolatedDecl({
+          autoAddExts: true,
+        }),
+        esbuild(),
+      ],
+      logLevel: 'silent',
+    })
+
+    await bundle.write({
+      dir: dist,
+    })
+
+    /**
+     * Map written output from file system rather than from bundle due to
+     * module execution order not consistent
+     *
+     * @see https://github.com/rollup/rollup/issues/3888
+     */
+    const allBundledFiles = (
+      await fs.readdir(dist, {
+        recursive: true,
+        withFileTypes: true,
+      })
+    ).filter((it) => it.isFile())
+
+    const fileSystemOutput = allBundledFiles.map((it) => {
+      return (async () => {
+        const filePath = path.relative(dist, path.join(it.parentPath, it.name))
+
+        const content = await fs.readFile(path.join(dist, filePath), 'utf-8')
+
+        return [
+          `// ${filePath.replaceAll('\\', '/')}`,
+          content.toString(),
+        ].join('\n')
+      })()
+    })
+
+    expect(await Promise.all(fileSystemOutput)).toMatchSnapshot()
+  })
 })

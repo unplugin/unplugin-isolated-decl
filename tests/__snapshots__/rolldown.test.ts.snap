@@ -31,7 +31,8 @@ export declare let c: React.JSX.Element;
 export declare let num: Num;
 ",
   "// temp/types.d.ts
-export type Num = number;
+import type { Num2 } from "./types2";
+export type Num = Num2;
 ",
   "// temp/types2.d.ts
 export type Num2 = number;
