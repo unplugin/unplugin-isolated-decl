@@ -218,18 +218,8 @@ export const IsolatedDecl: UnpluginInstance<Options | undefined, false> =
       inputOptions: NormalizedInputOptions,
     ) {
       const { input } = inputOptions
-      const inputMap = !Array.isArray(input)
-        ? Object.fromEntries(
-            Object.entries(input).map(([k, v]) => [
-              path.resolve(stripExt(v)),
-              k,
-            ]),
-          )
-        : undefined
-      const normalizedInput = Array.isArray(input)
-        ? input
-        : Object.values(input)
-      const outBase = lowestCommonAncestor(...normalizedInput)
+      const { outBase, map } = resolveEntry(input)
+      debug('[rollup] out base:', outBase)
 
       if (typeof outputOptions.entryFileNames !== 'string') {
         return this.error('entryFileNames must be a string')
@@ -245,8 +235,7 @@ export const IsolatedDecl: UnpluginInstance<Options | undefined, false> =
       }
 
       for (let [outname, source] of Object.entries(outputFiles)) {
-        const name: string =
-          inputMap?.[outname] || path.relative(outBase, outname)
+        const name: string = map?.[outname] || path.relative(outBase, outname)
         const fileName = entryFileNames.replace('[name]', name)
         if (options.patchCjsDefaultExport && fileName.endsWith('.d.cts')) {
           source = patchCjsDefaultExport(source)
@@ -264,18 +253,8 @@ export const IsolatedDecl: UnpluginInstance<Options | undefined, false> =
       config: NormalizedConfig['compilationConfig']['config'],
     ) {
       const { input = {}, output = {} } = config as ResolvedCompilation
-      const inputMap =
-        !Array.isArray(input) && input
-          ? Object.fromEntries(
-              Object.entries(input).map(([k, v]) => [
-                path.resolve(stripExt(v as string)),
-                k,
-              ]),
-            )
-          : undefined
-      const normalizedInput =
-        Array.isArray(input) && input ? input : Object.values(input)
-      const outBase = lowestCommonAncestor(...normalizedInput)
+      const { outBase, map } = resolveEntry(input as Record<string, string>)
+      debug('[farm] out base:', outBase)
 
       if (output && typeof output.entryFilename !== 'string') {
         return console.error('entryFileName must be a string')
@@ -304,9 +283,7 @@ export const IsolatedDecl: UnpluginInstance<Options | undefined, false> =
       }
 
       for (let [outname, source] of Object.entries(outputFiles)) {
-        const name: string =
-          inputMap?.[outname] || path.relative(outBase, outname)
-
+        const name: string = map?.[outname] || path.relative(outBase, outname)
         const fileName = entryFileNames.replace('[entryName]', name)
 
         if (options.patchCjsDefaultExport && fileName.endsWith('.d.cts')) {
@@ -336,6 +313,8 @@ export const IsolatedDecl: UnpluginInstance<Options | undefined, false> =
           throw new Error('unsupported entryPoints, must be an string[]')
 
         const outBase = lowestCommonAncestor(...entries)
+        debug('[esbuild] out base:', outBase)
+
         const jsExt = esbuildOptions.outExtension?.['.js']
         let outExt: string
         switch (jsExt) {
@@ -386,6 +365,24 @@ export const IsolatedDecl: UnpluginInstance<Options | undefined, false> =
       })
     }
   })
+
+function resolveEntry(input: string[] | Record<string, string>): {
+  map: Record<string, string> | undefined
+  outBase: string
+} {
+  const map = !Array.isArray(input)
+    ? Object.fromEntries(
+        Object.entries(input).map(([k, v]) => [
+          path.resolve(stripExt(v as string)),
+          k,
+        ]),
+      )
+    : undefined
+  const arr = Array.isArray(input) && input ? input : Object.values(input)
+  const outBase = lowestCommonAncestor(...arr)
+
+  return { map, outBase }
+}
 
 async function resolve(
   context: UnpluginBuildContext,
