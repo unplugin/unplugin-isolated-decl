@@ -34,7 +34,7 @@ export function patchEntryAlias(
       s.overwrite(
         i.source.start + 1,
         i.source.end - 1,
-        `./${path.join(offset, i.source.value)}`,
+        `./${path.join(offset, i.source.value).replaceAll('\\', '/')}`,
       )
     }
   }
