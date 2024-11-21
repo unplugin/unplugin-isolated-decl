@@ -1,5 +1,6 @@
 import { readdir, readFile } from 'node:fs/promises'
 import path from 'node:path'
+import { outputToSnapshot } from '@sxzz/test-utils'
 import { build } from 'esbuild'
 import { describe, expect, test } from 'vitest'
 import { dependencies } from '../package.json'
@@ -43,10 +44,6 @@ describe('esbuild', () => {
       format: 'esm',
     })
 
-    expect(
-      outputFiles.map(
-        (file) => `// ${file.path.replaceAll('\\', '/')}\n${file.text}`,
-      ),
-    ).toMatchSnapshot()
+    expect(outputToSnapshot(outputFiles)).toMatchSnapshot()
   })
 })

@@ -39,6 +39,9 @@ importers:
       '@sxzz/prettier-config':
         specifier: ^2.0.2
         version: 2.0.2
+      '@sxzz/test-utils':
+        specifier: ^0.3.7
+        version: 0.3.7(esbuild@0.24.0)(rolldown@0.14.0-snapshot-a07909e-20241111003354)(rollup@4.27.3)(vitest@2.1.5(@types/node@22.9.0))
       '@types/debug':
         specifier: ^4.1.12
         version: 4.1.12
@@ -1164,6 +1167,22 @@ packages:
 
   '@sxzz/prettier-config@2.0.2':
     resolution: {integrity: sha512-yBKxaIr6WqgHTaLgX0g6gxNuMllkwR1QGeXynfJGmyD+XrZqO96t9xT5Mfbr9H3+N56SXY9/yFvP/e8lcJI7KA==}
+
+  '@sxzz/test-utils@0.3.7':
+    resolution: {integrity: sha512-3WhTRNkkMa91YW99NebNOb0NOCaMlPPct/kqQyA1+2z/PlX0+r+2GJVmypHYZFXqQ+MEaRDUS2HwlNBkKpgBdw==}
+    engines: {node: '>=18.12.0'}
+    peerDependencies:
+      esbuild: '>=0.20.0'
+      rolldown: '*'
+      rollup: ^4.1.0
+      vitest: ^2.0.3
+    peerDependenciesMeta:
+      esbuild:
+        optional: true
+      rolldown:
+        optional: true
+      rollup:
+        optional: true
 
   '@tybys/wasm-util@0.9.0':
     resolution: {integrity: sha512-6+7nlbMVX/PVDCwaIQ8nTOPveOcFLSt8GcXdx8hD0bt39uWxYT88uXzqTd4fTvqta7oeUJqudepapKNt2DYJFw==}
@@ -4332,6 +4351,16 @@ snapshots:
       - typescript
 
   '@sxzz/prettier-config@2.0.2': {}
+
+  '@sxzz/test-utils@0.3.7(esbuild@0.24.0)(rolldown@0.14.0-snapshot-a07909e-20241111003354)(rollup@4.27.3)(vitest@2.1.5(@types/node@22.9.0))':
+    dependencies:
+      '@rollup/pluginutils': 5.1.3(rollup@4.27.3)
+      fast-glob: 3.3.2
+      vitest: 2.1.5(@types/node@22.9.0)
+    optionalDependencies:
+      esbuild: 0.24.0
+      rolldown: 0.14.0-snapshot-a07909e-20241111003354
+      rollup: 4.27.3
 
   '@tybys/wasm-util@0.9.0':
     dependencies:

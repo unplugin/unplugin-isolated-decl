@@ -1,9 +1,33 @@
 import fs from 'node:fs/promises'
 import path from 'node:path'
+import { outputToSnapshot } from '@sxzz/test-utils'
 import { rollup } from 'rollup'
 import esbuild from 'rollup-plugin-esbuild'
 import { describe, expect, test } from 'vitest'
 import UnpluginIsolatedDecl from '../src/rollup'
+
+async function getFileSnapshot(dir: string) {
+  /**
+   * Map written output from file system rather than from bundle due to
+   * module execution order not consistent
+   *
+   * @see https://github.com/rollup/rollup/issues/3888
+   */
+  const files = (
+    await fs.readdir(dir, { recursive: true, withFileTypes: true })
+  ).filter((it) => it.isFile())
+
+  const snapshot = await Promise.all(
+    files.map(async (it) => {
+      const absolute = path.resolve(it.parentPath, it.name)
+      const filePath = path.relative(dir, absolute)
+      const content = await fs.readFile(absolute, 'utf-8')
+
+      return `// ${filePath.replaceAll('\\', '/')}\n${content.toString()}`
+    }),
+  )
+  return snapshot
+}
 
 describe('rollup', () => {
   const TEST_SANDBOX_FOLDER = 'temp/rollup'
@@ -27,14 +51,7 @@ describe('rollup', () => {
       dir: dist,
     })
 
-    expect(
-      result.output.map((asset) =>
-        [
-          `// ${asset.fileName.replaceAll('\\', '/')}`,
-          asset.type === 'chunk' ? asset.code : asset.source,
-        ].join('\n'),
-      ),
-    ).toMatchSnapshot()
+    expect(outputToSnapshot(result.output)).toMatchSnapshot()
   })
 
   test('write entry-points', async () => {
@@ -57,45 +74,14 @@ describe('rollup', () => {
       preserveModules: true,
     })
 
-    /**
-     * Map written output from file system rather than from bundle due to
-     * module execution order not consistent
-     *
-     * @see https://github.com/rollup/rollup/issues/3888
-     */
-    const allBundledFiles = (
-      await fs.readdir(dist, {
-        recursive: true,
-        withFileTypes: true,
-      })
-    ).filter((it) => it.isFile())
-
-    const fileSystemOutput = allBundledFiles.map((it) => {
-      return (async () => {
-        const filePath = path.relative(dist, path.join(it.parentPath, it.name))
-
-        const content = await fs.readFile(path.join(dist, filePath), 'utf-8')
-
-        return [
-          `// ${filePath.replaceAll('\\', '/')}`,
-          content.toString(),
-        ].join('\n')
-      })()
-    })
-
-    expect(await Promise.all(fileSystemOutput)).toMatchSnapshot()
+    expect(await getFileSnapshot(dist)).toMatchSnapshot()
   })
 
   test('write entry-points (#34)', async () => {
-    const input =
-      //   [
-      //   path.resolve(__dirname, 'fixtures/entry-points2/index.ts'),
-      //   path.resolve(__dirname, 'fixtures/entry-points2/foo/bar/index.ts'),
-      // ]
-      {
-        index: path.resolve(__dirname, 'fixtures/entry-points2/index.ts'),
-        bar: path.resolve(__dirname, 'fixtures/entry-points2/foo/bar/index.ts'),
-      }
+    const input = {
+      index: path.resolve(__dirname, 'fixtures/entry-points2/index.ts'),
+      bar: path.resolve(__dirname, 'fixtures/entry-points2/foo/bar/index.ts'),
+    }
     const dist = path.resolve(__dirname, `${TEST_SANDBOX_FOLDER}/entry-points2`)
 
     const bundle = await rollup({
@@ -109,36 +95,8 @@ describe('rollup', () => {
       logLevel: 'silent',
     })
 
-    await bundle.write({
-      dir: dist,
-    })
+    await bundle.write({ dir: dist })
 
-    /**
-     * Map written output from file system rather than from bundle due to
-     * module execution order not consistent
-     *
-     * @see https://github.com/rollup/rollup/issues/3888
-     */
-    const allBundledFiles = (
-      await fs.readdir(dist, {
-        recursive: true,
-        withFileTypes: true,
-      })
-    ).filter((it) => it.isFile())
-
-    const fileSystemOutput = allBundledFiles.map((it) => {
-      return (async () => {
-        const filePath = path.relative(dist, path.join(it.parentPath, it.name))
-
-        const content = await fs.readFile(path.join(dist, filePath), 'utf-8')
-
-        return [
-          `// ${filePath.replaceAll('\\', '/')}`,
-          content.toString(),
-        ].join('\n')
-      })()
-    })
-
-    expect(await Promise.all(fileSystemOutput)).toMatchSnapshot()
+    expect(await getFileSnapshot(dist)).toMatchSnapshot()
   })
 })
