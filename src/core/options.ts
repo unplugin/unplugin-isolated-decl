@@ -15,6 +15,10 @@ export type Options = {
   autoAddExts?: boolean
   /** Patch `export default` in `.d.cts` to `export = ` */
   patchCjsDefaultExport?: boolean
+  rewriteImports?: (
+    id: string,
+    importer: string,
+  ) => string | void | null | undefined
 } & (
   | {
       /**
@@ -38,7 +42,7 @@ type Overwrite<T, U> = Pick<T, Exclude<keyof T, keyof U>> & U
 
 export type OptionsResolved = Overwrite<
   Required<Options>,
-  Pick<Options, 'enforce' | 'extraOutdir'>
+  Pick<Options, 'enforce' | 'extraOutdir' | 'rewriteImports'>
 >
 
 export function resolveOptions(options: Options): OptionsResolved {
@@ -51,5 +55,6 @@ export function resolveOptions(options: Options): OptionsResolved {
     extraOutdir: options.extraOutdir,
     autoAddExts: options.autoAddExts || false,
     patchCjsDefaultExport: options.patchCjsDefaultExport || false,
+    rewriteImports: options.rewriteImports,
   }
 }

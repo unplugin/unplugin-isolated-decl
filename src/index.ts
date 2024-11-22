@@ -139,17 +139,34 @@ export const IsolatedDecl: UnpluginInstance<Options | undefined, false> =
       const imports = filterImports(program)
 
       const s = new MagicString(dts)
-      if (options.autoAddExts) {
+      if (options.autoAddExts || options.rewriteImports) {
         for (const i of imports) {
           const { source } = i
-          if (path.basename(source.value).includes('.')) continue
+          let { value } = source
 
-          const resolved = await resolve(context, source.value, id)
-          if (!resolved || resolved.external) continue
-          if (resolved.id.endsWith('.ts') || resolved.id.endsWith('.tsx')) {
-            i.suffix = '.js'
-            source.value = (source.originalValue = source.value) + i.suffix
-            s.overwrite(source.start + 1, source.end - 1, source.value)
+          if (options.rewriteImports) {
+            const result = options.rewriteImports(value, id)
+            if (typeof result === 'string') {
+              value = result
+            }
+          }
+
+          if (
+            options.autoAddExts &&
+            (path.isAbsolute(value) || value[0] === '.') &&
+            !path.basename(value).includes('.')
+          ) {
+            const resolved = await resolve(context, value, id)
+            if (!resolved || resolved.external) continue
+            if (resolved.id.endsWith('.ts') || resolved.id.endsWith('.tsx')) {
+              value = value + (i.suffix = '.js')
+            }
+          }
+
+          if (source.value !== value) {
+            source.originalValue = source.value
+            source.value = value
+            s.overwrite(source.start + 1, source.end - 1, value)
           }
         }
       }
@@ -339,16 +356,18 @@ export const IsolatedDecl: UnpluginInstance<Options | undefined, false> =
 
         const textEncoder = new TextEncoder()
         for (const [filename, { s }] of Object.entries(outputFiles)) {
-          let source = s.toString()
           const outDir = build.initialOptions.outdir
           let outFile = `${path.relative(inputBase, filename)}.d.${outExt}`
           if (options.extraOutdir) {
             outFile = path.join(options.extraOutdir, outFile)
           }
           const filePath = outDir ? path.resolve(outDir, outFile) : outFile
+
+          let source = s.toString()
           if (options.patchCjsDefaultExport && filePath.endsWith('.d.cts')) {
             source = patchCjsDefaultExport(source)
           }
+
           if (write) {
             await mkdir(path.dirname(filePath), { recursive: true })
             await writeFile(filePath, source)

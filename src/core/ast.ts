@@ -70,7 +70,7 @@ export function rewriteImports(
       )
     }
 
-    if (final) {
+    if (final && final !== source.value) {
       final = final.replaceAll('\\', '/')
       if (!/^\.\.?\//.test(final)) {
         final = `./${final}`

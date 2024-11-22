@@ -11,8 +11,8 @@ describe('rollup', () => {
   const TEST_SANDBOX_FOLDER = path.resolve(__dirname, 'temp/rollup')
 
   test('generate basic', async () => {
-    const input = path.resolve(__dirname, 'fixtures/basic/main.ts')
-    const dist = path.resolve(__dirname, `${TEST_SANDBOX_FOLDER}/basic`)
+    const dir = 'basic'
+    const input = path.resolve(fixtures, dir, 'main.ts')
 
     const bundle = await rollup({
       input,
@@ -25,10 +25,7 @@ describe('rollup', () => {
       ],
       logLevel: 'silent',
     })
-
-    const result = await bundle.generate({
-      dir: dist,
-    })
+    const result = await bundle.generate({})
 
     expect(outputToSnapshot(result.output)).toMatchSnapshot()
   })
@@ -79,6 +76,42 @@ describe('rollup', () => {
     await bundle.write({ dir: dist })
 
     expect(await getFileSnapshot(dist)).toMatchSnapshot()
+  })
+
+  test('custom rewriter', async () => {
+    const dir = 'import-rewriter'
+    const input = path.resolve(fixtures, dir, 'index.ts')
+
+    let importer
+    const bundle = await rollup({
+      input,
+      plugins: [
+        {
+          name: 'resolver',
+          resolveId(id, importer, opt) {
+            if (id[0] === '~') {
+              id = `.${id.slice(1)}`
+              return this.resolve(id, importer, opt)
+            }
+          },
+        },
+        UnpluginIsolatedDecl({
+          autoAddExts: true,
+          rewriteImports(id, _importer) {
+            if (id[0] === '~') {
+              importer = _importer
+              return `.${id.slice(1)}`
+            }
+          },
+        }),
+        esbuild(),
+      ],
+      logLevel: 'silent',
+    })
+    const result = await bundle.generate({})
+
+    expect(outputToSnapshot(result.output)).toMatchSnapshot()
+    expect(importer).toBe(path.resolve(fixtures, dir, 'index.ts'))
   })
 })
 

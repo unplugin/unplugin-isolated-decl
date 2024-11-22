@@ -1,5 +1,17 @@
 // Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
 
+exports[`rollup > custom rewriter 1`] = `
+"// index.d.ts
+export type * from './test.ts';
+
+// index.js
+
+
+// test.d.ts
+export type Str = string;
+"
+`;
+
 exports[`rollup > generate basic 1`] = `
 "// main.js
 function Component() {
