@@ -14,7 +14,7 @@ import {
   type UnpluginContext,
   type UnpluginInstance,
 } from 'unplugin'
-import { filterImports, patchEntryAlias, type OxcImport } from './core/ast'
+import { filterImports, rewriteImports, type OxcImport } from './core/ast'
 import { resolveOptions, type Options } from './core/options'
 import {
   oxcTransform,
@@ -33,7 +33,6 @@ import type {
   NormalizedConfig,
   ResolvedCompilation,
 } from '@farmfe/core'
-import type * as OxcTypes from '@oxc-project/types'
 import type { PluginBuild } from 'esbuild'
 import type {
   NormalizedInputOptions,
@@ -45,9 +44,8 @@ import type {
 export type { Options }
 
 interface Output {
-  source: string
+  s: MagicString
   imports: OxcImport[]
-  s?: MagicString
 }
 
 /**
@@ -121,7 +119,7 @@ export const IsolatedDecl: UnpluginInstance<Options | undefined, false> =
             (options as any).transformOptions,
           )
       }
-      let { code: dts, errors } = result
+      const { code: dts, errors } = result
       debug(
         label,
         'transformed',
@@ -140,67 +138,47 @@ export const IsolatedDecl: UnpluginInstance<Options | undefined, false> =
       const { program } = await parseAsync(dts, { sourceFilename: id })
       const imports = filterImports(program)
 
-      let s: MagicString | undefined
+      const s = new MagicString(dts)
       if (options.autoAddExts) {
-        s = new MagicString(dts)
-
         for (const i of imports) {
-          if (path.basename(i.source.value).includes('.')) continue
+          const { source } = i
+          if (path.basename(source.value).includes('.')) continue
 
-          const resolved = await resolve(context, i.source.value, id)
+          const resolved = await resolve(context, source.value, id)
           if (!resolved || resolved.external) continue
           if (resolved.id.endsWith('.ts') || resolved.id.endsWith('.tsx')) {
-            i.source.value = `${((i.source as any).originalValue =
-              i.source.value)}.js`
-            s.overwrite(i.source.start + 1, i.source.end - 1, i.source.value)
+            i.suffix = '.js'
+            source.value = (source.originalValue = source.value) + i.suffix
+            s.overwrite(source.start + 1, source.end - 1, source.value)
           }
         }
-        dts = s.toString()
       }
-      addOutput(id, { source: dts, s, imports })
+      addOutput(id, { s, imports })
 
-      const typeImports = program.body.filter(
-        (
-          node,
-        ): node is
-          | OxcTypes.ImportDeclaration
-          | OxcTypes.ExportNamedDeclaration
-          | OxcTypes.ExportAllDeclaration => {
-          if (node.type === 'ImportDeclaration') {
-            if (node.importKind === 'type') return true
-            return (
-              !!node.specifiers &&
-              node.specifiers.every(
-                (spec) =>
-                  spec.type === 'ImportSpecifier' && spec.importKind === 'type',
-              )
+      const typeImports = program.body.filter((node): node is OxcImport => {
+        if (!('source' in node) || !node.source) return false
+        if ('importKind' in node && node.importKind === 'type') return true
+        if ('exportKind' in node && node.exportKind === 'type') return true
+
+        if (node.type === 'ImportDeclaration') {
+          return (
+            !!node.specifiers &&
+            node.specifiers.every(
+              (spec) =>
+                spec.type === 'ImportSpecifier' && spec.importKind === 'type',
             )
-          }
-          if (
-            node.type === 'ExportNamedDeclaration' ||
-            node.type === 'ExportAllDeclaration'
-          ) {
-            if (node.exportKind === 'type') return true
-            return (
-              node.type === 'ExportNamedDeclaration' &&
-              node.specifiers &&
-              node.specifiers.every(
-                (spec) =>
-                  spec.type === 'ExportSpecifier' && spec.exportKind === 'type',
-              )
-            )
-          }
-          return false
-        },
-      )
-      for (const i of typeImports) {
-        if (!i.source) continue
-        const resolved = (
-          await resolve(
-            context,
-            (i.source as any).originalValue || i.source.value,
-            id,
           )
+        }
+        return (
+          node.type === 'ExportNamedDeclaration' &&
+          node.specifiers &&
+          node.specifiers.every((spec) => spec.exportKind === 'type')
+        )
+      })
+      for (const i of typeImports) {
+        const { source } = i
+        const resolved = (
+          await resolve(context, source.originalValue || source.value, id)
         )?.id
         if (resolved && filter(resolved) && !outputFiles[stripExt(resolved)]) {
           let source: string
@@ -221,8 +199,8 @@ export const IsolatedDecl: UnpluginInstance<Options | undefined, false> =
       inputOptions: NormalizedInputOptions,
     ) {
       const { input } = inputOptions
-      const { outBase, map } = resolveEntry(input)
-      debug('[rollup] out base:', outBase)
+      const { inputBase, entryMap } = resolveEntry(input)
+      debug('[rollup] input base:', inputBase)
 
       if (typeof outputOptions.entryFileNames !== 'string') {
         return this.error('entryFileNames must be a string')
@@ -237,32 +215,25 @@ export const IsolatedDecl: UnpluginInstance<Options | undefined, false> =
         entryFileNames = path.join(options.extraOutdir, entryFileNames)
       }
 
-      for (let [outname, { source, s, imports }] of Object.entries(
-        outputFiles,
-      )) {
-        const entryAlias = map?.[outname]
-        const relativeName = path.relative(outBase, outname)
-        const fileName = entryFileNames.replace(
-          '[name]',
-          entryAlias || relativeName,
+      for (const [srcFilename, { s, imports }] of Object.entries(outputFiles)) {
+        const emitName = rewriteImports(
+          s,
+          imports,
+          entryMap,
+          inputBase,
+          entryFileNames,
+          srcFilename,
         )
 
-        if (entryAlias && entryAlias !== relativeName) {
-          const offset = path.relative(
-            path.dirname(path.resolve(outBase, fileName)),
-            path.dirname(outname),
-          )
-          source = patchEntryAlias(source, s, imports, outname, offset)
-        }
-
-        if (options.patchCjsDefaultExport && fileName.endsWith('.d.cts')) {
+        let source = s.toString()
+        if (options.patchCjsDefaultExport && emitName.endsWith('.d.cts')) {
           source = patchCjsDefaultExport(source)
         }
 
-        debug('[rollup] emit dts file:', fileName)
+        debug('[rollup] emit dts file:', emitName)
         this.emitFile({
           type: 'asset',
-          fileName,
+          fileName: emitName,
           source,
         })
       }
@@ -272,8 +243,10 @@ export const IsolatedDecl: UnpluginInstance<Options | undefined, false> =
       config: NormalizedConfig['compilationConfig']['config'],
     ) {
       const { input = {}, output = {} } = config as ResolvedCompilation
-      const { outBase, map } = resolveEntry(input as Record<string, string>)
-      debug('[farm] out base:', outBase)
+      const { inputBase, entryMap } = resolveEntry(
+        input as Record<string, string>,
+      )
+      debug('[farm] out base:', inputBase)
 
       if (output && typeof output.entryFilename !== 'string') {
         return console.error('entryFileName must be a string')
@@ -301,32 +274,25 @@ export const IsolatedDecl: UnpluginInstance<Options | undefined, false> =
         entryFileNames = path.join(options.extraOutdir, entryFileNames)
       }
 
-      for (let [outname, { source, s, imports }] of Object.entries(
-        outputFiles,
-      )) {
-        const entryAlias = map?.[outname]
-        const relativeName = path.relative(outBase, outname)
-        const fileName = entryFileNames.replace(
-          '[name]',
-          entryAlias || relativeName,
+      for (const [srcFilename, { s, imports }] of Object.entries(outputFiles)) {
+        const emitName = rewriteImports(
+          s,
+          imports,
+          entryMap,
+          inputBase,
+          entryFileNames,
+          srcFilename,
         )
 
-        if (entryAlias && entryAlias !== relativeName) {
-          const offset = path.relative(
-            path.dirname(path.resolve(outBase, fileName)),
-            path.dirname(outname),
-          )
-          source = patchEntryAlias(source, s, imports, outname, offset)
-        }
-
-        if (options.patchCjsDefaultExport && fileName.endsWith('.d.cts')) {
+        let source = s.toString()
+        if (options.patchCjsDefaultExport && emitName.endsWith('.d.cts')) {
           source = patchCjsDefaultExport(source)
         }
 
-        debug('[farm] emit dts file:', fileName)
+        debug('[farm] emit dts file:', emitName)
         farmPluginContext.emitFile({
           type: 'asset',
-          fileName,
+          fileName: emitName,
           source,
         })
       }
@@ -346,8 +312,8 @@ export const IsolatedDecl: UnpluginInstance<Options | undefined, false> =
         )
           throw new Error('unsupported entryPoints, must be an string[]')
 
-        const outBase = lowestCommonAncestor(...entries)
-        debug('[esbuild] out base:', outBase)
+        const inputBase = lowestCommonAncestor(...entries)
+        debug('[esbuild] out base:', inputBase)
 
         const jsExt = esbuildOptions.outExtension?.['.js']
         let outExt: string
@@ -372,9 +338,10 @@ export const IsolatedDecl: UnpluginInstance<Options | undefined, false> =
         }
 
         const textEncoder = new TextEncoder()
-        for (let [filename, { source }] of Object.entries(outputFiles)) {
+        for (const [filename, { s }] of Object.entries(outputFiles)) {
+          let source = s.toString()
           const outDir = build.initialOptions.outdir
-          let outFile = `${path.relative(outBase, filename)}.d.${outExt}`
+          let outFile = `${path.relative(inputBase, filename)}.d.${outExt}`
           if (options.extraOutdir) {
             outFile = path.join(options.extraOutdir, outFile)
           }

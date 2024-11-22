@@ -60,8 +60,8 @@ describe('rollup', () => {
   test('write entry-points (#34)', async () => {
     const dir = 'entry-points-34'
     const input = {
-      index: path.resolve(fixtures, dir, 'index.ts'),
-      bar: path.resolve(fixtures, dir, 'foo/bar/index.ts'),
+      index: path.resolve(fixtures, dir, 'main.ts'),
+      'foo/bar': path.resolve(fixtures, dir, 'foo/bar/bar.ts'),
     }
     const dist = path.resolve(TEST_SANDBOX_FOLDER, dir)
 

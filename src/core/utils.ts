@@ -33,10 +33,10 @@ export function stripExt(filename: string): string {
 }
 
 export function resolveEntry(input: string[] | Record<string, string>): {
-  map: Record<string, string> | undefined
-  outBase: string
+  entryMap: Record<string, string> | undefined
+  inputBase: string
 } {
-  const map = !Array.isArray(input)
+  const entryMap = !Array.isArray(input)
     ? Object.fromEntries(
         Object.entries(input).map(([k, v]) => [
           path.resolve(stripExt(v as string)),
@@ -45,7 +45,7 @@ export function resolveEntry(input: string[] | Record<string, string>): {
       )
     : undefined
   const arr = Array.isArray(input) && input ? input : Object.values(input)
-  const outBase = lowestCommonAncestor(...arr)
+  const inputBase = lowestCommonAncestor(...arr)
 
-  return { map, outBase }
+  return { entryMap, inputBase }
 }
