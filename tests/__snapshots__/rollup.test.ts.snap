@@ -33,47 +33,7 @@ export type Num2 = number;
 "
 `;
 
-exports[`rollup > write entry-points (#34) 1`] = `
-[
-  "// bar.d.ts
-export * as baz from './foo/bar/baz.js';
-export type CustomType = 'unimportant' | 'only' | 'showcase';
-",
-  "// bar.js
-export { b as baz } from './index-B_ebAVVP.js';
-",
-  "// index-B_ebAVVP.js
-function important() {
-  console.log("very! important function");
-}
-
-var baz = /*#__PURE__*/Object.freeze({
-  __proto__: null,
-  important: important
-});
-
-export { baz as b, important as i };
-",
-  "// index.d.ts
-export declare function foo(): void;
-export * from './foo/bar/baz.js';
-",
-  "// index.js
-export { i as important } from './index-B_ebAVVP.js';
-
-function foo() {
-  console.log("important function");
-}
-
-export { foo };
-",
-  "// foo/bar/baz.d.ts
-export declare function important(): void;
-",
-]
-`;
-
-exports[`rollup > write entry-points 1`] = `
+exports[`rollup > write entry-points (#22) 1`] = `
 [
   "// b/index.d.ts
 export { ComponentB } from "./ComponentB/ComponentB";
@@ -122,6 +82,46 @@ function ComponentA(props) {
 }
 
 export { ComponentA };
+",
+]
+`;
+
+exports[`rollup > write entry-points (#34) 1`] = `
+[
+  "// bar.d.ts
+export * as baz from './foo/bar/baz.js';
+export type CustomType = 'unimportant' | 'only' | 'showcase';
+",
+  "// bar.js
+export { b as baz } from './index-B_ebAVVP.js';
+",
+  "// index-B_ebAVVP.js
+function important() {
+  console.log("very! important function");
+}
+
+var baz = /*#__PURE__*/Object.freeze({
+  __proto__: null,
+  important: important
+});
+
+export { baz as b, important as i };
+",
+  "// index.d.ts
+export declare function foo(): void;
+export * from './foo/bar/baz.js';
+",
+  "// index.js
+export { i as important } from './index-B_ebAVVP.js';
+
+function foo() {
+  console.log("important function");
+}
+
+export { foo };
+",
+  "// foo/bar/baz.d.ts
+export declare function important(): void;
 ",
 ]
 `;
