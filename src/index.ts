@@ -142,14 +142,7 @@ export const IsolatedDecl: UnpluginInstance<Options | undefined, false> =
       if (options.autoAddExts || options.rewriteImports) {
         for (const i of imports) {
           const { source } = i
-          let { value } = source
-
-          if (options.rewriteImports) {
-            const result = options.rewriteImports(value, id)
-            if (typeof result === 'string') {
-              value = result
-            }
-          }
+          const { value } = source
 
           if (
             options.autoAddExts &&
@@ -159,14 +152,16 @@ export const IsolatedDecl: UnpluginInstance<Options | undefined, false> =
             const resolved = await resolve(context, value, id)
             if (!resolved || resolved.external) continue
             if (resolved.id.endsWith('.ts') || resolved.id.endsWith('.tsx')) {
-              value = value + (i.suffix = '.js')
+              i.suffix = '.js'
             }
           }
 
-          if (source.value !== value) {
-            source.originalValue = source.value
-            source.value = value
-            s.overwrite(source.start + 1, source.end - 1, value)
+          if (options.rewriteImports) {
+            const result = options.rewriteImports(value, id)
+            if (typeof result === 'string') {
+              source.value = result
+              s.overwrite(source.start + 1, source.end - 1, result)
+            }
           }
         }
       }
@@ -194,9 +189,7 @@ export const IsolatedDecl: UnpluginInstance<Options | undefined, false> =
       })
       for (const i of typeImports) {
         const { source } = i
-        const resolved = (
-          await resolve(context, source.originalValue || source.value, id)
-        )?.id
+        const resolved = (await resolve(context, source.value, id))?.id
         if (resolved && filter(resolved) && !outputFiles[stripExt(resolved)]) {
           let source: string
           try {
@@ -353,6 +346,8 @@ export const IsolatedDecl: UnpluginInstance<Options | undefined, false> =
             outFile = path.join(options.extraOutdir, outFile)
           }
           const filePath = outDir ? path.resolve(outDir, outFile) : outFile
+
+          // TODO rewrite imports
 
           let source = s.toString()
           if (options.patchCjsDefaultExport && filePath.endsWith('.d.cts')) {

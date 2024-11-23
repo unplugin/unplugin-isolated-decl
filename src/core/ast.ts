@@ -1,5 +1,5 @@
 import path from 'node:path'
-import { debug } from './utils'
+import { debug, stripExt } from './utils'
 import type * as OxcTypes from '@oxc-project/types'
 import type MagicString from 'magic-string'
 
@@ -8,7 +8,7 @@ export type OxcImport = (
   | OxcTypes.ExportAllDeclaration
   | OxcTypes.ExportNamedDeclaration
 ) & {
-  source: OxcTypes.StringLiteral & { originalValue?: string }
+  source: OxcTypes.StringLiteral
   suffix?: string
 }
 
@@ -30,56 +30,47 @@ export function rewriteImports(
   entryFileNames: string,
   srcFilename: string,
 ): string {
-  const entryAlias = entryMap?.[srcFilename]
-
   const srcRel = path.relative(inputBase, srcFilename)
   const srcDir = path.dirname(srcFilename)
   const srcDirRel = path.relative(inputBase, srcDir)
 
-  const emitName = entryFileNames
-    .replace(/\.(.)?[jt]sx?$/, (_, s) => `.d.${s || ''}ts`)
-    .replace('[name]', entryAlias || srcRel)
-  const emitDir = path.dirname(emitName)
+  let entryAlias = entryMap?.[srcFilename]
+  if (entryAlias && path.normalize(entryAlias) === srcRel)
+    entryAlias = undefined
 
-  // rewrite imports if current file is aliased-entry
-  const isAliasedEntry = entryAlias && entryAlias !== srcRel
-  isAliasedEntry && debug('Patch alias entry:', srcRel, '->', entryAlias)
+  const entry = entryAlias || srcRel
+  const resolvedEntry = entryFileNames.replaceAll('[name]', entry)
+
+  const emitDir = path.dirname(resolvedEntry)
+  const emitDtsName = resolvedEntry.replace(
+    /\.(.)?[jt]sx?$/,
+    (_, s) => `.d.${s || ''}ts`,
+  )
+  const offset = path.relative(emitDir, srcDirRel)
 
   for (const i of imports) {
     const { source } = i
-    if (source.value[0] !== '.') continue
+    const { value: srcIdRel } = source
+    if (srcIdRel[0] !== '.') continue
 
-    const originalValue = source.originalValue || source.value
-    const resolved = path.resolve(srcDir, originalValue)
-    const importAlias = entryMap?.[resolved]
+    const srcId = path.resolve(srcDir, srcIdRel)
+    const importAlias = entryMap?.[srcId]
 
-    const withEntryFileName = entryFileNames.replace(
-      '[name]',
-      importAlias || originalValue,
-    )
-
-    let final: string | undefined
+    let id: string
     if (importAlias) {
-      final = path.join(
-        path.relative(emitDir, path.dirname(withEntryFileName)),
-        path.basename(withEntryFileName),
+      const resolved = stripExt(
+        entryFileNames.replaceAll('[name]', importAlias),
       )
-      if (i.suffix) final += i.suffix
-      debug('Patch aliased import in', srcRel, ':', source.value, '->', final)
-    } else if (isAliasedEntry) {
-      const fileOffset = path.relative(emitDir, srcDirRel)
-      final = path.join(fileOffset, withEntryFileName)
-      debug(
-        'Patch import for aliased entry',
-        emitName,
-        ':',
-        i.source.value,
-        '->',
-        final,
-      )
+      id = pathRelative(srcDirRel, resolved)
+    } else {
+      id = stripExt(entryFileNames.replaceAll('[name]', srcIdRel))
     }
+    if (i.suffix) id += i.suffix
 
-    if (final && final !== source.value) {
+    let final = path.normalize(path.join(offset, id))
+    if (final !== source.value) {
+      debug('Patch import in', srcRel, ':', srcIdRel, '->', final)
+
       final = final.replaceAll('\\', '/')
       if (!/^\.\.?\//.test(final)) {
         final = `./${final}`
@@ -88,5 +79,9 @@ export function rewriteImports(
     }
   }
 
-  return emitName
+  return emitDtsName
+}
+
+function pathRelative(from: string, to: string) {
+  return path.join(path.relative(from, path.dirname(to)), path.basename(to))
 }
