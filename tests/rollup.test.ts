@@ -40,7 +40,7 @@ describe('rollup', () => {
 
     const bundle = await rollup({
       input,
-      plugins: [UnpluginIsolatedDecl(), esbuild()],
+      plugins: [UnpluginIsolatedDecl({ autoAddExts: true }), esbuild()],
       logLevel: 'silent',
     })
 

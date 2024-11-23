@@ -47,19 +47,26 @@ export function rewriteImports(
     const { source } = i
     if (source.value[0] !== '.') continue
 
-    const resolved = path.resolve(srcDir, source.originalValue || source.value)
+    const originalValue = source.originalValue || source.value
+    const resolved = path.resolve(srcDir, originalValue)
     const importAlias = entryMap?.[resolved]
+
+    const withEntryFileName = entryFileNames.replace(
+      '[name]',
+      importAlias || originalValue,
+    )
+
     let final: string | undefined
     if (importAlias) {
       final = path.join(
-        path.relative(emitDir, path.dirname(importAlias)),
-        path.basename(importAlias),
+        path.relative(emitDir, path.dirname(withEntryFileName)),
+        path.basename(withEntryFileName),
       )
       if (i.suffix) final += i.suffix
       debug('Patch aliased import in', srcRel, ':', source.value, '->', final)
     } else if (isAliasedEntry) {
       const fileOffset = path.relative(emitDir, srcDirRel)
-      final = path.join(fileOffset, i.source.value)
+      final = path.join(fileOffset, withEntryFileName)
       debug(
         'Patch import for aliased entry',
         emitName,
