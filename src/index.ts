@@ -212,11 +212,11 @@ export const IsolatedDecl: UnpluginInstance<Options | undefined, false> =
       const { inputBase, entryMap } = resolveEntry(input)
       debug('[rollup] input base:', inputBase)
 
-      if (typeof outputOptions.entryFileNames !== 'string') {
+      let { entryFileNames = '[name].js' } = outputOptions
+      if (typeof entryFileNames !== 'string') {
         return this.error('entryFileNames must be a string')
       }
 
-      let { entryFileNames } = outputOptions
       if (options.extraOutdir) {
         entryFileNames = path.join(options.extraOutdir, entryFileNames)
       }

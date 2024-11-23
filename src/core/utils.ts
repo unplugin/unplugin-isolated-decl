@@ -32,10 +32,15 @@ export function stripExt(filename: string): string {
   return filename.replace(/\.(.?)[jt]sx?$/, '')
 }
 
-export function resolveEntry(input: string[] | Record<string, string>): {
+export function resolveEntry(
+  input: string | string[] | Record<string, string>,
+): {
   entryMap: Record<string, string> | undefined
   inputBase: string
 } {
+  if (typeof input === 'string') {
+    input = [input]
+  }
   const entryMap = !Array.isArray(input)
     ? Object.fromEntries(
         Object.entries(input).map(([k, v]) => [
