@@ -223,11 +223,7 @@ export const IsolatedDecl: UnpluginInstance<Options | undefined, false> =
         return this.error('entryFileNames must be a string')
       }
 
-      let entryFileNames = outputOptions.entryFileNames.replace(
-        /\.(.)?[jt]sx?$/,
-        (_, s) => `.d.${s || ''}ts`,
-      )
-
+      let { entryFileNames } = outputOptions
       if (options.extraOutdir) {
         entryFileNames = path.join(options.extraOutdir, entryFileNames)
       }
@@ -282,15 +278,10 @@ export const IsolatedDecl: UnpluginInstance<Options | undefined, false> =
         extFormatMap.get(output.format || 'esm') || 'js',
       )
 
-      let entryFileNames = output.entryFilename.replace(
-        /\.(.)?[jt]sx?$/,
-        (_, s) => `.d.${s || ''}ts`,
-      )
-
+      let entryFileNames = output.entryFilename
       if (options.extraOutdir) {
         entryFileNames = path.join(options.extraOutdir, entryFileNames)
       }
-
       for (const [srcFilename, { s, imports }] of Object.entries(outputFiles)) {
         const emitName = rewriteImports(
           s,

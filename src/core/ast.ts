@@ -36,12 +36,14 @@ export function rewriteImports(
   const srcDir = path.dirname(srcFilename)
   const srcDirRel = path.relative(inputBase, srcDir)
 
-  const emitName = entryFileNames.replace('[name]', entryAlias || srcRel)
+  const emitName = entryFileNames
+    .replace(/\.(.)?[jt]sx?$/, (_, s) => `.d.${s || ''}ts`)
+    .replace('[name]', entryAlias || srcRel)
   const emitDir = path.dirname(emitName)
 
   // rewrite imports if current file is aliased-entry
   const isAliasedEntry = entryAlias && entryAlias !== srcRel
-  isAliasedEntry && debug('Patch alias entry:', srcRel, '->', emitName)
+  isAliasedEntry && debug('Patch alias entry:', srcRel, '->', entryAlias)
 
   for (const i of imports) {
     const { source } = i

@@ -48,7 +48,7 @@ export type Num2 = number;
 exports[`rollup > write entry-points (#22) 1`] = `
 [
   "// b/index.d.ts
-export { ComponentB } from "./ComponentB/ComponentB/index.d.ts";
+export { ComponentB } from "./ComponentB/ComponentB/index.js";
 ",
   "// b/index.js
 export { ComponentB } from './ComponentB/ComponentB/index.js';
@@ -72,7 +72,7 @@ function ComponentB(props) {
 export { ComponentB };
 ",
   "// a/index.d.ts
-export { ComponentA } from "./ComponentA/ComponentA/index.d.ts";
+export { ComponentA } from "./ComponentA/ComponentA/index.js";
 ",
   "// a/index.js
 export { ComponentA } from './ComponentA/ComponentA/index.js';
