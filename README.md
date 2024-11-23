@@ -113,12 +113,41 @@ export interface Options {
   extraOutdir?: string
   /** Automatically add `.js` extension to resolve in `Node16` + ESM mode. */
   autoAddExts?: boolean
+
+  rewriteImports?: (
+    id: string,
+    importer: string,
+  ) => string | void | null | undefined
+}
+```
+
+### `rewriteImports`
+
+Rewrite imports in `.d.ts` files. (esbuild support is not available)
+
+Here is an example of rewriting imports on Rollup:
+
+```js
+// rollup.config.js
+import alias from '@rollup/plugin-alias'
+
+export default {
+  // ...
+  plugins: [
+    alias({ entries: [{ find: '~', replacement: '.' }] }),
+    UnpluginIsolatedDecl({
+      rewriteImports(id, importer) {
+        if (id[0] === '~') return `.${id.slice(1)}`
+      },
+    }),
+    // ...
+  ],
 }
 ```
 
 ### `autoAddExts`
 
-Automatically add `.js` extension to resolve in Node 16+ ESM mode.
+Automatically add `.js` extension to resolve in Node 16+ ESM mode. (esbuild support is not available)
 
 ```ts
 // index.d.ts

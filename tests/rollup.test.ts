@@ -1,5 +1,6 @@
 import fs from 'node:fs/promises'
 import path from 'node:path'
+import alias from '@rollup/plugin-alias'
 import { outputToSnapshot } from '@sxzz/test-utils'
 import { rollup } from 'rollup'
 import esbuild from 'rollup-plugin-esbuild'
@@ -86,15 +87,9 @@ describe('rollup', () => {
     const bundle = await rollup({
       input,
       plugins: [
-        {
-          name: 'resolver',
-          resolveId(id, importer, opt) {
-            if (id[0] === '~') {
-              id = `.${id.slice(1)}`
-              return this.resolve(id, importer, opt)
-            }
-          },
-        },
+        alias({
+          entries: [{ find: '~', replacement: '.' }],
+        }),
         UnpluginIsolatedDecl({
           autoAddExts: true,
           rewriteImports(id, _importer) {
