@@ -50,7 +50,7 @@ export function rewriteImports(
 
   for (const i of imports) {
     const { source } = i
-    const { value: srcIdRel } = source
+    const srcIdRel = stripExt(source.value)
     if (srcIdRel[0] !== '.') continue
 
     const srcId = path.resolve(srcDir, srcIdRel)

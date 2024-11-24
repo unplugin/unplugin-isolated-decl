@@ -142,25 +142,24 @@ export const IsolatedDecl: UnpluginInstance<Options | undefined, false> =
       if (options.autoAddExts || options.rewriteImports) {
         for (const i of imports) {
           const { source } = i
-          const { value } = source
-
-          if (
-            options.autoAddExts &&
-            (path.isAbsolute(value) || value[0] === '.') &&
-            !path.basename(value).includes('.')
-          ) {
-            const resolved = await resolve(context, value, id)
-            if (!resolved || resolved.external) continue
-            if (resolved.id.endsWith('.ts') || resolved.id.endsWith('.tsx')) {
-              i.suffix = '.js'
-            }
-          }
+          let { value } = source
 
           if (options.rewriteImports) {
             const result = options.rewriteImports(value, id)
             if (typeof result === 'string') {
-              source.value = result
+              source.value = value = result
               s.overwrite(source.start + 1, source.end - 1, result)
+            }
+          }
+
+          if (
+            options.autoAddExts &&
+            (path.isAbsolute(value) || value[0] === '.')
+          ) {
+            const resolved = await resolve(context, value, stripExt(id))
+            if (!resolved || resolved.external) continue
+            if (resolved.id.endsWith('.ts') || resolved.id.endsWith('.tsx')) {
+              i.suffix = '.js'
             }
           }
         }

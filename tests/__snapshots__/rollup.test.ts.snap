@@ -2,7 +2,7 @@
 
 exports[`rollup > custom rewriter 1`] = `
 "// index.d.ts
-export type * from './test.ts';
+export type * from './test.js';
 
 // index.js
 
