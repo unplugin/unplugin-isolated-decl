@@ -45,10 +45,30 @@ export type Num2 = number;
 "
 `;
 
+exports[`rollup > with exts 1`] = `
+"// main.d.ts
+export type {} from './types.js';
+export type {} from './types.js';
+export type {} from './tsx.js';
+export type {} from './tsx.jsx';
+export type {} from './tsx.js';
+export type {} from './tsx.jsx';
+
+// main.js
+
+
+// tsx.d.ts
+export type A = string;
+
+// types.d.ts
+export type Str = string;
+"
+`;
+
 exports[`rollup > write entry-points (#22) 1`] = `
 [
   "// b/index.d.ts
-export { ComponentB } from "./ComponentB/ComponentB/index.js";
+export { ComponentB } from "./ComponentB/ComponentB/index.jsx";
 ",
   "// b/index.js
 export { ComponentB } from './ComponentB/ComponentB/index.js';
@@ -72,7 +92,7 @@ function ComponentB(props) {
 export { ComponentB };
 ",
   "// a/index.d.ts
-export { ComponentA } from "./ComponentA/ComponentA/index.js";
+export { ComponentA } from "./ComponentA/ComponentA/index.jsx";
 ",
   "// a/index.js
 export { ComponentA } from './ComponentA/ComponentA/index.js';

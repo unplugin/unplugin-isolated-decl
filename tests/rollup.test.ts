@@ -31,6 +31,20 @@ describe('rollup', () => {
     expect(outputToSnapshot(result.output)).toMatchSnapshot()
   })
 
+  test('with exts', async () => {
+    const dir = 'with-exts'
+    const input = path.resolve(fixtures, dir, 'main.ts')
+
+    const bundle = await rollup({
+      input,
+      plugins: [UnpluginIsolatedDecl(), esbuild()],
+      logLevel: 'silent',
+    })
+    const result = await bundle.generate({})
+
+    expect(outputToSnapshot(result.output)).toMatchSnapshot()
+  })
+
   test('write entry-points (#22)', async () => {
     const dir = 'entry-points-22'
     const input = {

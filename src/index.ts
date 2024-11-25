@@ -24,6 +24,7 @@ import {
 } from './core/transformer'
 import {
   debug,
+  guessExt,
   lowestCommonAncestor,
   resolveEntry,
   stripExt,
@@ -158,9 +159,7 @@ export const IsolatedDecl: UnpluginInstance<Options | undefined, false> =
           ) {
             const resolved = await resolve(context, value, stripExt(id))
             if (!resolved || resolved.external) continue
-            if (resolved.id.endsWith('.ts') || resolved.id.endsWith('.tsx')) {
-              i.suffix = '.js'
-            }
+            i.ext = guessExt(resolved.id)
           }
         }
       }
@@ -186,8 +185,7 @@ export const IsolatedDecl: UnpluginInstance<Options | undefined, false> =
           node.specifiers.every((spec) => spec.exportKind === 'type')
         )
       })
-      for (const i of typeImports) {
-        const { source } = i
+      for (const { source } of typeImports) {
         const resolved = (await resolve(context, source.value, id))?.id
         if (resolved && filter(resolved) && !outputFiles[stripExt(resolved)]) {
           let source: string

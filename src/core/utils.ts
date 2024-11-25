@@ -54,3 +54,8 @@ export function resolveEntry(
 
   return { entryMap, inputBase }
 }
+
+export function guessExt(filename: string): string {
+  const ext = path.extname(filename).slice(1)
+  return ext.replace(/^([cm]?)ts/, (_, $1) => `${$1}js`)
+}
