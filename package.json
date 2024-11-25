@@ -105,11 +105,11 @@
     "unplugin": "^1.16.0"
   },
   "devDependencies": {
-    "@farmfe/core": "^1.4.3",
+    "@farmfe/core": "^1.4.4",
     "@oxc-project/types": "^0.37.0",
     "@rollup/plugin-alias": "^5.1.1",
     "@swc/core": "^1.9.3",
-    "@sxzz/eslint-config": "^4.4.1",
+    "@sxzz/eslint-config": "^4.5.0",
     "@sxzz/prettier-config": "^2.0.2",
     "@sxzz/test-utils": "^0.3.7",
     "@types/debug": "^4.1.12",
