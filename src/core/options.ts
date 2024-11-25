@@ -15,6 +15,8 @@ export type Options = {
   autoAddExts?: boolean
   /** Patch `export default` in `.d.cts` to `export = ` */
   patchCjsDefaultExport?: boolean
+  /** Base directory for input files. */
+  inputBase?: string
   rewriteImports?: (
     id: string,
     importer: string,
@@ -42,7 +44,7 @@ type Overwrite<T, U> = Pick<T, Exclude<keyof T, keyof U>> & U
 
 export type OptionsResolved = Overwrite<
   Required<Options>,
-  Pick<Options, 'enforce' | 'extraOutdir' | 'rewriteImports'>
+  Pick<Options, 'enforce' | 'extraOutdir' | 'rewriteImports' | 'inputBase'>
 >
 
 export function resolveOptions(options: Options): OptionsResolved {
@@ -56,5 +58,6 @@ export function resolveOptions(options: Options): OptionsResolved {
     autoAddExts: options.autoAddExts || false,
     patchCjsDefaultExport: options.patchCjsDefaultExport || false,
     rewriteImports: options.rewriteImports,
+    inputBase: options.inputBase,
   }
 }

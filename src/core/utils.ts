@@ -34,6 +34,7 @@ export function stripExt(filename: string): string {
 
 export function resolveEntry(
   input: string | string[] | Record<string, string>,
+  userInputBase?: string,
 ): {
   entryMap: Record<string, string> | undefined
   inputBase: string
@@ -50,7 +51,7 @@ export function resolveEntry(
       )
     : undefined
   const arr = Array.isArray(input) && input ? input : Object.values(input)
-  const inputBase = lowestCommonAncestor(...arr)
+  const inputBase = userInputBase || lowestCommonAncestor(...arr)
 
   return { entryMap, inputBase }
 }

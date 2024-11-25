@@ -206,7 +206,7 @@ export const IsolatedDecl: UnpluginInstance<Options | undefined, false> =
       inputOptions: NormalizedInputOptions,
     ) {
       const { input } = inputOptions
-      const { inputBase, entryMap } = resolveEntry(input)
+      const { inputBase, entryMap } = resolveEntry(input, options.inputBase)
       debug('[rollup] input base:', inputBase)
 
       let { entryFileNames = '[name].js' } = outputOptions
@@ -248,8 +248,9 @@ export const IsolatedDecl: UnpluginInstance<Options | undefined, false> =
       const { input = {}, output = {} } = config as ResolvedCompilation
       const { inputBase, entryMap } = resolveEntry(
         input as Record<string, string>,
+        options.inputBase,
       )
-      debug('[farm] out base:', inputBase)
+      debug('[farm] input base:', inputBase)
 
       if (output && typeof output.entryFilename !== 'string') {
         return console.error('entryFileName must be a string')
@@ -310,8 +311,8 @@ export const IsolatedDecl: UnpluginInstance<Options | undefined, false> =
         )
           throw new Error('unsupported entryPoints, must be an string[]')
 
-        const inputBase = lowestCommonAncestor(...entries)
-        debug('[esbuild] out base:', inputBase)
+        const inputBase = options.inputBase || lowestCommonAncestor(...entries)
+        debug('[esbuild] input base:', inputBase)
 
         const jsExt = esbuildOptions.outExtension?.['.js']
         let outExt: string
