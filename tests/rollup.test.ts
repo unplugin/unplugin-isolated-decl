@@ -2,6 +2,7 @@ import fs from 'node:fs/promises'
 import path from 'node:path'
 import alias from '@rollup/plugin-alias'
 import { outputToSnapshot } from '@sxzz/test-utils'
+import pathe from 'pathe'
 import { rollup } from 'rollup'
 import esbuild from 'rollup-plugin-esbuild'
 import { describe, expect, test } from 'vitest'
@@ -138,10 +139,10 @@ async function getFileSnapshot(dir: string) {
   const snapshot = await Promise.all(
     files.map(async (it) => {
       const absolute = path.resolve(it.parentPath, it.name)
-      const filePath = path.relative(dir, absolute)
+      const filePath = pathe.relative(dir, absolute)
       const content = await fs.readFile(absolute, 'utf-8')
 
-      return `// ${filePath.replaceAll('\\', '/')}\n${content.toString()}`
+      return `// ${filePath}\n${content.toString()}`
     }),
   )
   return snapshot

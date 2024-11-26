@@ -102,6 +102,7 @@
     "debug": "^4.3.7",
     "magic-string": "^0.30.13",
     "oxc-parser": "^0.37.0",
+    "pathe": "^1.1.2",
     "unplugin": "^1.16.0"
   },
   "devDependencies": {
