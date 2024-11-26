@@ -1,16 +1,16 @@
-import path from 'node:path'
 import Debug from 'debug'
+import { dirname, extname, normalize, resolve, sep } from 'pathe'
 
 export const debug: Debug.Debugger = Debug('unplugin-isolated-decl')
 
 export function lowestCommonAncestor(...filepaths: string[]): string {
   if (filepaths.length === 0) return ''
-  if (filepaths.length === 1) return path.dirname(filepaths[0])
-  filepaths = filepaths.map((p) => p.replaceAll('\\', '/'))
+  if (filepaths.length === 1) return dirname(filepaths[0])
+  filepaths = filepaths.map((p) => normalize(p))
   const [first, ...rest] = filepaths
-  let ancestor = first.split('/')
+  let ancestor = first.split(sep)
   for (const filepath of rest) {
-    const directories = filepath.split('/', ancestor.length)
+    const directories = filepath.split(sep, ancestor.length)
     let index = 0
     for (const directory of directories) {
       if (directory === ancestor[index]) {
@@ -24,8 +24,8 @@ export function lowestCommonAncestor(...filepaths: string[]): string {
   }
 
   return ancestor.length <= 1 && ancestor[0] === ''
-    ? `/${ancestor[0]}`
-    : ancestor.join('/')
+    ? `${sep}${ancestor[0]}`
+    : ancestor.join(sep)
 }
 
 export function stripExt(filename: string): string {
@@ -45,7 +45,7 @@ export function resolveEntry(
   const entryMap = !Array.isArray(input)
     ? Object.fromEntries(
         Object.entries(input).map(([k, v]) => [
-          path.resolve(stripExt(v as string)),
+          resolve(stripExt(v as string)),
           k,
         ]),
       )
@@ -57,6 +57,6 @@ export function resolveEntry(
 }
 
 export function guessExt(filename: string): string {
-  const ext = path.extname(filename).slice(1)
+  const ext = extname(filename).slice(1)
   return ext.replace(/^([cm]?)ts/, (_, $1) => `${$1}js`)
 }

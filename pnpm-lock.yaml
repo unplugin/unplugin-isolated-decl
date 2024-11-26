@@ -20,6 +20,9 @@ importers:
       oxc-parser:
         specifier: ^0.37.0
         version: 0.37.0
+      pathe:
+        specifier: ^1.1.2
+        version: 1.1.2
       unplugin:
         specifier: ^1.16.0
         version: 1.16.0
