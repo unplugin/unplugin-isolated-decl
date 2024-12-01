@@ -8,6 +8,7 @@ export type Options = {
   include?: FilterPattern
   exclude?: FilterPattern
   enforce?: 'pre' | 'post' | undefined
+  sourceMap?: boolean
   ignoreErrors?: boolean
   /** An extra directory layer for output files. */
   extraOutdir?: string
@@ -52,6 +53,7 @@ export function resolveOptions(options: Options): OptionsResolved {
     include: options.include || [/\.[cm]?tsx?$/],
     exclude: options.exclude || [/node_modules/],
     enforce: 'enforce' in options ? options.enforce : 'pre',
+    sourceMap: options.sourceMap || false,
     transformer: options.transformer || 'typescript',
     ignoreErrors: options.ignoreErrors || false,
     extraOutdir: options.extraOutdir,

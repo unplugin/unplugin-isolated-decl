@@ -22,6 +22,9 @@ export { c, hello, num };
 // temp/component.d.ts
 export declare function Component(): React.JSX.Element;
 
+//# sourceMappingURL=component.d.ts.map
+// temp/component.d.ts.map
+{"version":3,"file":"component.d.ts","sourceRoot":"","sources":["../../../../fixtures/basic/component.tsx"],"names":[],"mappings":"AAAA,OAAO,iBAAS,aAAa,MAAM,IAAI"}
 // temp/main.d.ts
 import { type Num } from "../temp/types.js";
 export type Str = string;
@@ -29,11 +32,20 @@ export declare function hello(s: Str): Str;
 export declare let c: React.JSX.Element;
 export declare let num: Num;
 
+//# sourceMappingURL=main.d.ts.map
+// temp/main.d.ts.map
+{"version":3,"file":"main.d.ts","sourceRoot":"","sources":["../../../../fixtures/basic/main.ts"],"names":[],"mappings":"AAAA,cAAc,WAAW,SAAS;AAElC,YAAY;AAEZ,OAAO,iBAAS,MAAMA,GAAG,MAAM;AAI/B,OAAO,YAAIC,GAAG,MAAM,IAAI;AAExB,OAAO,YAAIC,KAAK"}
 // temp/types.d.ts
 import type { Num2 } from "../temp/types2.js";
 export type Num = Num2;
 
+//# sourceMappingURL=types.d.ts.map
+// temp/types.d.ts.map
+{"version":3,"file":"types.d.ts","sourceRoot":"","sources":["../../../../fixtures/basic/types.ts"],"names":[],"mappings":"AAAA,cAAc,YAAY,UAAU;AACpC,YAAY,MAAM"}
 // temp/types2.d.ts
 export type Num2 = number;
-"
+
+//# sourceMappingURL=types2.d.ts.map
+// temp/types2.d.ts.map
+{"version":3,"file":"types2.d.ts","sourceRoot":"","sources":["../../../../fixtures/basic/types2.ts"],"names":[],"mappings":"AACA,YAAY"}"
 `;

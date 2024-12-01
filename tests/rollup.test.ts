@@ -55,7 +55,13 @@ describe('rollup', () => {
 
     const bundle = await rollup({
       input,
-      plugins: [UnpluginIsolatedDecl({ autoAddExts: true }), esbuild()],
+      plugins: [
+        UnpluginIsolatedDecl({
+          autoAddExts: true,
+          sourceMap: true,
+        }),
+        esbuild(),
+      ],
       logLevel: 'silent',
     })
 
@@ -82,6 +88,7 @@ describe('rollup', () => {
       plugins: [
         UnpluginIsolatedDecl({
           autoAddExts: true,
+          sourceMap: true,
         }),
         esbuild(),
       ],

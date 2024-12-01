@@ -17,6 +17,8 @@ import {
 import { filterImports, rewriteImports, type OxcImport } from './core/ast'
 import { resolveOptions, type Options } from './core/options'
 import {
+  appendMapUrl,
+  generateDtsMap,
   oxcTransform,
   swcTransform,
   tsTransform,
@@ -47,6 +49,8 @@ export type { Options }
 interface Output {
   s: MagicString
   imports: OxcImport[]
+  map?: string
+  ext: string
 }
 
 /**
@@ -60,10 +64,11 @@ export const IsolatedDecl: UnpluginInstance<Options | undefined, false> =
     let farmPluginContext: UnpluginBuildContext
 
     const outputFiles: Record<string, Output> = {}
-    function addOutput(filename: string, output: Output) {
+    function addOutput(filename: string, output: Omit<Output, 'ext'>) {
       const name = stripExt(filename)
+      const ext = path.extname(filename)
       debug('Add output:', name)
-      outputFiles[name] = output
+      outputFiles[name] = { ...output, ext }
     }
 
     const rollup: Partial<Plugin> = {
@@ -108,7 +113,7 @@ export const IsolatedDecl: UnpluginInstance<Options | undefined, false> =
       let result: TransformResult
       switch (options.transformer) {
         case 'oxc':
-          result = await oxcTransform(id, code)
+          result = await oxcTransform(id, code, options.sourceMap)
           break
         case 'swc':
           result = await swcTransform(id, code)
@@ -118,9 +123,11 @@ export const IsolatedDecl: UnpluginInstance<Options | undefined, false> =
             id,
             code,
             (options as any).transformOptions,
+            options.sourceMap,
           )
+          break
       }
-      const { code: dts, errors } = result
+      const { code: dts, errors, map } = result
       debug(
         label,
         'transformed',
@@ -163,7 +170,7 @@ export const IsolatedDecl: UnpluginInstance<Options | undefined, false> =
           }
         }
       }
-      addOutput(id, { s, imports })
+      addOutput(id, { s, imports, map })
 
       const typeImports = program.body.filter((node): node is OxcImport => {
         if (!('source' in node) || !node.source) return false
@@ -209,7 +216,7 @@ export const IsolatedDecl: UnpluginInstance<Options | undefined, false> =
       const { inputBase, entryMap } = resolveEntry(input, options.inputBase)
       debug('[rollup] input base:', inputBase)
 
-      let { entryFileNames = '[name].js' } = outputOptions
+      let { entryFileNames = '[name].js', dir: outDir } = outputOptions
       if (typeof entryFileNames !== 'string') {
         return this.error('entryFileNames must be a string')
       }
@@ -218,7 +225,9 @@ export const IsolatedDecl: UnpluginInstance<Options | undefined, false> =
         entryFileNames = path.join(options.extraOutdir, entryFileNames)
       }
 
-      for (const [srcFilename, { s, imports }] of Object.entries(outputFiles)) {
+      for (const [srcFilename, { s, imports, map, ext }] of Object.entries(
+        outputFiles,
+      )) {
         const emitName = rewriteImports(
           s,
           imports,
@@ -234,6 +243,18 @@ export const IsolatedDecl: UnpluginInstance<Options | undefined, false> =
         }
 
         debug('[rollup] emit dts file:', emitName)
+        if (map && outDir) {
+          source = appendMapUrl(source, emitName)
+          this.emitFile({
+            type: 'asset',
+            fileName: `${emitName}.map`,
+            source: generateDtsMap(
+              map,
+              srcFilename + ext,
+              path.join(outDir, emitName),
+            ),
+          })
+        }
         this.emitFile({
           type: 'asset',
           fileName: emitName,
@@ -273,7 +294,9 @@ export const IsolatedDecl: UnpluginInstance<Options | undefined, false> =
       if (options.extraOutdir) {
         entryFileNames = path.join(options.extraOutdir, entryFileNames)
       }
-      for (const [srcFilename, { s, imports }] of Object.entries(outputFiles)) {
+      for (const [srcFilename, { s, imports, map, ext }] of Object.entries(
+        outputFiles,
+      )) {
         const emitName = rewriteImports(
           s,
           imports,
@@ -289,6 +312,19 @@ export const IsolatedDecl: UnpluginInstance<Options | undefined, false> =
         }
 
         debug('[farm] emit dts file:', emitName)
+        const outDir = output.path
+        if (map && outDir) {
+          source = appendMapUrl(source, emitName)
+          farmPluginContext.emitFile({
+            type: 'asset',
+            fileName: `${emitName}.map`,
+            source: generateDtsMap(
+              map,
+              srcFilename + ext,
+              path.join(outDir, emitName),
+            ),
+          })
+        }
         farmPluginContext.emitFile({
           type: 'asset',
           fileName: emitName,
@@ -337,29 +373,40 @@ export const IsolatedDecl: UnpluginInstance<Options | undefined, false> =
         }
 
         const textEncoder = new TextEncoder()
-        for (const [filename, { s }] of Object.entries(outputFiles)) {
+        for (const [srcFilename, { s, map, ext }] of Object.entries(
+          outputFiles,
+        )) {
           const outDir = build.initialOptions.outdir
-          let outFile = `${path.relative(inputBase, filename)}.d.${outExt}`
+          let outName = `${path.relative(inputBase, srcFilename)}.d.${outExt}`
           if (options.extraOutdir) {
-            outFile = path.join(options.extraOutdir, outFile)
+            outName = path.join(options.extraOutdir, outName)
           }
-          const filePath = outDir ? path.resolve(outDir, outFile) : outFile
+          const outPath = outDir ? path.resolve(outDir, outName) : outName
 
           // TODO rewrite imports
 
           let source = s.toString()
-          if (options.patchCjsDefaultExport && filePath.endsWith('.d.cts')) {
+          if (options.patchCjsDefaultExport && outPath.endsWith('.d.cts')) {
             source = patchCjsDefaultExport(source)
           }
 
           if (write) {
-            await mkdir(path.dirname(filePath), { recursive: true })
-            await writeFile(filePath, source)
-            debug('[esbuild] write dts file:', filePath)
+            await mkdir(path.dirname(outPath), { recursive: true })
+
+            if (map) {
+              source = appendMapUrl(source, outPath)
+              await writeFile(
+                `${outPath}.map`,
+                generateDtsMap(map, srcFilename + ext, path.join(outPath)),
+              )
+            }
+
+            await writeFile(outPath, source)
+            debug('[esbuild] write dts file:', outPath)
           } else {
-            debug('[esbuild] emit dts file:', filePath)
+            debug('[esbuild] emit dts file:', outPath)
             result.outputFiles!.push({
-              path: filePath,
+              path: outPath,
               contents: textEncoder.encode(source),
               hash: '',
               text: source,

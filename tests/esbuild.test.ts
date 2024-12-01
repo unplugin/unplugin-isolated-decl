@@ -13,7 +13,12 @@ describe('esbuild', () => {
     const dist = path.resolve(__dirname, 'temp/esbuild/basic')
     await build({
       entryPoints: [input],
-      plugins: [UnpluginIsolatedDecl({ extraOutdir: 'extraOutdir' })],
+      plugins: [
+        UnpluginIsolatedDecl({
+          extraOutdir: 'extraOutdir',
+          sourceMap: true,
+        }),
+      ],
       logLevel: 'silent',
       bundle: true,
       external: Object.keys(dependencies),
@@ -35,7 +40,11 @@ describe('esbuild', () => {
   test('generate mode', async () => {
     const { outputFiles } = await build({
       entryPoints: [input],
-      plugins: [UnpluginIsolatedDecl({ extraOutdir: 'temp' })],
+      plugins: [
+        UnpluginIsolatedDecl({
+          extraOutdir: 'temp',
+        }),
+      ],
       logLevel: 'silent',
       bundle: true,
       external: Object.keys(dependencies),

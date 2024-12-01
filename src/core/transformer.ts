@@ -1,8 +1,10 @@
-import type { TranspileOptions } from 'typescript'
+import path from 'node:path'
+import type { CompilerOptions, TranspileOptions } from 'typescript'
 
 export interface TransformResult {
   code: string
   errors: Array<string>
+  map?: string
 }
 
 function tryImport<T>(pkg: string): Promise<T | null> {
@@ -19,6 +21,7 @@ function tryImport<T>(pkg: string): Promise<T | null> {
 export async function oxcTransform(
   id: string,
   code: string,
+  sourceMap?: boolean,
 ): Promise<TransformResult> {
   const oxc = await tryImport<typeof import('oxc-transform')>('oxc-transform')
   if (!oxc) {
@@ -29,7 +32,11 @@ export async function oxcTransform(
       ],
     }
   }
-  return oxc.isolatedDeclaration(id, code, { sourcemap: false })
+  const result = oxc.isolatedDeclaration(id, code, { sourcemap: sourceMap })
+  return {
+    ...result,
+    map: result.map?.mappings,
+  }
 }
 
 /**
@@ -83,6 +90,7 @@ export async function tsTransform(
   id: string,
   code: string,
   transformOptions?: TranspileOptions,
+  sourceMap?: boolean,
 ): Promise<TransformResult> {
   const ts = await tryImport<typeof import('typescript')>('typescript')
   if (!ts) {
@@ -103,11 +111,23 @@ export async function tsTransform(
     }
   }
 
-  const { outputText, diagnostics } = ts.transpileDeclaration(code, {
-    fileName: id,
-    reportDiagnostics: true,
-    ...transformOptions,
-  })
+  const compilerOptions: CompilerOptions = {
+    declarationMap: sourceMap,
+    ...transformOptions?.compilerOptions,
+  }
+  let { outputText, diagnostics, sourceMapText } = ts.transpileDeclaration(
+    code,
+    {
+      fileName: id,
+      reportDiagnostics: true,
+      ...transformOptions,
+      compilerOptions,
+    },
+  )
+
+  if (compilerOptions.declarationMap) {
+    outputText = stripMapUrl(outputText)
+  }
 
   const errors = diagnostics?.length
     ? [
@@ -121,8 +141,42 @@ export async function tsTransform(
         }),
       ]
     : []
+
+  if (sourceMapText) {
+    sourceMapText = JSON.parse(sourceMapText).mappings
+  }
+
   return {
     code: outputText,
     errors,
+    map: sourceMapText,
   }
+}
+
+function stripMapUrl(code: string) {
+  const lines = code.split('\n')
+  const lastLine = lines.at(-1)
+  if (lastLine?.startsWith('//# sourceMappingURL=')) {
+    return lines.slice(0, -1).join('\n')
+  }
+  return code
+}
+
+export function appendMapUrl(map: string, filename: string) {
+  return `${map}\n//# sourceMappingURL=${path.basename(filename)}.map`
+}
+
+export function generateDtsMap(
+  mappings: string,
+  src: string,
+  dts: string,
+): string {
+  return JSON.stringify({
+    version: 3,
+    file: path.basename(dts),
+    sourceRoot: '',
+    sources: [path.relative(path.dirname(dts), src)],
+    names: [],
+    mappings,
+  })
 }

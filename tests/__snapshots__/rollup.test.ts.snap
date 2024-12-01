@@ -69,7 +69,9 @@ exports[`rollup > write entry-points (#22) 1`] = `
 [
   "// b/index.d.ts
 export { ComponentB } from "./ComponentB/ComponentB/index.jsx";
-",
+//# sourceMappingURL=index.d.ts.map",
+  "// b/index.d.ts.map
+{"version":3,"file":"index.d.ts","sourceRoot":"","sources":["../../../../fixtures/entry-points-22/b/index.ts"],"names":[],"mappings":"AAAA,OAAO,EAAE,UAAU,EAAE,MAAM,yBAAyB,CAAC"}",
   "// b/index.js
 export { ComponentB } from './ComponentB/ComponentB/index.js';
 ",
@@ -80,7 +82,9 @@ interface ComponentBProps {
 }
 export declare function ComponentB(props: ComponentBProps): React.JSX.Element;
 export {};
-",
+//# sourceMappingURL=index.d.ts.map",
+  "// b/ComponentB/ComponentB/index.d.ts.map
+{"version":3,"file":"index.d.ts","sourceRoot":"","sources":["../../../../../../fixtures/entry-points-22/b/ComponentB/ComponentB.tsx"],"names":[],"mappings":"AAAA,OAAO,KAAK,MAAM,OAAO,CAAC;AAE1B,UAAU,eAAe;IACvB,IAAI,EAAE,MAAM,CAAC;CACd;AAED,wBAAgB,UAAU,CAAC,KAAK,EAAE,eAAe,GAAG,KAAK,CAAC,GAAG,CAAC,OAAO,CAGpE"}",
   "// b/ComponentB/ComponentB/index.js
 import React from 'react';
 
@@ -93,7 +97,9 @@ export { ComponentB };
 ",
   "// a/index.d.ts
 export { ComponentA } from "./ComponentA/ComponentA/index.jsx";
-",
+//# sourceMappingURL=index.d.ts.map",
+  "// a/index.d.ts.map
+{"version":3,"file":"index.d.ts","sourceRoot":"","sources":["../../../../fixtures/entry-points-22/a/index.ts"],"names":[],"mappings":"AAAA,OAAO,EAAE,UAAU,EAAE,MAAM,yBAAyB,CAAC"}",
   "// a/index.js
 export { ComponentA } from './ComponentA/ComponentA/index.js';
 ",
@@ -102,7 +108,9 @@ export interface MyModel {
     some: string;
 }
 export declare const a = "b";
-",
+//# sourceMappingURL=index.d.ts.map",
+  "// a/Models/model/index.d.ts.map
+{"version":3,"file":"index.d.ts","sourceRoot":"","sources":["../../../../../../fixtures/entry-points-22/a/Models/model.ts"],"names":[],"mappings":"AAAA,MAAM,WAAW,OAAO;IACtB,IAAI,EAAE,MAAM,CAAA;CACb;AACD,eAAO,MAAM,CAAC,MAAM,CAAA"}",
   "// a/ComponentA/ComponentA/index.d.ts
 import React from 'react';
 export { a } from '../../Models/model/index.js';
@@ -110,7 +118,9 @@ interface ComponentAProps {
     test: string;
 }
 export declare function ComponentA(props: ComponentAProps): React.JSX.Element;
-",
+//# sourceMappingURL=index.d.ts.map",
+  "// a/ComponentA/ComponentA/index.d.ts.map
+{"version":3,"file":"index.d.ts","sourceRoot":"","sources":["../../../../../../fixtures/entry-points-22/a/ComponentA/ComponentA.tsx"],"names":[],"mappings":"AAAA,OAAO,KAAK,MAAM,OAAO,CAAA;AACzB,OAAO,EAAE,CAAC,EAAE,MAAM,iBAAiB,CAAA;AAEnC,UAAU,eAAe;IACvB,IAAI,EAAE,MAAM,CAAA;CACb;AAED,wBAAgB,UAAU,CAAC,KAAK,EAAE,eAAe,GAAG,KAAK,CAAC,GAAG,CAAC,OAAO,CAGpE"}",
   "// a/ComponentA/ComponentA/index.js
 import React from 'react';
 
@@ -129,20 +139,26 @@ exports[`rollup > write entry-points (#34) 1`] = `
   "// index.d.ts
 export * from './foo/bar.js';
 export * from './foo/bar/baz.js';
-",
+//# sourceMappingURL=index.d.ts.map",
+  "// index.d.ts.map
+{"version":3,"file":"index.d.ts","sourceRoot":"","sources":["../../../fixtures/entry-points-34/main.ts"],"names":[],"mappings":"AAAA,cAAc,eAAe,CAAA;AAC7B,cAAc,eAAe,CAAA"}",
   "// index.js
 
 ",
   "// foo/bar.d.ts
 export type * from './bar/baz.js';
 export type * from '../index.js';
-",
+//# sourceMappingURL=bar.d.ts.map",
+  "// foo/bar.d.ts.map
+{"version":3,"file":"bar.d.ts","sourceRoot":"","sources":["../../../../fixtures/entry-points-34/foo/bar/bar.ts"],"names":[],"mappings":"AAAA,mBAAmB,OAAO,CAAA;AAC1B,mBAAmB,YAAY,CAAA"}",
   "// foo/bar.js
 
 ",
   "// foo/bar/baz.d.ts
 export type * from '../bar.js';
 export type * from '../../index.js';
-",
+//# sourceMappingURL=baz.d.ts.map",
+  "// foo/bar/baz.d.ts.map
+{"version":3,"file":"baz.d.ts","sourceRoot":"","sources":["../../../../../fixtures/entry-points-34/foo/bar/baz.ts"],"names":[],"mappings":"AAAA,mBAAmB,UAAU,CAAA;AAC7B,mBAAmB,YAAY,CAAA"}",
 ]
 `;
