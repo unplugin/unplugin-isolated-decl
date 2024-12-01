@@ -102,13 +102,25 @@ export interface Options {
   enforce?: 'pre' | 'post' | undefined
   /**
    * You need to install one of the supported transformers yourself.
+   * oxc: @oxc/transformer
+   * swc: @swc/core
+   * typescript: typescript
+   *
    * @default typescript
    */
   transformer?: 'oxc' | 'swc' | 'typescript'
+  /**
+   * Whether to generate declaration source maps.
+   *
+   * Supported by `typescript` and `oxc` transformer only.
+   *
+   * @link https://www.typescriptlang.org/tsconfig/#declarationMap
+   */
+  sourceMap?: boolean
+
   /** Only for typescript transformer */
   transformOptions?: TranspileOptions
   ignoreErrors?: boolean
-
   /** An extra directory layer for output files. */
   extraOutdir?: string
   /** Automatically add `.js` extension to resolve in `Node16` + ESM mode. */

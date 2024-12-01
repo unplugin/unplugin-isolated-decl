@@ -8,6 +8,13 @@ export type Options = {
   include?: FilterPattern
   exclude?: FilterPattern
   enforce?: 'pre' | 'post' | undefined
+  /**
+   * Whether to generate declaration source maps.
+   *
+   * Supported by `typescript` and `oxc` transformer only.
+   *
+   * @link https://www.typescriptlang.org/tsconfig/#declarationMap
+   */
   sourceMap?: boolean
   ignoreErrors?: boolean
   /** An extra directory layer for output files. */
