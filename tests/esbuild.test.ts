@@ -1,10 +1,10 @@
-import { readdir, readFile } from 'node:fs/promises'
 import path from 'node:path'
 import { outputToSnapshot } from '@sxzz/test-utils'
 import { build } from 'esbuild'
 import { describe, expect, test } from 'vitest'
 import { dependencies } from '../package.json'
 import UnpluginIsolatedDecl from '../src/esbuild'
+import { getFileSnapshot } from './_utils'
 
 describe('esbuild', () => {
   const input = path.resolve(__dirname, 'fixtures/basic/main.ts')
@@ -28,13 +28,7 @@ describe('esbuild', () => {
     })
 
     const outDir = path.resolve(dist, 'extraOutdir')
-    await expect(
-      Promise.all(
-        (await readdir(outDir))
-          .sort()
-          .map((file) => readFile(path.resolve(outDir, file), 'utf8')),
-      ),
-    ).resolves.toMatchSnapshot()
+    expect(await getFileSnapshot(outDir)).toMatchSnapshot()
   })
 
   test('generate mode', async () => {
