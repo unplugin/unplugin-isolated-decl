@@ -18,7 +18,7 @@ export async function getFileSnapshot(dir: string): Promise<string[]> {
       const filePath = path.relative(dir, absolute)
       const content = await readFile(absolute, 'utf-8')
 
-      return `// ${filePath}\n${content.toString()}`.replaceAll('\\', '/')
+      return `// ${filePath.replaceAll('\\', '/')}\n${content.toString()}`
     }),
   )
   return snapshot

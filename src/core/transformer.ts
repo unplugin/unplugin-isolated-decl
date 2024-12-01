@@ -175,7 +175,7 @@ export function generateDtsMap(
     version: 3,
     file: path.basename(dts),
     sourceRoot: '',
-    sources: [path.relative(path.dirname(dts), src)],
+    sources: [path.relative(path.dirname(dts), src).replaceAll('\\', '/')],
     names: [],
     mappings,
   })
