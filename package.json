@@ -123,6 +123,7 @@
     "rolldown": "nightly",
     "rollup": "^4.28.0",
     "rollup-plugin-esbuild": "^6.1.1",
+    "tinyglobby": "^0.2.10",
     "tsdown": "^0.3.1",
     "tsx": "^4.19.2",
     "typescript": "^5.7.2",
