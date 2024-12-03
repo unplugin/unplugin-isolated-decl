@@ -42,7 +42,7 @@ export type Options = {
        * `typescript` should be installed yourself.
        * @default 'typescript'
        */
-      transformer: 'typescript'
+      transformer?: 'typescript'
       /** Only for typescript transformer */
       transformOptions?: TranspileOptions
     }
