@@ -243,7 +243,7 @@ export const IsolatedDecl: UnpluginInstance<Options | undefined, false> =
         }
 
         debug('[rollup] emit dts file:', emitName)
-        if (map && outDir) {
+        if (options.sourceMap && map && outDir) {
           source = appendMapUrl(source, emitName)
           this.emitFile({
             type: 'asset',
@@ -313,7 +313,7 @@ export const IsolatedDecl: UnpluginInstance<Options | undefined, false> =
 
         debug('[farm] emit dts file:', emitName)
         const outDir = output.path
-        if (map && outDir) {
+        if (options.sourceMap && map && outDir) {
           source = appendMapUrl(source, emitName)
           farmPluginContext.emitFile({
             type: 'asset',
@@ -393,7 +393,7 @@ export const IsolatedDecl: UnpluginInstance<Options | undefined, false> =
           if (write) {
             await mkdir(path.dirname(outPath), { recursive: true })
 
-            if (map) {
+            if (options.sourceMap && map) {
               source = appendMapUrl(source, outPath)
               await writeFile(
                 `${outPath}.map`,
