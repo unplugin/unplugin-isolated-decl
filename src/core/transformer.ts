@@ -8,11 +8,7 @@ export interface TransformResult {
 }
 
 function tryImport<T>(pkg: string): Promise<T | null> {
-  try {
-    return import(pkg)
-  } catch {
-    return Promise.resolve(null)
-  }
+  return import(pkg).catch(() => null)
 }
 
 /**
