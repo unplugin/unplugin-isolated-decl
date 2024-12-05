@@ -143,7 +143,7 @@ export const IsolatedDecl: UnpluginInstance<Options | undefined, false> =
         }
       }
 
-      const { program } = await parseAsync(dts, { sourceFilename: id })
+      const { program } = await parseAsync(id, dts)
       const imports = filterImports(program)
 
       const s = new MagicString(dts)
