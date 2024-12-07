@@ -56,7 +56,19 @@ export function resolveEntry(
   return { entryMap, inputBase }
 }
 
-export function guessExt(filename: string): string {
-  const ext = path.extname(filename).slice(1)
-  return ext.replace(/^([cm]?)ts/, (_, $1) => `${$1}js`)
+function endsWithIndex(s: string) {
+  return /(?:^|[/\\])index\..+$/.test(s)
+}
+
+export function guessSuffix(id: string, resolved: string): string {
+  let suffix = ''
+  if (!endsWithIndex(id) && endsWithIndex(resolved)) {
+    suffix += '/index'
+  }
+  const ext = path
+    .extname(resolved)
+    .slice(1)
+    .replace(/^([cm]?)ts/, (_, $1) => `${$1}js`)
+  suffix += `.${ext}`
+  return suffix
 }

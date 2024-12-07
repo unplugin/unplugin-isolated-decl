@@ -45,6 +45,25 @@ export type Num2 = number;
 "
 `;
 
+exports[`rollup > no index path 1`] = `
+"// foo/index.d.ts
+export type Foo = string;
+
+
+// index.d.ts
+export type Bar = string;
+
+
+// main.d.ts
+export {} from './foo/index.js';
+export {} from './index.js';
+
+
+// main.js
+
+"
+`;
+
 exports[`rollup > with exts 1`] = `
 "// main.d.ts
 export type {} from './types.js';

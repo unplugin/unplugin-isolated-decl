@@ -26,7 +26,7 @@ import {
 } from './core/transformer'
 import {
   debug,
-  guessExt,
+  guessSuffix,
   lowestCommonAncestor,
   resolveEntry,
   stripExt,
@@ -166,7 +166,7 @@ export const IsolatedDecl: UnpluginInstance<Options | undefined, false> =
           ) {
             const resolved = await resolve(context, value, stripExt(id))
             if (!resolved || resolved.external) continue
-            i.ext = guessExt(resolved.id)
+            i.suffix = guessSuffix(value, resolved.id)
           }
         }
       }

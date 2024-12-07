@@ -129,4 +129,25 @@ describe('rollup', () => {
     expect(outputToSnapshot(result.output)).toMatchSnapshot()
     expect(importer).toBe(path.resolve(fixtures, dir, 'index.ts'))
   })
+
+  test('no index path', async () => {
+    const dir = 'no-index'
+    const input = path.resolve(fixtures, dir, 'main.ts')
+    const dist = path.resolve(TEST_SANDBOX_FOLDER, dir)
+
+    const bundle = await rollup({
+      input,
+      plugins: [
+        UnpluginIsolatedDecl({
+          autoAddExts: true,
+        }),
+        esbuild(),
+      ],
+      logLevel: 'silent',
+    })
+
+    await bundle.write({ dir: dist })
+
+    expect(await getFileSnapshot(dist)).toMatchSnapshot()
+  })
 })

@@ -1,5 +1,5 @@
 import path from 'node:path'
-import { debug, guessExt, stripExt } from './utils'
+import { debug, guessSuffix, stripExt } from './utils'
 import type * as OxcTypes from '@oxc-project/types'
 import type MagicString from 'magic-string'
 
@@ -9,7 +9,7 @@ export type OxcImport = (
   | OxcTypes.ExportNamedDeclaration
 ) & {
   source: OxcTypes.StringLiteral
-  ext?: string
+  suffix?: string
 }
 
 export function filterImports(program: OxcTypes.Program): OxcImport[] {
@@ -66,17 +66,17 @@ export function rewriteImports(
       id = stripExt(entryFileNames.replaceAll('[name]', srcIdRel))
     }
 
-    const ext = i.ext || guessExt(source.value)
-    if (ext) id += `.${ext}`
+    const suffix = i.suffix || guessSuffix(source.value, source.value)
+    if (suffix) id += suffix
 
     let final = path.normalize(path.join(offset, id))
     if (final !== path.normalize(source.value)) {
       debug('Patch import in', srcRel, ':', srcIdRel, '->', final)
 
       final = final.replaceAll('\\', '/')
-      if (!/^\.\.?\//.test(final)) {
-        final = `./${final}`
-      }
+      if (final.startsWith('/')) final = `.${final}`
+      if (!/^\.\.?\//.test(final)) final = `./${final}`
+
       s.overwrite(i.source.start + 1, i.source.end - 1, final)
     }
   }
