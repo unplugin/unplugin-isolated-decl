@@ -17,6 +17,20 @@ describe('rollup', () => {
 
     const bundle = await rollup({
       input,
+      plugins: [UnpluginIsolatedDecl({ extraOutdir: 'temp' }), esbuild()],
+      logLevel: 'silent',
+    })
+    const result = await bundle.generate({})
+
+    expect(outputToSnapshot(result.output)).toMatchSnapshot()
+  })
+
+  test('autoAddExts', async () => {
+    const dir = 'basic'
+    const input = path.resolve(fixtures, dir, 'main.ts')
+
+    const bundle = await rollup({
+      input,
       plugins: [
         UnpluginIsolatedDecl({
           extraOutdir: 'temp',

@@ -69,6 +69,6 @@ export function guessSuffix(id: string, resolved: string): string {
     .extname(resolved)
     .slice(1)
     .replace(/^([cm]?)ts/, (_, $1) => `${$1}js`)
-  suffix += `.${ext}`
+  if (ext) suffix += `.${ext}`
   return suffix
 }
