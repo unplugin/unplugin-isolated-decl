@@ -5,7 +5,7 @@ import { rollup } from 'rollup'
 import esbuild from 'rollup-plugin-esbuild'
 import { describe, expect, test } from 'vitest'
 import UnpluginIsolatedDecl from '../src/rollup'
-import { getFileSnapshot } from './_utils'
+import { expectSnapshot } from './_utils'
 
 describe('rollup', () => {
   const fixtures = path.resolve(__dirname, 'fixtures')
@@ -25,7 +25,21 @@ describe('rollup', () => {
     expect(outputToSnapshot(result.output)).toMatchSnapshot()
   })
 
-  test('autoAddExts', async () => {
+  test(`don't add exts, but keep`, async () => {
+    const dir = 'with-exts'
+    const input = path.resolve(fixtures, dir, 'main.ts')
+
+    const bundle = await rollup({
+      input,
+      plugins: [UnpluginIsolatedDecl(), esbuild()],
+      logLevel: 'silent',
+    })
+    const result = await bundle.generate({})
+
+    expect(outputToSnapshot(result.output)).toMatchSnapshot()
+  })
+
+  test('auto add exts', async () => {
     const dir = 'basic'
     const input = path.resolve(fixtures, dir, 'main.ts')
 
@@ -38,20 +52,6 @@ describe('rollup', () => {
         }),
         esbuild(),
       ],
-      logLevel: 'silent',
-    })
-    const result = await bundle.generate({})
-
-    expect(outputToSnapshot(result.output)).toMatchSnapshot()
-  })
-
-  test('with exts', async () => {
-    const dir = 'with-exts'
-    const input = path.resolve(fixtures, dir, 'main.ts')
-
-    const bundle = await rollup({
-      input,
-      plugins: [UnpluginIsolatedDecl(), esbuild()],
       logLevel: 'silent',
     })
     const result = await bundle.generate({})
@@ -86,7 +86,7 @@ describe('rollup', () => {
       preserveModules: true,
     })
 
-    expect(await getFileSnapshot(dist)).toMatchSnapshot()
+    await expectSnapshot(dist, `rollup/${dir}`)
   })
 
   test('write entry-points (#34)', async () => {
@@ -111,7 +111,7 @@ describe('rollup', () => {
 
     await bundle.write({ dir: dist })
 
-    expect(await getFileSnapshot(dist)).toMatchSnapshot()
+    await expectSnapshot(dist, `rollup/${dir}`)
   })
 
   test('custom rewriter', async () => {
@@ -162,6 +162,6 @@ describe('rollup', () => {
 
     await bundle.write({ dir: dist })
 
-    expect(await getFileSnapshot(dist)).toMatchSnapshot()
+    await expectSnapshot(dist, `rollup/${dir}`)
   })
 })

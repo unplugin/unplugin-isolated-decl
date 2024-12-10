@@ -4,7 +4,7 @@ import { build } from 'esbuild'
 import { describe, expect, test } from 'vitest'
 import { dependencies } from '../package.json'
 import UnpluginIsolatedDecl from '../src/esbuild'
-import { getFileSnapshot } from './_utils'
+import { expectSnapshot } from './_utils'
 
 describe('esbuild', () => {
   const input = path.resolve(__dirname, 'fixtures/basic/main.ts')
@@ -28,7 +28,7 @@ describe('esbuild', () => {
     })
 
     const outDir = path.resolve(dist, 'extraOutdir')
-    expect(await getFileSnapshot(outDir)).toMatchSnapshot()
+    await expectSnapshot(outDir, `esbuild/basic`)
   })
 
   test('generate mode', async () => {

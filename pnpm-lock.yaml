@@ -43,8 +43,8 @@ importers:
         specifier: ^2.0.2
         version: 2.0.2
       '@sxzz/test-utils':
-        specifier: ^0.3.8
-        version: 0.3.8(esbuild@0.24.0)(rolldown@0.15.0-snapshot-de64ad9-20241209003633(@babel/runtime@7.26.0))(rollup@4.28.1)(vitest@2.1.8(@types/node@22.10.1))
+        specifier: ^0.3.10
+        version: 0.3.10(esbuild@0.24.0)(rolldown@0.15.0-snapshot-de64ad9-20241209003633(@babel/runtime@7.26.0))(rollup@4.28.1)(vitest@2.1.8(@types/node@22.10.1))
       '@types/debug':
         specifier: ^4.1.12
         version: 4.1.12
@@ -1239,8 +1239,8 @@ packages:
   '@sxzz/prettier-config@2.0.2':
     resolution: {integrity: sha512-yBKxaIr6WqgHTaLgX0g6gxNuMllkwR1QGeXynfJGmyD+XrZqO96t9xT5Mfbr9H3+N56SXY9/yFvP/e8lcJI7KA==}
 
-  '@sxzz/test-utils@0.3.8':
-    resolution: {integrity: sha512-UcF5bskQjTFom+Nn9WzsWQsOkLmD+FO774YgMrhw/wMp2sTej/ot9owKAoYOTVV64HpH0qDKHUnrBvZ8pufXLg==}
+  '@sxzz/test-utils@0.3.10':
+    resolution: {integrity: sha512-SDNzLZMR7ah+8a3D+Rqj10d0R/ARt9XLHluSKu865xkZcLvJRxxoJ+HOUFL7ALPzkkwQU0WyR6/OMH3PiMco4w==}
     engines: {node: '>=18.12.0'}
     peerDependencies:
       esbuild: '>=0.20.0'
@@ -4473,10 +4473,10 @@ snapshots:
 
   '@sxzz/prettier-config@2.0.2': {}
 
-  '@sxzz/test-utils@0.3.8(esbuild@0.24.0)(rolldown@0.15.0-snapshot-de64ad9-20241209003633(@babel/runtime@7.26.0))(rollup@4.28.1)(vitest@2.1.8(@types/node@22.10.1))':
+  '@sxzz/test-utils@0.3.10(esbuild@0.24.0)(rolldown@0.15.0-snapshot-de64ad9-20241209003633(@babel/runtime@7.26.0))(rollup@4.28.1)(vitest@2.1.8(@types/node@22.10.1))':
     dependencies:
       '@rollup/pluginutils': 5.1.3(rollup@4.28.1)
-      fast-glob: 3.3.2
+      tinyglobby: 0.2.10
       vitest: 2.1.8(@types/node@22.10.1)
     optionalDependencies:
       esbuild: 0.24.0

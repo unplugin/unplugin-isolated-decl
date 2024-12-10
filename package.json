@@ -111,7 +111,7 @@
     "@swc/core": "^1.10.0",
     "@sxzz/eslint-config": "^4.5.1",
     "@sxzz/prettier-config": "^2.0.2",
-    "@sxzz/test-utils": "^0.3.8",
+    "@sxzz/test-utils": "^0.3.10",
     "@types/debug": "^4.1.12",
     "@types/node": "^22.10.1",
     "bumpp": "^9.9.0",
