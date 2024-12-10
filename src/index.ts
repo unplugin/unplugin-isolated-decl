@@ -26,9 +26,9 @@ import {
 } from './core/transformer'
 import {
   debug,
-  guessSuffix,
   lowestCommonAncestor,
   resolveEntry,
+  shouldAddIndex,
   stripExt,
 } from './core/utils'
 import type {
@@ -147,29 +147,26 @@ export const IsolatedDecl: UnpluginInstance<Options | undefined, false> =
       const imports = filterImports(program)
 
       const s = new MagicString(dts)
-      if (options.autoAddExts || options.rewriteImports) {
-        for (const i of imports) {
-          const { source } = i
-          let { value } = source
 
-          if (options.rewriteImports) {
-            const result = options.rewriteImports(value, id)
-            if (typeof result === 'string') {
-              source.value = value = result
-              s.overwrite(source.start + 1, source.end - 1, result)
-            }
-          }
+      for (const i of imports) {
+        const { source } = i
+        let { value } = source
 
-          if (
-            options.autoAddExts &&
-            (path.isAbsolute(value) || value[0] === '.')
-          ) {
-            const resolved = await resolve(context, value, stripExt(id))
-            if (!resolved || resolved.external) continue
-            i.suffix = guessSuffix(value, resolved.id)
+        if (options.rewriteImports) {
+          const result = options.rewriteImports(value, id)
+          if (typeof result === 'string') {
+            source.value = value = result
+            s.overwrite(source.start + 1, source.end - 1, result)
           }
         }
+
+        if (path.isAbsolute(value) || value[0] === '.') {
+          const resolved = await resolve(context, value, stripExt(id))
+          if (!resolved || resolved.external) continue
+          i.shouldAddIndex = shouldAddIndex(value, resolved.id)
+        }
       }
+
       addOutput(id, { s, imports, map })
 
       const typeImports = program.body.filter((node): node is OxcImport => {
@@ -230,6 +227,7 @@ export const IsolatedDecl: UnpluginInstance<Options | undefined, false> =
       )) {
         const emitName = rewriteImports(
           s,
+          options,
           imports,
           entryMap,
           inputBase,
@@ -299,6 +297,7 @@ export const IsolatedDecl: UnpluginInstance<Options | undefined, false> =
       )) {
         const emitName = rewriteImports(
           s,
+          options,
           imports,
           entryMap,
           inputBase,

@@ -19,8 +19,6 @@ export type Options = {
   ignoreErrors?: boolean
   /** An extra directory layer for output files. */
   extraOutdir?: string
-  /** Automatically add `.js` extension to resolve in `Node16` + ESM mode. */
-  autoAddExts?: boolean
   /** Patch `export default` in `.d.cts` to `export = ` */
   patchCjsDefaultExport?: boolean
   /** Base directory for input files. */
@@ -64,7 +62,6 @@ export function resolveOptions(options: Options): OptionsResolved {
     transformer: options.transformer || 'typescript',
     ignoreErrors: options.ignoreErrors || false,
     extraOutdir: options.extraOutdir,
-    autoAddExts: options.autoAddExts || false,
     patchCjsDefaultExport: options.patchCjsDefaultExport || false,
     rewriteImports: options.rewriteImports,
     inputBase: options.inputBase,

@@ -17,7 +17,7 @@ describe('rollup', () => {
 
     const bundle = await rollup({
       input,
-      plugins: [UnpluginIsolatedDecl({ extraOutdir: 'temp' }), esbuild()],
+      plugins: [UnpluginIsolatedDecl(), esbuild()],
       logLevel: 'silent',
     })
     const result = await bundle.generate({})
@@ -25,8 +25,8 @@ describe('rollup', () => {
     expect(outputToSnapshot(result.output)).toMatchSnapshot()
   })
 
-  test(`don't add exts, but keep`, async () => {
-    const dir = 'with-exts'
+  test(`keep ext`, async () => {
+    const dir = 'keep-ext'
     const input = path.resolve(fixtures, dir, 'main.ts')
 
     const bundle = await rollup({
@@ -39,19 +39,13 @@ describe('rollup', () => {
     expect(outputToSnapshot(result.output)).toMatchSnapshot()
   })
 
-  test('auto add exts', async () => {
+  test(`extraOutdir`, async () => {
     const dir = 'basic'
     const input = path.resolve(fixtures, dir, 'main.ts')
 
     const bundle = await rollup({
       input,
-      plugins: [
-        UnpluginIsolatedDecl({
-          extraOutdir: 'temp',
-          autoAddExts: true,
-        }),
-        esbuild(),
-      ],
+      plugins: [UnpluginIsolatedDecl({ extraOutdir: 'types' }), esbuild()],
       logLevel: 'silent',
     })
     const result = await bundle.generate({})
@@ -71,7 +65,6 @@ describe('rollup', () => {
       input,
       plugins: [
         UnpluginIsolatedDecl({
-          autoAddExts: true,
           sourceMap: true,
         }),
         esbuild(),
@@ -101,7 +94,6 @@ describe('rollup', () => {
       input,
       plugins: [
         UnpluginIsolatedDecl({
-          autoAddExts: true,
           sourceMap: true,
         }),
         esbuild(),
@@ -126,7 +118,6 @@ describe('rollup', () => {
           entries: [{ find: '~', replacement: '.' }],
         }),
         UnpluginIsolatedDecl({
-          autoAddExts: true,
           rewriteImports(id, _importer) {
             if (id[0] === '~') {
               importer = _importer
@@ -151,12 +142,7 @@ describe('rollup', () => {
 
     const bundle = await rollup({
       input,
-      plugins: [
-        UnpluginIsolatedDecl({
-          autoAddExts: true,
-        }),
-        esbuild(),
-      ],
+      plugins: [UnpluginIsolatedDecl(), esbuild()],
       logLevel: 'silent',
     })
 

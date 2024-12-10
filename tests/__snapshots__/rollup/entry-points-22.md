@@ -44,7 +44,7 @@ export declare const a = "b";
 ## a/index.d.ts
 
 ```ts
-export { ComponentA } from "./ComponentA/ComponentA/index.jsx";
+export { ComponentA } from "./ComponentA/ComponentA/index.js";
 //# sourceMappingURL=index.d.ts.map
 ```
 ## a/index.d.ts.map
@@ -90,7 +90,7 @@ export { ComponentB };
 ## b/index.d.ts
 
 ```ts
-export { ComponentB } from "./ComponentB/ComponentB/index.jsx";
+export { ComponentB } from "./ComponentB/ComponentB/index.js";
 //# sourceMappingURL=index.d.ts.map
 ```
 ## b/index.d.ts.map

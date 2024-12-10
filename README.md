@@ -123,8 +123,6 @@ export interface Options {
   ignoreErrors?: boolean
   /** An extra directory layer for output files. */
   extraOutdir?: string
-  /** Automatically add `.js` extension to resolve in `Node16` + ESM mode. */
-  autoAddExts?: boolean
 
   rewriteImports?: (
     id: string,
@@ -155,22 +153,6 @@ export default {
     // ...
   ],
 }
-```
-
-### `autoAddExts`
-
-Automatically add `.js` extension to resolve in Node 16+ ESM mode. (esbuild support is not available)
-
-```ts
-// index.d.ts
-import {} from './foo'
-```
-
-With `autoAddExts`, it will be transformed to:
-
-```ts
-// index.d.ts
-import {} from './foo.js'
 ```
 
 ### `patchCjsDefaultExport`

@@ -7,7 +7,6 @@ export default defineConfig({
   clean: true,
   plugins: [
     IsolatedDecl({
-      autoAddExts: true,
       patchCjsDefaultExport: true,
     }),
   ],

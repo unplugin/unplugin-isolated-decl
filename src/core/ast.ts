@@ -1,5 +1,6 @@
 import path from 'node:path'
-import { debug, guessSuffix, stripExt } from './utils'
+import { debug, stripExt } from './utils'
+import type { OptionsResolved } from './options'
 import type * as OxcTypes from '@oxc-project/types'
 import type MagicString from 'magic-string'
 
@@ -9,7 +10,7 @@ export type OxcImport = (
   | OxcTypes.ExportNamedDeclaration
 ) & {
   source: OxcTypes.StringLiteral
-  suffix?: string
+  shouldAddIndex?: boolean
 }
 
 export function filterImports(program: OxcTypes.Program): OxcImport[] {
@@ -24,6 +25,7 @@ export function filterImports(program: OxcTypes.Program): OxcImport[] {
 
 export function rewriteImports(
   s: MagicString,
+  options: OptionsResolved,
   imports: OxcImport[],
   entryMap: Record<string, string> | undefined,
   inputBase: string,
@@ -50,24 +52,24 @@ export function rewriteImports(
 
   for (const i of imports) {
     const { source } = i
-    const srcIdRel = stripExt(source.value)
+    let srcIdRel = source.value
     if (srcIdRel[0] !== '.') continue
 
+    if (i.shouldAddIndex) srcIdRel += '/index'
+
     const srcId = path.resolve(srcDir, srcIdRel)
-    const importAlias = entryMap?.[srcId]
+    const importAlias = entryMap?.[stripExt(srcId)]
 
     let id: string
     if (importAlias) {
-      const resolved = stripExt(
-        entryFileNames.replaceAll('[name]', importAlias),
+      const resolved = entryFileNames.replaceAll(
+        '[name]',
+        stripExt(importAlias),
       )
       id = pathRelative(srcDirRel, resolved)
     } else {
-      id = stripExt(entryFileNames.replaceAll('[name]', srcIdRel))
+      id = entryFileNames.replaceAll('[name]', stripExt(srcIdRel))
     }
-
-    const suffix = i.suffix || guessSuffix(source.value, source.value)
-    if (suffix) id += suffix
 
     let final = path.normalize(path.join(offset, id))
     if (final !== path.normalize(source.value)) {

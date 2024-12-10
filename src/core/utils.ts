@@ -60,15 +60,6 @@ function endsWithIndex(s: string) {
   return /(?:^|[/\\])index\..+$/.test(s)
 }
 
-export function guessSuffix(id: string, resolved: string): string {
-  let suffix = ''
-  if (!endsWithIndex(id) && endsWithIndex(resolved)) {
-    suffix += '/index'
-  }
-  const ext = path
-    .extname(resolved)
-    .slice(1)
-    .replace(/^([cm]?)ts/, (_, $1) => `${$1}js`)
-  if (ext) suffix += `.${ext}`
-  return suffix
+export function shouldAddIndex(id: string, resolved: string): boolean {
+  return !endsWithIndex(id) && endsWithIndex(resolved)
 }
