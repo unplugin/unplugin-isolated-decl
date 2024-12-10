@@ -40,17 +40,18 @@ describe('rollup', () => {
   })
 
   test(`extraOutdir`, async () => {
-    const dir = 'basic'
+    const dir = 'extra-outdir'
     const input = path.resolve(fixtures, dir, 'main.ts')
+    const dist = path.resolve(TEST_SANDBOX_FOLDER, dir)
 
     const bundle = await rollup({
       input,
       plugins: [UnpluginIsolatedDecl({ extraOutdir: 'types' }), esbuild()],
       logLevel: 'silent',
     })
-    const result = await bundle.generate({})
+    await bundle.write({ dir: dist })
 
-    expect(outputToSnapshot(result.output)).toMatchSnapshot()
+    await expectSnapshot(dist, `rollup/${dir}`)
   })
 
   test('write entry-points (#22)', async () => {

@@ -213,19 +213,15 @@ export const IsolatedDecl: UnpluginInstance<Options | undefined, false> =
       const { inputBase, entryMap } = resolveEntry(input, options.inputBase)
       debug('[rollup] input base:', inputBase)
 
-      let { entryFileNames = '[name].js', dir: outDir } = outputOptions
+      const { entryFileNames = '[name].js', dir: outDir } = outputOptions
       if (typeof entryFileNames !== 'string') {
         return this.error('entryFileNames must be a string')
-      }
-
-      if (options.extraOutdir) {
-        entryFileNames = path.join(options.extraOutdir, entryFileNames)
       }
 
       for (const [srcFilename, { s, imports, map, ext }] of Object.entries(
         outputFiles,
       )) {
-        const emitName = rewriteImports(
+        let emitName = rewriteImports(
           s,
           options,
           imports,
@@ -240,6 +236,9 @@ export const IsolatedDecl: UnpluginInstance<Options | undefined, false> =
           source = patchCjsDefaultExport(source)
         }
 
+        if (options.extraOutdir) {
+          emitName = path.join(options.extraOutdir || '', emitName)
+        }
         debug('[rollup] emit dts file:', emitName)
         if (options.sourceMap && map && outDir) {
           source = appendMapUrl(source, emitName)
@@ -288,14 +287,11 @@ export const IsolatedDecl: UnpluginInstance<Options | undefined, false> =
         extFormatMap.get(output.format || 'esm') || 'js',
       )
 
-      let entryFileNames = output.entryFilename
-      if (options.extraOutdir) {
-        entryFileNames = path.join(options.extraOutdir, entryFileNames)
-      }
+      const entryFileNames = output.entryFilename
       for (const [srcFilename, { s, imports, map, ext }] of Object.entries(
         outputFiles,
       )) {
-        const emitName = rewriteImports(
+        let emitName = rewriteImports(
           s,
           options,
           imports,
@@ -308,6 +304,10 @@ export const IsolatedDecl: UnpluginInstance<Options | undefined, false> =
         let source = s.toString()
         if (options.patchCjsDefaultExport && emitName.endsWith('.d.cts')) {
           source = patchCjsDefaultExport(source)
+        }
+
+        if (options.extraOutdir) {
+          emitName = path.join(options.extraOutdir || '', emitName)
         }
 
         debug('[farm] emit dts file:', emitName)
