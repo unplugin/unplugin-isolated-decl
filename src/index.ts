@@ -63,7 +63,7 @@ export const IsolatedDecl: UnpluginInstance<Options | undefined, false> =
 
     let farmPluginContext: UnpluginBuildContext
 
-    const outputFiles: Record<string, Output> = {}
+    let outputFiles: Record<string, Output> = Object.create(null)
     function addOutput(filename: string, output: Omit<Output, 'ext'>) {
       const name = stripExt(filename)
       const ext = path.extname(filename)
@@ -84,6 +84,7 @@ export const IsolatedDecl: UnpluginInstance<Options | undefined, false> =
       buildStart() {
         // eslint-disable-next-line @typescript-eslint/no-this-alias
         farmPluginContext = this
+        outputFiles = Object.create(null)
       },
 
       transformInclude: (id) => filter(id),
@@ -239,7 +240,10 @@ export const IsolatedDecl: UnpluginInstance<Options | undefined, false> =
         if (options.extraOutdir) {
           emitName = path.join(options.extraOutdir || '', emitName)
         }
+
         debug('[rollup] emit dts file:', emitName)
+        const originalFileName = srcFilename + ext
+
         if (options.sourceMap && map && outDir) {
           source = appendMapUrl(source, emitName)
           this.emitFile({
@@ -247,15 +251,17 @@ export const IsolatedDecl: UnpluginInstance<Options | undefined, false> =
             fileName: `${emitName}.map`,
             source: generateDtsMap(
               map,
-              srcFilename + ext,
+              originalFileName,
               path.join(outDir, emitName),
             ),
+            originalFileName,
           })
         }
         this.emitFile({
           type: 'asset',
           fileName: emitName,
           source,
+          originalFileName,
         })
       }
     }
