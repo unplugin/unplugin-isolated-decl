@@ -32,6 +32,7 @@ export async function oxcTransform(
   return {
     ...result,
     map: result.map?.mappings,
+    errors: result.errors.map((error) => error.message),
   }
 }
 
