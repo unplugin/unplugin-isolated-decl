@@ -2,11 +2,11 @@
 
 exports[`rolldown 1`] = `
 "// main.js
-import { jsx as _jsx } from "react/jsx-runtime";
+import { jsx } from "react/jsx-runtime";
 
 //#region tests/fixtures/basic/component.tsx
 function Component() {
-	return _jsx("div", { children: "I'm a div in a tsx component!" });
+	return jsx("div", { children: "I'm a div in a tsx component!" });
 }
 
 //#endregion
