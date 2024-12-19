@@ -3,7 +3,6 @@
  *
  * @module
  */
-/* eslint-disable import/no-default-export */
 
 import { IsolatedDecl } from './index'
 
