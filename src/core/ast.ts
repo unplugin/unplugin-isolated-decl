@@ -1,6 +1,5 @@
 import path from 'node:path'
 import { debug, stripExt } from './utils'
-import type { OptionsResolved } from './options'
 import type * as OxcTypes from '@oxc-project/types'
 import type MagicString from 'magic-string'
 
@@ -25,7 +24,6 @@ export function filterImports(program: OxcTypes.Program): OxcImport[] {
 
 export function rewriteImports(
   s: MagicString,
-  options: OptionsResolved,
   imports: OxcImport[],
   entryMap: Record<string, string> | undefined,
   inputBase: string,

@@ -224,7 +224,6 @@ export const IsolatedDecl: UnpluginInstance<Options | undefined, false> =
       )) {
         let emitName = rewriteImports(
           s,
-          options,
           imports,
           entryMap,
           inputBase,
@@ -299,7 +298,6 @@ export const IsolatedDecl: UnpluginInstance<Options | undefined, false> =
       )) {
         let emitName = rewriteImports(
           s,
-          options,
           imports,
           entryMap,
           inputBase,
