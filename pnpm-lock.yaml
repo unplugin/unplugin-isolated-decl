@@ -21,8 +21,8 @@ importers:
         specifier: ^0.44.0
         version: 0.44.0
       unplugin:
-        specifier: ^2.1.0
-        version: 2.1.0
+        specifier: ^2.1.2
+        version: 2.1.2
     devDependencies:
       '@farmfe/core':
         specifier: ^1.6.2
@@ -34,8 +34,8 @@ importers:
         specifier: ^5.1.1
         version: 5.1.1(rollup@4.29.1)
       '@swc/core':
-        specifier: ^1.10.3
-        version: 1.10.3(@swc/helpers@0.5.15)
+        specifier: ^1.10.4
+        version: 1.10.4(@swc/helpers@0.5.15)
       '@sxzz/eslint-config':
         specifier: ^4.5.1
         version: 4.5.1(@types/eslint@9.6.1)(@typescript-eslint/eslint-plugin@8.18.2(@typescript-eslint/parser@8.18.2(eslint@9.17.0(jiti@2.4.2))(typescript@5.7.2))(eslint@9.17.0(jiti@2.4.2))(typescript@5.7.2))(eslint@9.17.0(jiti@2.4.2))(typescript@5.7.2)
@@ -83,7 +83,7 @@ importers:
         version: 0.2.10
       tsdown:
         specifier: ^0.5.3
-        version: 0.5.3(@babel/runtime@7.26.0)(@swc/core@1.10.3(@swc/helpers@0.5.15))(oxc-transform@0.44.0)(typescript@5.7.2)
+        version: 0.5.3(@babel/runtime@7.26.0)(@swc/core@1.10.4(@swc/helpers@0.5.15))(oxc-transform@0.44.0)(typescript@5.7.2)
       tsx:
         specifier: ^4.19.2
         version: 4.19.2
@@ -1094,68 +1094,68 @@ packages:
     cpu: [x64]
     os: [win32]
 
-  '@swc/core-darwin-arm64@1.10.3':
-    resolution: {integrity: sha512-LFFCxAUKBy69AUE+01rgazQcafIXrYs6tBa9SyKPR51ft6Tp66dAVrWg9MTykaWskuXEe80LPUvUw1ga3bOH3A==}
+  '@swc/core-darwin-arm64@1.10.4':
+    resolution: {integrity: sha512-sV/eurLhkjn/197y48bxKP19oqcLydSel42Qsy2zepBltqUx+/zZ8+/IS0Bi7kaWVFxerbW1IPB09uq8Zuvm3g==}
     engines: {node: '>=10'}
     cpu: [arm64]
     os: [darwin]
 
-  '@swc/core-darwin-x64@1.10.3':
-    resolution: {integrity: sha512-yZNv1+yPg0GvYdThsMI8WpaPRAPuw2gQDMdgijLFfRcRlr2l1sTWsDHqGd7QMTx+acYM3uB537gyd31WjUAwlQ==}
+  '@swc/core-darwin-x64@1.10.4':
+    resolution: {integrity: sha512-gjYNU6vrAUO4+FuovEo9ofnVosTFXkF0VDuo1MKPItz6e2pxc2ale4FGzLw0Nf7JB1sX4a8h06CN16/pLJ8Q2w==}
     engines: {node: '>=10'}
     cpu: [x64]
     os: [darwin]
 
-  '@swc/core-linux-arm-gnueabihf@1.10.3':
-    resolution: {integrity: sha512-Qa6hu5ASoKV4rcYUBGG3y3z+9UT042KAG4A7ivqqYQFcMfkB4NbZb5So2YWOpUc0/5YlSVkgL22h3Mbj5EXy7A==}
+  '@swc/core-linux-arm-gnueabihf@1.10.4':
+    resolution: {integrity: sha512-zd7fXH5w8s+Sfvn2oO464KDWl+ZX1MJiVmE4Pdk46N3PEaNwE0koTfgx2vQRqRG4vBBobzVvzICC3618WcefOA==}
     engines: {node: '>=10'}
     cpu: [arm]
     os: [linux]
 
-  '@swc/core-linux-arm64-gnu@1.10.3':
-    resolution: {integrity: sha512-BGnoZrmo0nlkXrOxVHk5U3j9u4BuquFviC+LvMe+HrDc5YLVe1gSXMUSBKhIz9MY9uFgxXW977TnB1XjLSKe5Q==}
+  '@swc/core-linux-arm64-gnu@1.10.4':
+    resolution: {integrity: sha512-+UGfoHDxsMZgFD3tABKLeEZHqLNOkxStu+qCG7atGBhS4Slri6h6zijVvf4yI5X3kbXdvc44XV/hrP/Klnui2A==}
     engines: {node: '>=10'}
     cpu: [arm64]
     os: [linux]
 
-  '@swc/core-linux-arm64-musl@1.10.3':
-    resolution: {integrity: sha512-L07/4zKnIY2S/00bE+Yn3oEHkyGjWmGGE8Ta4luVCL+00s04EIwMoE1Hc8E8xFB5zLew5ViKFc5kNb5YZ/tRFQ==}
+  '@swc/core-linux-arm64-musl@1.10.4':
+    resolution: {integrity: sha512-cDDj2/uYsOH0pgAnDkovLZvKJpFmBMyXkxEG6Q4yw99HbzO6QzZ5HDGWGWVq/6dLgYKlnnmpjZCPPQIu01mXEg==}
     engines: {node: '>=10'}
     cpu: [arm64]
     os: [linux]
 
-  '@swc/core-linux-x64-gnu@1.10.3':
-    resolution: {integrity: sha512-cvTCekY4u0fBIDNfhv/2UxcOXqH4XJE2iNxKuQejS5KIapFJwrZ+fRQ2lha3+yopI/d2p96BlBEWTAcBzeTntw==}
+  '@swc/core-linux-x64-gnu@1.10.4':
+    resolution: {integrity: sha512-qJXh9D6Kf5xSdGWPINpLGixAbB5JX8JcbEJpRamhlDBoOcQC79dYfOMEIxWPhTS1DGLyFakAx2FX/b2VmQmj0g==}
     engines: {node: '>=10'}
     cpu: [x64]
     os: [linux]
 
-  '@swc/core-linux-x64-musl@1.10.3':
-    resolution: {integrity: sha512-h9kUOTrSSpY9JNc41a+NMAwK62USk/pvNE9Fi/Pfoklmlf9j9j8gRCitqvHpmZcEF4PPIsoMdiGetDipTwvWlw==}
+  '@swc/core-linux-x64-musl@1.10.4':
+    resolution: {integrity: sha512-A76lIAeyQnHCVt0RL/pG+0er8Qk9+acGJqSZOZm67Ve3B0oqMd871kPtaHBM0BW3OZAhoILgfHW3Op9Q3mx3Cw==}
     engines: {node: '>=10'}
     cpu: [x64]
     os: [linux]
 
-  '@swc/core-win32-arm64-msvc@1.10.3':
-    resolution: {integrity: sha512-iHOmLYkZYn3r1Ff4rfyczdrYGt/wVIWyY0t8swsO9o1TE+zmucGFZuYZzgj3ng8Kp4sojJrydAGz8TINQZDBzQ==}
+  '@swc/core-win32-arm64-msvc@1.10.4':
+    resolution: {integrity: sha512-e6j5kBu4fIY7fFxFxnZI0MlEovRvp50Lg59Fw+DVbtqHk3C85dckcy5xKP+UoXeuEmFceauQDczUcGs19SRGSQ==}
     engines: {node: '>=10'}
     cpu: [arm64]
     os: [win32]
 
-  '@swc/core-win32-ia32-msvc@1.10.3':
-    resolution: {integrity: sha512-4SqLSE4Ozh8SxuVuHIZhkSyJQru5+WbQMRs5ggLRqeUy3vkUPHOAFAY3oMwDJUN6BwbAr8+664TmdrMwaWh8Ng==}
+  '@swc/core-win32-ia32-msvc@1.10.4':
+    resolution: {integrity: sha512-RSYHfdKgNXV/amY5Tqk1EWVsyQnhlsM//jeqMLw5Fy9rfxP592W9UTumNikNRPdjI8wKKzNMXDb1U29tQjN0dg==}
     engines: {node: '>=10'}
     cpu: [ia32]
     os: [win32]
 
-  '@swc/core-win32-x64-msvc@1.10.3':
-    resolution: {integrity: sha512-jTyf/IbNq7NVyqqDIEDzgjALjWu1IMfXKLXXAJArreklIMzkfHU1sV32ZJLOBmRKPyslCoalxIAU+hTx4reUTQ==}
+  '@swc/core-win32-x64-msvc@1.10.4':
+    resolution: {integrity: sha512-1ujYpaqfqNPYdwKBlvJnOqcl+Syn3UrQ4XE0Txz6zMYgyh6cdU6a3pxqLqIUSJ12MtXRA9ZUhEz1ekU3LfLWXw==}
     engines: {node: '>=10'}
     cpu: [x64]
     os: [win32]
 
-  '@swc/core@1.10.3':
-    resolution: {integrity: sha512-2yjqCcsBx6SNBQZIYNlwxED9aYXW/7QBZyr8LYAxTx5bzmoNhKiClYbsNLe1NJ6ccf5uSbcInw12PjXLduNEdQ==}
+  '@swc/core@1.10.4':
+    resolution: {integrity: sha512-ut3zfiTLORMxhr6y/GBxkHmzcGuVpwJYX4qyXWuBKkpw/0g0S5iO1/wW7RnLnZbAi8wS/n0atRZoaZlXWBkeJg==}
     engines: {node: '>=10'}
     peerDependencies:
       '@swc/helpers': '*'
@@ -3261,8 +3261,8 @@ packages:
     resolution: {integrity: sha512-Rvh1xqD5yMWBwBiJ5Iv0J1gRZzBEvojnWxQw+3riawJFWrbSznmuv1qom2quWSksPMGN/v4c9q1xtW7KjYFUhA==}
     engines: {node: '>=18.12.0'}
 
-  unplugin@2.1.0:
-    resolution: {integrity: sha512-us4j03/499KhbGP8BU7Hrzrgseo+KdfJYWcbcajCOqsAyb8Gk0Yn2kiUIcZISYCb1JFaZfIuG3b42HmguVOKCQ==}
+  unplugin@2.1.2:
+    resolution: {integrity: sha512-Q3LU0e4zxKfRko1wMV2HmP8lB9KWislY7hxXpxd+lGx0PRInE4vhMBVEZwpdVYHvtqzhSrzuIfErsob6bQfCzw==}
     engines: {node: '>=18.12.0'}
 
   untildify@4.0.0:
@@ -4244,51 +4244,51 @@ snapshots:
   '@rollup/rollup-win32-x64-msvc@4.29.1':
     optional: true
 
-  '@swc/core-darwin-arm64@1.10.3':
+  '@swc/core-darwin-arm64@1.10.4':
     optional: true
 
-  '@swc/core-darwin-x64@1.10.3':
+  '@swc/core-darwin-x64@1.10.4':
     optional: true
 
-  '@swc/core-linux-arm-gnueabihf@1.10.3':
+  '@swc/core-linux-arm-gnueabihf@1.10.4':
     optional: true
 
-  '@swc/core-linux-arm64-gnu@1.10.3':
+  '@swc/core-linux-arm64-gnu@1.10.4':
     optional: true
 
-  '@swc/core-linux-arm64-musl@1.10.3':
+  '@swc/core-linux-arm64-musl@1.10.4':
     optional: true
 
-  '@swc/core-linux-x64-gnu@1.10.3':
+  '@swc/core-linux-x64-gnu@1.10.4':
     optional: true
 
-  '@swc/core-linux-x64-musl@1.10.3':
+  '@swc/core-linux-x64-musl@1.10.4':
     optional: true
 
-  '@swc/core-win32-arm64-msvc@1.10.3':
+  '@swc/core-win32-arm64-msvc@1.10.4':
     optional: true
 
-  '@swc/core-win32-ia32-msvc@1.10.3':
+  '@swc/core-win32-ia32-msvc@1.10.4':
     optional: true
 
-  '@swc/core-win32-x64-msvc@1.10.3':
+  '@swc/core-win32-x64-msvc@1.10.4':
     optional: true
 
-  '@swc/core@1.10.3(@swc/helpers@0.5.15)':
+  '@swc/core@1.10.4(@swc/helpers@0.5.15)':
     dependencies:
       '@swc/counter': 0.1.3
       '@swc/types': 0.1.17
     optionalDependencies:
-      '@swc/core-darwin-arm64': 1.10.3
-      '@swc/core-darwin-x64': 1.10.3
-      '@swc/core-linux-arm-gnueabihf': 1.10.3
-      '@swc/core-linux-arm64-gnu': 1.10.3
-      '@swc/core-linux-arm64-musl': 1.10.3
-      '@swc/core-linux-x64-gnu': 1.10.3
-      '@swc/core-linux-x64-musl': 1.10.3
-      '@swc/core-win32-arm64-msvc': 1.10.3
-      '@swc/core-win32-ia32-msvc': 1.10.3
-      '@swc/core-win32-x64-msvc': 1.10.3
+      '@swc/core-darwin-arm64': 1.10.4
+      '@swc/core-darwin-x64': 1.10.4
+      '@swc/core-linux-arm-gnueabihf': 1.10.4
+      '@swc/core-linux-arm64-gnu': 1.10.4
+      '@swc/core-linux-arm64-musl': 1.10.4
+      '@swc/core-linux-x64-gnu': 1.10.4
+      '@swc/core-linux-x64-musl': 1.10.4
+      '@swc/core-win32-arm64-msvc': 1.10.4
+      '@swc/core-win32-ia32-msvc': 1.10.4
+      '@swc/core-win32-x64-msvc': 1.10.4
       '@swc/helpers': 0.5.15
 
   '@swc/counter@0.1.3': {}
@@ -6634,7 +6634,7 @@ snapshots:
     dependencies:
       typescript: 5.7.2
 
-  tsdown@0.5.3(@babel/runtime@7.26.0)(@swc/core@1.10.3(@swc/helpers@0.5.15))(oxc-transform@0.44.0)(typescript@5.7.2):
+  tsdown@0.5.3(@babel/runtime@7.26.0)(@swc/core@1.10.4(@swc/helpers@0.5.15))(oxc-transform@0.44.0)(typescript@5.7.2):
     dependencies:
       cac: 6.7.14
       chokidar: 4.0.3
@@ -6647,7 +6647,7 @@ snapshots:
       rollup-plugin-dts: 6.1.1(rollup@4.29.1)(typescript@5.7.2)
       tinyglobby: 0.2.10
       unconfig: 0.6.0
-      unplugin-isolated-decl: 0.10.3(@swc/core@1.10.3(@swc/helpers@0.5.15))(oxc-transform@0.44.0)(rollup@4.29.1)(typescript@5.7.2)
+      unplugin-isolated-decl: 0.10.3(@swc/core@1.10.4(@swc/helpers@0.5.15))(oxc-transform@0.44.0)(rollup@4.29.1)(typescript@5.7.2)
       unplugin-unused: 0.3.0(rollup@4.29.1)
     transitivePeerDependencies:
       - '@babel/runtime'
@@ -6731,15 +6731,15 @@ snapshots:
 
   universalify@2.0.1: {}
 
-  unplugin-isolated-decl@0.10.3(@swc/core@1.10.3(@swc/helpers@0.5.15))(oxc-transform@0.44.0)(rollup@4.29.1)(typescript@5.7.2):
+  unplugin-isolated-decl@0.10.3(@swc/core@1.10.4(@swc/helpers@0.5.15))(oxc-transform@0.44.0)(rollup@4.29.1)(typescript@5.7.2):
     dependencies:
       '@rollup/pluginutils': 5.1.4(rollup@4.29.1)
       debug: 4.4.0
       magic-string: 0.30.17
       oxc-parser: 0.43.0
-      unplugin: 2.1.0
+      unplugin: 2.1.2
     optionalDependencies:
-      '@swc/core': 1.10.3(@swc/helpers@0.5.15)
+      '@swc/core': 1.10.4(@swc/helpers@0.5.15)
       oxc-transform: 0.44.0
       typescript: 5.7.2
     transitivePeerDependencies:
@@ -6752,11 +6752,11 @@ snapshots:
       js-tokens: 9.0.1
       picocolors: 1.1.1
       pkg-types: 1.3.0
-      unplugin: 2.1.0
+      unplugin: 2.1.2
     transitivePeerDependencies:
       - rollup
 
-  unplugin@2.1.0:
+  unplugin@2.1.2:
     dependencies:
       acorn: 8.14.0
       webpack-virtual-modules: 0.6.2
