@@ -15,6 +15,7 @@ export type Bar = string;
 ```ts
 export {} from './foo/index.js';
 export {} from './index.js';
+export {} from './index.js';
 
 ```
 ## main.js

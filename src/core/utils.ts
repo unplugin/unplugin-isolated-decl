@@ -57,7 +57,7 @@ export function resolveEntry(
 }
 
 function endsWithIndex(s: string) {
-  return /(?:^|[/\\])index\..+$/.test(s)
+  return /(?:^|[/\\])index(?:\..+)?$/.test(s)
 }
 
 export function shouldAddIndex(id: string, resolved: string): boolean {
