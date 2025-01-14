@@ -102,7 +102,7 @@ export interface Options {
   enforce?: 'pre' | 'post' | undefined
   /**
    * You need to install one of the supported transformers yourself.
-   * oxc: @oxc/transformer
+   * oxc: oxc-transform
    * swc: @swc/core
    * typescript: typescript
    *
