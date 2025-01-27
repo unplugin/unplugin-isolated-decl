@@ -7,11 +7,11 @@ import { describe, expect, test } from 'vitest'
 import UnpluginIsolatedDecl from '../src/rollup'
 import { expectSnapshot } from './_utils'
 
-describe('rollup', () => {
+describe.concurrent('rollup', () => {
   const fixtures = path.resolve(__dirname, 'fixtures')
   const TEST_SANDBOX_FOLDER = path.resolve(__dirname, 'temp/rollup')
 
-  test('generate basic', async () => {
+  test('generate basic', async ({ expect }) => {
     const dir = 'basic'
     const input = path.resolve(fixtures, dir, 'main.ts')
 
@@ -25,7 +25,7 @@ describe('rollup', () => {
     expect(outputToSnapshot(result.output)).toMatchSnapshot()
   })
 
-  test(`keep ext`, async () => {
+  test(`keep ext`, async ({ expect }) => {
     const dir = 'keep-ext'
     const input = path.resolve(fixtures, dir, 'main.ts')
 
@@ -39,7 +39,7 @@ describe('rollup', () => {
     expect(outputToSnapshot(result.output)).toMatchSnapshot()
   })
 
-  test(`extraOutdir`, async () => {
+  test(`extraOutdir`, async ({ expect }) => {
     const dir = 'extra-outdir'
     const input = path.resolve(fixtures, dir, 'main.ts')
     const dist = path.resolve(TEST_SANDBOX_FOLDER, dir)
@@ -51,10 +51,10 @@ describe('rollup', () => {
     })
     await bundle.write({ dir: dist })
 
-    await expectSnapshot(dist, `rollup/${dir}`)
+    await expectSnapshot(dist, `rollup/${dir}`, expect)
   })
 
-  test('write entry-points (#22)', async () => {
+  test('write entry-points (#22)', async ({ expect }) => {
     const dir = 'entry-points-22'
     const input = {
       a: path.resolve(fixtures, dir, 'a/index.ts'),
@@ -80,10 +80,10 @@ describe('rollup', () => {
       preserveModules: true,
     })
 
-    await expectSnapshot(dist, `rollup/${dir}`)
+    await expectSnapshot(dist, `rollup/${dir}`, expect)
   })
 
-  test('write entry-points (#34)', async () => {
+  test('write entry-points (#34)', async ({ expect }) => {
     const dir = 'entry-points-34'
     const input = {
       index: path.resolve(fixtures, dir, 'main.ts'),
@@ -104,10 +104,10 @@ describe('rollup', () => {
 
     await bundle.write({ dir: dist })
 
-    await expectSnapshot(dist, `rollup/${dir}`)
+    await expectSnapshot(dist, `rollup/${dir}`, expect)
   })
 
-  test('custom rewriter', async () => {
+  test('custom rewriter', async ({ expect }) => {
     const dir = 'import-rewriter'
     const input = path.resolve(fixtures, dir, 'index.ts')
 
@@ -136,7 +136,7 @@ describe('rollup', () => {
     expect(importer).toBe(path.resolve(fixtures, dir, 'index.ts'))
   })
 
-  test('no index path', async () => {
+  test('no index path', async ({ expect }) => {
     const dir = 'no-index'
     const input = path.resolve(fixtures, dir, 'main.ts')
     const dist = path.resolve(TEST_SANDBOX_FOLDER, dir)
@@ -149,6 +149,6 @@ describe('rollup', () => {
 
     await bundle.write({ dir: dist })
 
-    await expectSnapshot(dist, `rollup/${dir}`)
+    await expectSnapshot(dist, `rollup/${dir}`, expect)
   })
 })

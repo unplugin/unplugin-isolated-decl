@@ -6,10 +6,10 @@ import { dependencies } from '../package.json'
 import UnpluginIsolatedDecl from '../src/esbuild'
 import { expectSnapshot } from './_utils'
 
-describe('esbuild', () => {
+describe.concurrent('esbuild', () => {
   const input = path.resolve(__dirname, 'fixtures/basic/main.ts')
 
-  test('write mode', async () => {
+  test('write mode', async ({ expect }) => {
     const dist = path.resolve(__dirname, 'temp/esbuild/basic')
     await build({
       entryPoints: [input],
@@ -28,7 +28,7 @@ describe('esbuild', () => {
     })
 
     const outDir = path.resolve(dist, 'extraOutdir')
-    await expectSnapshot(outDir, `esbuild/basic`)
+    await expectSnapshot(outDir, `esbuild/basic`, expect)
   })
 
   test('generate mode', async () => {
