@@ -114,7 +114,7 @@
     "@sxzz/test-utils": "^0.3.12",
     "@types/debug": "^4.1.12",
     "@types/node": "^22.10.7",
-    "bumpp": "^9.10.1",
+    "bumpp": "^10.0.1",
     "esbuild": "^0.24.2",
     "eslint": "^9.18.0",
     "fast-glob": "^3.3.3",
