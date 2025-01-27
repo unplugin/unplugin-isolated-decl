@@ -3,7 +3,7 @@ import alias from '@rollup/plugin-alias'
 import { outputToSnapshot } from '@sxzz/test-utils'
 import { rollup } from 'rollup'
 import esbuild from 'rollup-plugin-esbuild'
-import { describe, expect, test } from 'vitest'
+import { describe, test } from 'vitest'
 import UnpluginIsolatedDecl from '../src/rollup'
 import { expectSnapshot } from './_utils'
 
