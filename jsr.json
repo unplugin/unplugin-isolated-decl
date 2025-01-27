@@ -1,6 +1,6 @@
 {
   "name": "@unplugin/isolated-decl",
-  "version": "0.10.5",
+  "version": "0.10.6",
   "exports": {
     "./index": "./src/index.ts",
     "./api": "./src/api.ts",
