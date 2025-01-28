@@ -151,4 +151,20 @@ describe.concurrent('rollup', () => {
 
     await expectSnapshot(dist, `rollup/${dir}`, expect)
   })
+
+  test('ignore errors', async ({ expect }) => {
+    const dir = 'ignore-errors'
+    const input = path.resolve(fixtures, dir, 'main.ts')
+    const dist = path.resolve(TEST_SANDBOX_FOLDER, dir)
+
+    const bundle = await rollup({
+      input,
+      plugins: [UnpluginIsolatedDecl({ ignoreErrors: true }), esbuild()],
+      logLevel: 'silent',
+    })
+
+    await bundle.write({ dir: dist })
+
+    await expectSnapshot(dist, `rollup/${dir}`, expect)
+  })
 })
