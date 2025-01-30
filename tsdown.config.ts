@@ -10,4 +10,5 @@ export default defineConfig({
       patchCjsDefaultExport: true,
     }),
   ],
+  publint: true,
 })
