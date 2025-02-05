@@ -98,11 +98,11 @@
     }
   },
   "dependencies": {
-    "@rollup/pluginutils": "^5.1.4",
     "debug": "^4.4.0",
     "magic-string": "^0.30.17",
     "oxc-parser": "^0.48.1",
-    "unplugin": "^2.1.2"
+    "unplugin": "^2.1.2",
+    "unplugin-utils": "^0.2.0"
   },
   "devDependencies": {
     "@farmfe/core": "^1.6.6",

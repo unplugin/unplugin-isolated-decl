@@ -8,9 +8,6 @@ importers:
 
   .:
     dependencies:
-      '@rollup/pluginutils':
-        specifier: ^5.1.4
-        version: 5.1.4(rollup@4.32.1)
       debug:
         specifier: ^4.4.0
         version: 4.4.0
@@ -23,6 +20,9 @@ importers:
       unplugin:
         specifier: ^2.1.2
         version: 2.1.2
+      unplugin-utils:
+        specifier: ^0.2.0
+        version: 0.2.0
     devDependencies:
       '@farmfe/core':
         specifier: ^1.6.6
@@ -3124,6 +3124,10 @@ packages:
   unplugin-unused@0.3.0:
     resolution: {integrity: sha512-Rvh1xqD5yMWBwBiJ5Iv0J1gRZzBEvojnWxQw+3riawJFWrbSznmuv1qom2quWSksPMGN/v4c9q1xtW7KjYFUhA==}
     engines: {node: '>=18.12.0'}
+
+  unplugin-utils@0.2.0:
+    resolution: {integrity: sha512-EOZMReV+C8W/VRmWvWYUk4cIZEbZLcgRKtkI/+iNQopnk9+LBpafku+8vXozOn4ju0oZBmz0KpqmV4eEzHhWgg==}
+    engines: {node: '>=20.18.0'}
 
   unplugin@2.1.2:
     resolution: {integrity: sha512-Q3LU0e4zxKfRko1wMV2HmP8lB9KWislY7hxXpxd+lGx0PRInE4vhMBVEZwpdVYHvtqzhSrzuIfErsob6bQfCzw==}
@@ -6522,6 +6526,11 @@ snapshots:
       unplugin: 2.1.2
     transitivePeerDependencies:
       - rollup
+
+  unplugin-utils@0.2.0:
+    dependencies:
+      pathe: 2.0.2
+      picomatch: 4.0.2
 
   unplugin@2.1.2:
     dependencies:

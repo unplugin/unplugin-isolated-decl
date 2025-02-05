@@ -5,7 +5,6 @@
 
 import { mkdir, readFile, writeFile } from 'node:fs/promises'
 import path from 'node:path'
-import { createFilter } from '@rollup/pluginutils'
 import MagicString from 'magic-string'
 import { parseAsync } from 'oxc-parser'
 import {
@@ -14,6 +13,7 @@ import {
   type UnpluginContext,
   type UnpluginInstance,
 } from 'unplugin'
+import { createFilter } from 'unplugin-utils'
 import { filterImports, rewriteImports, type OxcImport } from './core/ast'
 import { resolveOptions, type Options } from './core/options'
 import {
