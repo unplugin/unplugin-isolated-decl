@@ -19,4 +19,6 @@ import { IsolatedDecl } from './index'
  * }
  * ```
  */
-export default IsolatedDecl.rollup as typeof IsolatedDecl.rollup
+const rollup = IsolatedDecl.rollup as typeof IsolatedDecl.rollup
+export default rollup
+export { rollup as 'module.exports' }

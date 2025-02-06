@@ -21,8 +21,8 @@ importers:
         specifier: ^2.1.2
         version: 2.1.2
       unplugin-utils:
-        specifier: ^0.2.0
-        version: 0.2.0
+        specifier: ^0.2.3
+        version: 0.2.3
     devDependencies:
       '@farmfe/core':
         specifier: ^1.6.6
@@ -40,8 +40,8 @@ importers:
         specifier: ^5.0.1
         version: 5.0.1(@types/eslint@9.6.1)(@typescript-eslint/eslint-plugin@8.23.0(@typescript-eslint/parser@8.23.0(eslint@9.19.0(jiti@2.4.2))(typescript@5.7.3))(eslint@9.19.0(jiti@2.4.2))(typescript@5.7.3))(eslint@9.19.0(jiti@2.4.2))(typescript@5.7.3)
       '@sxzz/prettier-config':
-        specifier: ^2.1.1
-        version: 2.1.1
+        specifier: ^2.1.2
+        version: 2.1.2
       '@sxzz/test-utils':
         specifier: ^0.5.1
         version: 0.5.1(esbuild@0.24.2)(rolldown@1.0.0-beta.3(@babel/runtime@7.26.7)(typescript@5.7.3))(rollup@4.34.4)(vitest@3.0.5(@types/debug@4.1.12)(@types/node@22.13.1)(jiti@2.4.2)(tsx@4.19.2)(yaml@2.7.0))
@@ -76,14 +76,14 @@ importers:
         specifier: ^4.34.4
         version: 4.34.4
       rollup-plugin-esbuild:
-        specifier: ^6.1.1
-        version: 6.1.1(esbuild@0.24.2)(rollup@4.34.4)
+        specifier: ^6.2.0
+        version: 6.2.0(esbuild@0.24.2)(rollup@4.34.4)
       tinyglobby:
         specifier: ^0.2.10
         version: 0.2.10
       tsdown:
-        specifier: ^0.5.7
-        version: 0.5.7(@babel/runtime@7.26.7)(@swc/core@1.10.14(@swc/helpers@0.5.15))(oxc-transform@0.48.2)(typescript@5.7.3)
+        specifier: ^0.5.8
+        version: 0.5.8(@babel/runtime@7.26.7)(@swc/core@1.10.14(@swc/helpers@0.5.15))(oxc-transform@0.48.2)(typescript@5.7.3)
       tsx:
         specifier: ^4.19.2
         version: 4.19.2
@@ -820,15 +820,6 @@ packages:
       rollup:
         optional: true
 
-  '@rollup/pluginutils@5.1.4':
-    resolution: {integrity: sha512-USm05zrsFxYLPdWWq+K3STlWiT/3ELn3RcV5hJMghpeAIhxfsUIg6mt12CBJBInWMV4VneoV7SfGv8xIwo2qNQ==}
-    engines: {node: '>=14.0.0'}
-    peerDependencies:
-      rollup: ^1.20.0||^2.0.0||^3.0.0||^4.0.0
-    peerDependenciesMeta:
-      rollup:
-        optional: true
-
   '@rollup/rollup-android-arm-eabi@4.34.4':
     resolution: {integrity: sha512-gGi5adZWvjtJU7Axs//CWaQbQd/vGy8KGcnEaCWiyCqxWYDxwIlAHFuSe6Guoxtd0SRvSfVTDMPd5H+4KE2kKA==}
     cpu: [arm]
@@ -1012,8 +1003,8 @@ packages:
       '@unocss/eslint-plugin':
         optional: true
 
-  '@sxzz/prettier-config@2.1.1':
-    resolution: {integrity: sha512-owu4VkMj7838H60tbUP+Rty/rtx2BsHShDPU3pn67o94NVZO4mJ3vHxkxjmQwbrdKfDLNTLJMDq5PrVFo6CVfg==}
+  '@sxzz/prettier-config@2.1.2':
+    resolution: {integrity: sha512-i6jyRhteHVFeoXQyPl6nQZ/i+yQuEd1UUDKbNQyKXkEBtakjwmqst2pGb81d7F6/B/ntNOoW8TKALni3uCWcHQ==}
 
   '@sxzz/test-utils@0.5.1':
     resolution: {integrity: sha512-/2b/31ny6VhJTtZm05pXISmJSbuR4pbLLxsOSRZ7EN5zsTaauqVGqZO3grQYZCuQddZFubFBQQ2SxO7dRM3aIQ==}
@@ -1514,8 +1505,8 @@ packages:
   ee-first@1.1.1:
     resolution: {integrity: sha512-WMwm9LhRUo+WUaRN+vRuETqG89IgZphVSNkdFgeb6sS/E4OrDIN7t48CAewSHXc6C8lefD8KKfr5vY61brQlow==}
 
-  electron-to-chromium@1.5.92:
-    resolution: {integrity: sha512-BeHgmNobs05N1HMmMZ7YIuHfYBGlq/UmvlsTgg+fsbFs9xVMj+xJHFg19GN04+9Q+r8Xnh9LXqaYIyEWElnNgQ==}
+  electron-to-chromium@1.5.94:
+    resolution: {integrity: sha512-v+oaMuy6AgwZ6Hi2u5UgcM3wxzeFscBTsZBQL2FoDTx/T6k1XEQKz++8fe1VlQ3zjXB6hcvy5JPb5ZSkmVtdIQ==}
 
   encodeurl@1.0.2:
     resolution: {integrity: sha512-TPJXq8JqFaVYm2CWmPvnP2Iyo4ZSM7/QKcSmuMLDObfpH5fi7RUGmd/rTDf+rut/saiDiQEeVTNgAmJEdAOx0w==}
@@ -1762,9 +1753,6 @@ packages:
   estraverse@5.3.0:
     resolution: {integrity: sha512-MMdARuVEQziNTeJD8DgMqmhwR11BRQ/cBP+pLtYdSTnf3MIO8fFeiINEbX36ZdNlfU/7A9f3gUw49B3oQsvwBA==}
     engines: {node: '>=4.0'}
-
-  estree-walker@2.0.2:
-    resolution: {integrity: sha512-Rfkk/Mp/DL7JVje3u18FxFujQlTNR2q6QfMSMB7AvCBx91NGj/ba3kCfza0f6dVDbw7YlRf/nDrn7pQrCCyQ/w==}
 
   estree-walker@3.0.3:
     resolution: {integrity: sha512-7RUKfXgSMMkzt6ZuXmqapOurLGPPfgj6l9uRZ7lRGolvk0y2yocc35LdcxKC5PQZdn2DMqioAQ2NoWcrTKmm6g==}
@@ -2817,8 +2805,8 @@ packages:
       rollup: ^3.29.4 || ^4
       typescript: ^4.5 || ^5.0
 
-  rollup-plugin-esbuild@6.1.1:
-    resolution: {integrity: sha512-CehMY9FAqJD5OUaE/Mi1r5z0kNeYxItmRO2zG4Qnv2qWKF09J2lTy5GUzjJR354ZPrLkCj4fiBN41lo8PzBUhw==}
+  rollup-plugin-esbuild@6.2.0:
+    resolution: {integrity: sha512-LbkHaCahA6ceyWzAd6md2yajNS+HfZmZ5o58ShkZp0cQeZOnZECG2D2xWFNBq5SF6X6pfMK2udkZ+wRtvpzyVQ==}
     engines: {node: '>=14.18.0'}
     peerDependencies:
       esbuild: '>=0.18.0'
@@ -3031,8 +3019,8 @@ packages:
     peerDependencies:
       typescript: '>=4.8.4'
 
-  tsdown@0.5.7:
-    resolution: {integrity: sha512-vtrG2gWuZmsLpoC0fsc9ajhiybm9au4jm7TZ/HhO0vpyK2S7WYOmSq8VwKyUeO84HNsx41zRcaXSPs4Llh1wsQ==}
+  tsdown@0.5.8:
+    resolution: {integrity: sha512-7ztoVkd/PuGn4F4zhF6yTY0PmekU+SI2nPXO5nSMxxEF2B/J5iII6dDPcSVaP4zVxK0AZGTDiHRgtC6m0Suj6g==}
     engines: {node: '>=18.0.0'}
     hasBin: true
 
@@ -3113,8 +3101,8 @@ packages:
     resolution: {integrity: sha512-gptHNQghINnc/vTGIk0SOFGFNXw7JVrlRUtConJRlvaw6DuX0wO5Jeko9sWrMBhh+PsYAZ7oXAiOnf/UKogyiw==}
     engines: {node: '>= 10.0.0'}
 
-  unplugin-isolated-decl@0.10.6:
-    resolution: {integrity: sha512-dZxD4gQMH52AzYTKVlYRbKYfce1TE6Dm9dWaV3PHNL5jrG6UnlH43bUPzXGElkXjN0not2unsyq5CvDmBUWPCw==}
+  unplugin-isolated-decl@0.10.7:
+    resolution: {integrity: sha512-7eSgUicXr2A2KfWhlpbQgxJ8lJoSCrK0lEiovQx1oRmOJo4hTnjHMQTjyITS3mh7Y41UliGP7Z0czkC7eZRAwQ==}
     engines: {node: '>=18.12.0'}
     peerDependencies:
       '@swc/core': ^1.6.6
@@ -3128,13 +3116,13 @@ packages:
       typescript:
         optional: true
 
-  unplugin-unused@0.3.0:
-    resolution: {integrity: sha512-Rvh1xqD5yMWBwBiJ5Iv0J1gRZzBEvojnWxQw+3riawJFWrbSznmuv1qom2quWSksPMGN/v4c9q1xtW7KjYFUhA==}
+  unplugin-unused@0.4.0:
+    resolution: {integrity: sha512-xjP9js8L51/oFN4X3xVWhdfCKPRWE0jWl4Y887U1eJ9PRZOdgX5PphuNqz/zIgSGa5akNoxJ2LpjlpzKDMGXFA==}
     engines: {node: '>=18.12.0'}
 
-  unplugin-utils@0.2.0:
-    resolution: {integrity: sha512-EOZMReV+C8W/VRmWvWYUk4cIZEbZLcgRKtkI/+iNQopnk9+LBpafku+8vXozOn4ju0oZBmz0KpqmV4eEzHhWgg==}
-    engines: {node: '>=20.18.0'}
+  unplugin-utils@0.2.3:
+    resolution: {integrity: sha512-unB2e2ogZwEoMw/X0Gq1vj2jaRKLmTh9wcSEJggESPllcrZI68uO7B8ykixbXqsSwG8r9T7qaHZudXIC/3qvhw==}
+    engines: {node: '>=18.12.0'}
 
   unplugin@2.1.2:
     resolution: {integrity: sha512-Q3LU0e4zxKfRko1wMV2HmP8lB9KWislY7hxXpxd+lGx0PRInE4vhMBVEZwpdVYHvtqzhSrzuIfErsob6bQfCzw==}
@@ -3954,14 +3942,6 @@ snapshots:
     optionalDependencies:
       rollup: 4.34.4
 
-  '@rollup/pluginutils@5.1.4(rollup@4.34.4)':
-    dependencies:
-      '@types/estree': 1.0.6
-      estree-walker: 2.0.2
-      picomatch: 4.0.2
-    optionalDependencies:
-      rollup: 4.34.4
-
   '@rollup/rollup-android-arm-eabi@4.34.4':
     optional: true
 
@@ -4112,12 +4092,12 @@ snapshots:
       - supports-color
       - typescript
 
-  '@sxzz/prettier-config@2.1.1': {}
+  '@sxzz/prettier-config@2.1.2': {}
 
   '@sxzz/test-utils@0.5.1(esbuild@0.24.2)(rolldown@1.0.0-beta.3(@babel/runtime@7.26.7)(typescript@5.7.3))(rollup@4.34.4)(vitest@3.0.5(@types/debug@4.1.12)(@types/node@22.13.1)(jiti@2.4.2)(tsx@4.19.2)(yaml@2.7.0))':
     dependencies:
       tinyglobby: 0.2.10
-      unplugin-utils: 0.2.0
+      unplugin-utils: 0.2.3
       vitest: 3.0.5(@types/debug@4.1.12)(@types/node@22.13.1)(jiti@2.4.2)(tsx@4.19.2)(yaml@2.7.0)
     optionalDependencies:
       esbuild: 0.24.2
@@ -4368,7 +4348,7 @@ snapshots:
   browserslist@4.24.4:
     dependencies:
       caniuse-lite: 1.0.30001697
-      electron-to-chromium: 1.5.92
+      electron-to-chromium: 1.5.94
       node-releases: 2.0.19
       update-browserslist-db: 1.1.2(browserslist@4.24.4)
 
@@ -4611,7 +4591,7 @@ snapshots:
 
   ee-first@1.1.1: {}
 
-  electron-to-chromium@1.5.92: {}
+  electron-to-chromium@1.5.94: {}
 
   encodeurl@1.0.2: {}
 
@@ -4980,8 +4960,6 @@ snapshots:
       estraverse: 5.3.0
 
   estraverse@5.3.0: {}
-
-  estree-walker@2.0.2: {}
 
   estree-walker@3.0.3:
     dependencies:
@@ -6215,14 +6193,14 @@ snapshots:
     optionalDependencies:
       '@babel/code-frame': 7.26.2
 
-  rollup-plugin-esbuild@6.1.1(esbuild@0.24.2)(rollup@4.34.4):
+  rollup-plugin-esbuild@6.2.0(esbuild@0.24.2)(rollup@4.34.4):
     dependencies:
-      '@rollup/pluginutils': 5.1.4(rollup@4.34.4)
       debug: 4.4.0
       es-module-lexer: 1.6.0
       esbuild: 0.24.2
       get-tsconfig: 4.10.0
       rollup: 4.34.4
+      unplugin-utils: 0.2.3
     transitivePeerDependencies:
       - supports-color
 
@@ -6416,7 +6394,7 @@ snapshots:
     dependencies:
       typescript: 5.7.3
 
-  tsdown@0.5.7(@babel/runtime@7.26.7)(@swc/core@1.10.14(@swc/helpers@0.5.15))(oxc-transform@0.48.2)(typescript@5.7.3):
+  tsdown@0.5.8(@babel/runtime@7.26.7)(@swc/core@1.10.14(@swc/helpers@0.5.15))(oxc-transform@0.48.2)(typescript@5.7.3):
     dependencies:
       cac: 6.7.14
       chokidar: 4.0.3
@@ -6431,8 +6409,8 @@ snapshots:
       rollup-plugin-dts: 6.1.1(rollup@4.34.4)(typescript@5.7.3)
       tinyglobby: 0.2.10
       unconfig: 0.6.1
-      unplugin-isolated-decl: 0.10.6(@swc/core@1.10.14(@swc/helpers@0.5.15))(oxc-transform@0.48.2)(rollup@4.34.4)(typescript@5.7.3)
-      unplugin-unused: 0.3.0(rollup@4.34.4)
+      unplugin-isolated-decl: 0.10.7(@swc/core@1.10.14(@swc/helpers@0.5.15))(oxc-transform@0.48.2)(typescript@5.7.3)
+      unplugin-unused: 0.4.0
     transitivePeerDependencies:
       - '@babel/runtime'
       - '@swc/core'
@@ -6515,32 +6493,29 @@ snapshots:
 
   universalify@2.0.1: {}
 
-  unplugin-isolated-decl@0.10.6(@swc/core@1.10.14(@swc/helpers@0.5.15))(oxc-transform@0.48.2)(rollup@4.34.4)(typescript@5.7.3):
+  unplugin-isolated-decl@0.10.7(@swc/core@1.10.14(@swc/helpers@0.5.15))(oxc-transform@0.48.2)(typescript@5.7.3):
     dependencies:
-      '@rollup/pluginutils': 5.1.4(rollup@4.34.4)
       debug: 4.4.0
       magic-string: 0.30.17
       oxc-parser: 0.48.2
       unplugin: 2.1.2
+      unplugin-utils: 0.2.3
     optionalDependencies:
       '@swc/core': 1.10.14(@swc/helpers@0.5.15)
       oxc-transform: 0.48.2
       typescript: 5.7.3
     transitivePeerDependencies:
-      - rollup
       - supports-color
 
-  unplugin-unused@0.3.0(rollup@4.34.4):
+  unplugin-unused@0.4.0:
     dependencies:
-      '@rollup/pluginutils': 5.1.4(rollup@4.34.4)
       js-tokens: 9.0.1
       picocolors: 1.1.1
       pkg-types: 1.3.1
       unplugin: 2.1.2
-    transitivePeerDependencies:
-      - rollup
+      unplugin-utils: 0.2.3
 
-  unplugin-utils@0.2.0:
+  unplugin-utils@0.2.3:
     dependencies:
       pathe: 2.0.2
       picomatch: 4.0.2

@@ -19,4 +19,6 @@ import { IsolatedDecl } from './index'
  * }
  * ```
  */
-export default IsolatedDecl.farm as typeof IsolatedDecl.farm
+const farm = IsolatedDecl.farm as typeof IsolatedDecl.farm
+export default farm
+export { farm as 'module.exports' }

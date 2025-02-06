@@ -11,12 +11,14 @@ import { IsolatedDecl } from './index'
  *
  * @example
  * ```ts
- * // vite.config.js
+ * // vite.config.ts
  * import IsolatedDecl from 'unplugin-isolated-decl/vite'
  *
- * export default {
+ * export default defineConfig({
  *   plugins: [IsolatedDecl()],
- * }
+ * })
  * ```
  */
-export default IsolatedDecl.vite as typeof IsolatedDecl.vite
+const vite = IsolatedDecl.vite as typeof IsolatedDecl.vite
+export default vite
+export { vite as 'module.exports' }

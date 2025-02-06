@@ -1,7 +1,7 @@
 {
   "name": "unplugin-isolated-decl",
   "version": "0.10.7",
-  "packageManager": "pnpm@10.2.0",
+  "packageManager": "pnpm@10.2.1",
   "description": "A blazing-fast tool for generating isolated declarations.",
   "type": "module",
   "keywords": [
@@ -28,38 +28,14 @@
   "module": "./dist/index.js",
   "types": "./dist/index.d.ts",
   "exports": {
-    ".": {
-      "require": "./dist/index.cjs",
-      "import": "./dist/index.js"
-    },
-    "./vite": {
-      "require": "./dist/vite.cjs",
-      "import": "./dist/vite.js"
-    },
-    "./rollup": {
-      "require": "./dist/rollup.cjs",
-      "import": "./dist/rollup.js"
-    },
-    "./rolldown": {
-      "require": "./dist/rolldown.cjs",
-      "import": "./dist/rolldown.js"
-    },
-    "./esbuild": {
-      "require": "./dist/esbuild.cjs",
-      "import": "./dist/esbuild.js"
-    },
-    "./farm": {
-      "require": "./dist/farm.cjs",
-      "import": "./dist/farm.js"
-    },
-    "./api": {
-      "require": "./dist/api.cjs",
-      "import": "./dist/api.js"
-    },
-    "./*": [
-      "./*",
-      "./*.d.ts"
-    ]
+    ".": "./dist/index.js",
+    "./vite": "./dist/vite.js",
+    "./rollup": "./dist/rollup.js",
+    "./rolldown": "./dist/rolldown.js",
+    "./esbuild": "./dist/esbuild.js",
+    "./farm": "./dist/farm.js",
+    "./api": "./dist/api.js",
+    "./*": "./*"
   },
   "typesVersions": {
     "*": {
@@ -102,7 +78,7 @@
     "magic-string": "^0.30.17",
     "oxc-parser": "^0.48.2",
     "unplugin": "^2.1.2",
-    "unplugin-utils": "^0.2.0"
+    "unplugin-utils": "^0.2.3"
   },
   "devDependencies": {
     "@farmfe/core": "^1.6.6",
@@ -110,7 +86,7 @@
     "@rollup/plugin-alias": "^5.1.1",
     "@swc/core": "^1.10.14",
     "@sxzz/eslint-config": "^5.0.1",
-    "@sxzz/prettier-config": "^2.1.1",
+    "@sxzz/prettier-config": "^2.1.2",
     "@sxzz/test-utils": "^0.5.1",
     "@types/debug": "^4.1.12",
     "@types/node": "^22.13.1",
@@ -122,9 +98,9 @@
     "prettier": "^3.4.2",
     "rolldown": "^1.0.0-beta.3",
     "rollup": "^4.34.4",
-    "rollup-plugin-esbuild": "^6.1.1",
+    "rollup-plugin-esbuild": "^6.2.0",
     "tinyglobby": "^0.2.10",
-    "tsdown": "^0.5.7",
+    "tsdown": "^0.5.8",
     "tsx": "^4.19.2",
     "typescript": "^5.7.3",
     "vite": "^6.1.0",
