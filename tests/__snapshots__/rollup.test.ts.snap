@@ -24,12 +24,14 @@ export declare let c: React.JSX.Element;
 export declare let num: Num;
 
 // main.js
+import { jsx } from 'react/jsx-runtime';
+
 function Component() {
-  return /* @__PURE__ */ React.createElement("div", null, "I'm a div in a tsx component!");
+	return jsx("div", { children: "I'm a div in a tsx component!" });
 }
 
 function hello(s) {
-  return "hello" + s;
+	return "hello" + s;
 }
 let c = Component;
 let num = 1;

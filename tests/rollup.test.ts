@@ -2,7 +2,7 @@ import path from 'node:path'
 import alias from '@rollup/plugin-alias'
 import { outputToSnapshot } from '@sxzz/test-utils'
 import { rollup } from 'rollup'
-import esbuild from 'rollup-plugin-esbuild'
+import Oxc from 'unplugin-oxc/rollup'
 import { describe, test } from 'vitest'
 import UnpluginIsolatedDecl from '../src/rollup'
 import { expectSnapshot } from './_utils'
@@ -17,7 +17,7 @@ describe.concurrent('rollup', () => {
 
     const bundle = await rollup({
       input,
-      plugins: [UnpluginIsolatedDecl(), esbuild()],
+      plugins: [UnpluginIsolatedDecl(), Oxc()],
       logLevel: 'silent',
     })
     const result = await bundle.generate({})
@@ -31,7 +31,7 @@ describe.concurrent('rollup', () => {
 
     const bundle = await rollup({
       input,
-      plugins: [UnpluginIsolatedDecl(), esbuild()],
+      plugins: [UnpluginIsolatedDecl(), Oxc()],
       logLevel: 'silent',
     })
     const result = await bundle.generate({})
@@ -46,7 +46,7 @@ describe.concurrent('rollup', () => {
 
     const bundle = await rollup({
       input,
-      plugins: [UnpluginIsolatedDecl({ extraOutdir: 'types' }), esbuild()],
+      plugins: [UnpluginIsolatedDecl({ extraOutdir: 'types' }), Oxc()],
       logLevel: 'silent',
     })
     await bundle.write({ dir: dist })
@@ -68,7 +68,7 @@ describe.concurrent('rollup', () => {
         UnpluginIsolatedDecl({
           sourceMap: true,
         }),
-        esbuild(),
+        Oxc(),
       ],
       logLevel: 'silent',
     })
@@ -97,7 +97,7 @@ describe.concurrent('rollup', () => {
         UnpluginIsolatedDecl({
           sourceMap: true,
         }),
-        esbuild(),
+        Oxc(),
       ],
       logLevel: 'silent',
     })
@@ -126,7 +126,7 @@ describe.concurrent('rollup', () => {
             }
           },
         }),
-        esbuild(),
+        Oxc(),
       ],
       logLevel: 'silent',
     })
@@ -143,7 +143,7 @@ describe.concurrent('rollup', () => {
 
     const bundle = await rollup({
       input,
-      plugins: [UnpluginIsolatedDecl(), esbuild()],
+      plugins: [UnpluginIsolatedDecl(), Oxc()],
       logLevel: 'silent',
     })
 
@@ -159,7 +159,7 @@ describe.concurrent('rollup', () => {
 
     const bundle = await rollup({
       input,
-      plugins: [UnpluginIsolatedDecl({ ignoreErrors: true }), esbuild()],
+      plugins: [UnpluginIsolatedDecl({ ignoreErrors: true }), Oxc()],
       logLevel: 'silent',
     })
 

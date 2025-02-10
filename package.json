@@ -98,11 +98,11 @@
     "prettier": "^3.4.2",
     "rolldown": "^1.0.0-beta.3",
     "rollup": "^4.34.4",
-    "rollup-plugin-esbuild": "^6.2.0",
     "tinyglobby": "^0.2.10",
     "tsdown": "^0.5.8",
     "tsx": "^4.19.2",
     "typescript": "^5.7.3",
+    "unplugin-oxc": "https://pkg.pr.new/unplugin/unplugin-oxc@a403eed",
     "vite": "^6.1.0",
     "vitest": "^3.0.5"
   },

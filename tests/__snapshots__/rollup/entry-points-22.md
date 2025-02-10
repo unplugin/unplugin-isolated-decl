@@ -17,11 +17,12 @@ export declare function ComponentA(props: ComponentAProps): React.JSX.Element;
 ## a/ComponentA/ComponentA/index.js
 
 ```js
-import React from 'react';
+import 'react';
+import { jsxs, Fragment } from 'react/jsx-runtime';
 
 function ComponentA(props) {
-  const { test } = props;
-  return /* @__PURE__ */ React.createElement(React.Fragment, null, "ComponentA: ", test);
+	const { test } = props;
+	return jsxs(Fragment, { children: ["ComponentA: ", test] });
 }
 
 export { ComponentA };
@@ -77,11 +78,12 @@ export {};
 ## b/ComponentB/ComponentB/index.js
 
 ```js
-import React from 'react';
+import 'react';
+import { jsxs, Fragment } from 'react/jsx-runtime';
 
 function ComponentB(props) {
-  const { test } = props;
-  return /* @__PURE__ */ React.createElement(React.Fragment, null, "ComponentB: ", test);
+	const { test } = props;
+	return jsxs(Fragment, { children: ["ComponentB: ", test] });
 }
 
 export { ComponentB };
