@@ -111,6 +111,7 @@
   },
   "prettier": "@sxzz/prettier-config",
   "resolutions": {
-    "unplugin-isolated-decl": "workspace:*"
+    "unplugin-isolated-decl": "-",
+    "@changesets/cli": "-"
   }
 }
