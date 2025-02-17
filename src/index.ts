@@ -426,34 +426,36 @@ async function resolve(
   importer: string,
 ): Promise<{ id: string; external: boolean } | undefined> {
   const nativeContext = context.getNativeBuildContext?.()
-  switch (nativeContext?.framework) {
-    case 'esbuild': {
-      const resolved = await nativeContext?.build.resolve(id, {
-        importer,
-        resolveDir: path.dirname(importer),
-        kind: 'import-statement',
-      })
-      return {
-        id: resolved?.path,
-        external: resolved?.external,
+  try {
+    switch (nativeContext?.framework) {
+      case 'esbuild': {
+        const resolved = await nativeContext?.build.resolve(id, {
+          importer,
+          resolveDir: path.dirname(importer),
+          kind: 'import-statement',
+        })
+        return {
+          id: resolved?.path,
+          external: resolved?.external,
+        }
+      }
+      case 'farm': {
+        const resolved = await nativeContext?.context.resolve(
+          { source: id, importer, kind: 'import' },
+          {
+            meta: {},
+            caller: 'unplugin-isolated-decl',
+          },
+        )
+        return { id: resolved.resolvedPath, external: !!resolved.external }
+      }
+      default: {
+        const resolved = await (context as PluginContext).resolve(id, importer)
+        if (!resolved) return
+        return { id: resolved.id, external: !!resolved.external }
       }
     }
-    case 'farm': {
-      const resolved = await nativeContext?.context.resolve(
-        { source: id, importer, kind: 'import' },
-        {
-          meta: {},
-          caller: 'unplugin-isolated-decl',
-        },
-      )
-      return { id: resolved.resolvedPath, external: !!resolved.external }
-    }
-    default: {
-      const resolved = await (context as PluginContext).resolve(id, importer)
-      if (!resolved) return
-      return { id: resolved.id, external: !!resolved.external }
-    }
-  }
+  } catch {}
 }
 
 function patchCjsDefaultExport(source: string) {
