@@ -111,7 +111,7 @@
   },
   "prettier": "@sxzz/prettier-config",
   "resolutions": {
-    "unplugin-isolated-decl": "-",
-    "@changesets/cli": "-"
+    "@changesets/cli": "-",
+    "unplugin-isolated-decl": "-"
   }
 }
