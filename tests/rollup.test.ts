@@ -167,4 +167,26 @@ describe.concurrent('rollup', () => {
 
     await expectSnapshot(dist, `rollup/${dir}`, expect)
   })
+
+  test('oxc options', async ({ expect }) => {
+    const dir = 'oxc-options'
+    const input = path.resolve(fixtures, dir, 'main.ts')
+    const dist = path.resolve(TEST_SANDBOX_FOLDER, dir)
+
+    const bundle = await rollup({
+      input,
+      plugins: [
+        UnpluginIsolatedDecl({
+          transformer: 'oxc',
+          transformOptions: { stripInternal: true },
+        }),
+        Oxc(),
+      ],
+      logLevel: 'silent',
+    })
+
+    await bundle.write({ dir: dist })
+
+    await expectSnapshot(dist, `rollup/${dir}`, expect)
+  })
 })

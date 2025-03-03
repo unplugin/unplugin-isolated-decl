@@ -114,7 +114,10 @@ export const IsolatedDecl: UnpluginInstance<Options | undefined, false> =
       let result: TransformResult
       switch (options.transformer) {
         case 'oxc':
-          result = await oxcTransform(id, code, options.sourceMap)
+          result = await oxcTransform(id, code, {
+            ...options.transformOptions,
+            sourcemap: options.sourceMap,
+          })
           break
         case 'swc':
           result = await swcTransform(id, code)
@@ -123,7 +126,7 @@ export const IsolatedDecl: UnpluginInstance<Options | undefined, false> =
           result = await tsTransform(
             id,
             code,
-            (options as any).transformOptions,
+            options.transformOptions,
             options.sourceMap,
           )
           break

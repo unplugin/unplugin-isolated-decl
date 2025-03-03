@@ -1,3 +1,4 @@
+import type { IsolatedDeclarationsOptions } from 'oxc-transform'
 import type { TranspileOptions } from 'typescript'
 import type { FilterPattern } from 'unplugin-utils'
 
@@ -30,10 +31,16 @@ export type Options = {
 } & (
   | {
       /**
-       * `oxc-transform` or `@swc/core` should be installed yourself
-       * if you want to use `oxc` or `swc` transformer.
+       * `@swc/core` should be installed yourself.
        */
-      transformer?: 'oxc' | 'swc'
+      transformer?: 'swc'
+    }
+  | {
+      /**
+       * `oxc-transform` should be installed yourself.
+       */
+      transformer?: 'oxc'
+      transformOptions?: Omit<IsolatedDeclarationsOptions, 'sourceMap'>
     }
   | {
       /**
@@ -49,7 +56,7 @@ export type Options = {
 type Overwrite<T, U> = Pick<T, Exclude<keyof T, keyof U>> & U
 
 export type OptionsResolved = Overwrite<
-  Required<Options>,
+  Required<Options> & { transformOptions?: any },
   Pick<Options, 'enforce' | 'extraOutdir' | 'rewriteImports' | 'inputBase'>
 >
 
@@ -65,5 +72,6 @@ export function resolveOptions(options: Options): OptionsResolved {
     patchCjsDefaultExport: options.patchCjsDefaultExport || false,
     rewriteImports: options.rewriteImports,
     inputBase: options.inputBase,
+    transformOptions: (options as any).transformOptions,
   }
 }
