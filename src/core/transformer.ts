@@ -1,4 +1,5 @@
 import path from 'node:path'
+import type { IsolatedDeclarationsOptions } from 'oxc-transform'
 import type { CompilerOptions, TranspileOptions } from 'typescript'
 
 export interface TransformResult {
@@ -17,7 +18,7 @@ function tryImport<T>(pkg: string): Promise<T | null> {
 export async function oxcTransform(
   id: string,
   code: string,
-  sourceMap?: boolean,
+  transformOptions?: IsolatedDeclarationsOptions,
 ): Promise<TransformResult> {
   const oxc = await tryImport<typeof import('oxc-transform')>('oxc-transform')
   if (!oxc) {
@@ -28,7 +29,7 @@ export async function oxcTransform(
       ],
     }
   }
-  const result = oxc.isolatedDeclaration(id, code, { sourcemap: sourceMap })
+  const result = oxc.isolatedDeclaration(id, code, transformOptions)
   return {
     ...result,
     map: result.map?.mappings,
