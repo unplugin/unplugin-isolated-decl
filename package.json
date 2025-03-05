@@ -73,8 +73,8 @@
   "dependencies": {
     "debug": "^4.4.0",
     "magic-string": "^0.30.17",
-    "oxc-parser": "^0.55.0",
-    "oxc-transform": "^0.55.0",
+    "oxc-parser": "^0.54.0",
+    "oxc-transform": "^0.54.0",
     "unplugin": "^2.2.0",
     "unplugin-utils": "^0.2.4"
   },
