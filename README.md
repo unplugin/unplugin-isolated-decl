@@ -101,12 +101,11 @@ export interface Options {
   exclude?: FilterPattern
   enforce?: 'pre' | 'post' | undefined
   /**
-   * You need to install one of the supported transformers yourself.
-   * oxc: oxc-transform
+   * You should install the transformer manually if you are not using oxc.
    * swc: @swc/core
    * typescript: typescript
    *
-   * @default typescript
+   * @default oxc
    */
   transformer?: 'oxc' | 'swc' | 'typescript'
   /**

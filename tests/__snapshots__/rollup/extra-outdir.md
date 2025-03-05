@@ -7,7 +7,7 @@
 ## types/main.d.ts
 
 ```ts
-export * from './utils/types.js';
+export * from "./utils/types.js";
 
 ```
 ## types/test.d.ts
@@ -19,6 +19,6 @@ export type Str = string;
 ## types/utils/types.d.ts
 
 ```ts
-export * from '../test.js';
+export * from "../test.js";
 
 ```

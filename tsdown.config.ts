@@ -5,6 +5,6 @@ export default defineConfig({
   entry: ['./src/*.ts'],
   format: ['esm'],
   clean: true,
-  plugins: [IsolatedDecl({ transformer: 'oxc' })],
+  plugins: [IsolatedDecl()],
   publint: true,
 })

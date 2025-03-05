@@ -2,7 +2,7 @@
 
 exports[`rollup > custom rewriter 1`] = `
 "// index.d.ts
-export type * from './test.js';
+export type * from "./test.js";
 
 // index.js
 
@@ -17,7 +17,7 @@ exports[`rollup > generate basic 1`] = `
 export declare function Component(): React.JSX.Element;
 
 // main.d.ts
-import { type Num } from './types.js';
+import { type Num } from "./types.js";
 export type Str = string;
 export declare function hello(s: Str): Str;
 export declare let c: React.JSX.Element;
@@ -39,7 +39,7 @@ let num = 1;
 export { c, hello, num };
 
 // types.d.ts
-import type { Num2 } from './types2.js';
+import type { Num2 } from "./types2.js";
 export type Num = Num2;
 
 // types2.d.ts
@@ -49,12 +49,12 @@ export type Num2 = number;
 
 exports[`rollup > keep ext 1`] = `
 "// main.d.ts
-export type {} from './types.js';
-export type {} from './types.js';
-export type {} from './tsx.js';
-export type {} from './tsx.js';
-export type {} from './tsx.js';
-export type {} from './tsx.js';
+export type  {} from "./types.js";
+export type  {} from "./types.js";
+export type  {} from "./tsx.js";
+export type  {} from "./tsx.js";
+export type  {} from "./tsx.js";
+export type  {} from "./tsx.js";
 
 // main.js
 

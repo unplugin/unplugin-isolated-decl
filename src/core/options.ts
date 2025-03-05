@@ -31,21 +31,20 @@ export type Options = {
 } & (
   | {
       /**
-       * `@swc/core` should be installed yourself.
-       */
-      transformer?: 'swc'
-    }
-  | {
-      /**
-       * `oxc-transform` should be installed yourself.
+       * @default 'oxc'
        */
       transformer?: 'oxc'
       transformOptions?: Omit<IsolatedDeclarationsOptions, 'sourceMap'>
     }
   | {
       /**
+       * `@swc/core` should be installed yourself.
+       */
+      transformer?: 'swc'
+    }
+  | {
+      /**
        * `typescript` should be installed yourself.
-       * @default 'typescript'
        */
       transformer?: 'typescript'
       /** Only for typescript transformer */
@@ -66,7 +65,7 @@ export function resolveOptions(options: Options): OptionsResolved {
     exclude: options.exclude || [/node_modules/],
     enforce: 'enforce' in options ? options.enforce : 'pre',
     sourceMap: options.sourceMap || false,
-    transformer: options.transformer || 'typescript',
+    transformer: options.transformer || 'oxc',
     ignoreErrors: options.ignoreErrors || false,
     extraOutdir: options.extraOutdir,
     patchCjsDefaultExport: options.patchCjsDefaultExport || false,

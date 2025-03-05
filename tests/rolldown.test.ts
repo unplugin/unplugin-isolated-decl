@@ -13,7 +13,6 @@ test('rolldown', async () => {
     plugins: [
       UnpluginIsolatedDecl({
         extraOutdir: 'temp',
-        transformer: 'oxc',
       }),
     ],
     logLevel: 'silent',

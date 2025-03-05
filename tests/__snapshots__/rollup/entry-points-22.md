@@ -1,18 +1,19 @@
 ## a/ComponentA/ComponentA/index.d.ts
 
 ```ts
-import React from 'react';
-export { a } from '../../Models/model/index.js';
+import React from "react";
+export { a } from "../../Models/model/index.js";
 interface ComponentAProps {
-    test: string;
+	test: string;
 }
 export declare function ComponentA(props: ComponentAProps): React.JSX.Element;
+
 //# sourceMappingURL=index.d.ts.map
 ```
 ## a/ComponentA/ComponentA/index.d.ts.map
 
 ```map
-{"version":3,"file":"index.d.ts","sourceRoot":"","sources":["../../../../../../fixtures/entry-points-22/a/ComponentA/ComponentA.tsx"],"names":[],"mappings":"AAAA,OAAO,KAAK,MAAM,OAAO,CAAA;AACzB,OAAO,EAAE,CAAC,EAAE,MAAM,iBAAiB,CAAA;AAEnC,UAAU,eAAe;IACvB,IAAI,EAAE,MAAM,CAAA;CACb;AAED,wBAAgB,UAAU,CAAC,KAAK,EAAE,eAAe,GAAG,KAAK,CAAC,GAAG,CAAC,OAAO,CAGpE"}
+{"version":3,"file":"index.d.ts","sourceRoot":"","sources":["../../../../../../fixtures/entry-points-22/a/ComponentA/ComponentA.tsx"],"names":[],"mappings":"AAAA,OAAO,WAAW,OAAO;AACzB,SAAS,SAAS;UAER,gBAAgB;CACxB;AACD;AAED,OAAO,iBAAS,WAAWA,OAAO,kBAAkB,MAAM,IAAI"}
 ```
 ## a/ComponentA/ComponentA/index.js
 
@@ -32,26 +33,28 @@ export { ComponentA };
 
 ```ts
 export interface MyModel {
-    some: string;
+	some: string;
 }
 export declare const a = "b";
+
 //# sourceMappingURL=index.d.ts.map
 ```
 ## a/Models/model/index.d.ts.map
 
 ```map
-{"version":3,"file":"index.d.ts","sourceRoot":"","sources":["../../../../../../fixtures/entry-points-22/a/Models/model.ts"],"names":[],"mappings":"AAAA,MAAM,WAAW,OAAO;IACtB,IAAI,EAAE,MAAM,CAAA;CACb;AACD,eAAO,MAAM,CAAC,MAAM,CAAA"}
+{"version":3,"file":"index.d.ts","sourceRoot":"","sources":["../../../../../../fixtures/entry-points-22/a/Models/model.ts"],"names":[],"mappings":"AAAA,iBAAiB,QAAQ;CACvB;AACD;AACD,OAAO,cAAM,IAAI"}
 ```
 ## a/index.d.ts
 
 ```ts
 export { ComponentA } from "./ComponentA/ComponentA/index.js";
+
 //# sourceMappingURL=index.d.ts.map
 ```
 ## a/index.d.ts.map
 
 ```map
-{"version":3,"file":"index.d.ts","sourceRoot":"","sources":["../../../../fixtures/entry-points-22/a/index.ts"],"names":[],"mappings":"AAAA,OAAO,EAAE,UAAU,EAAE,MAAM,yBAAyB,CAAC"}
+{"version":3,"file":"index.d.ts","sourceRoot":"","sources":["../../../../fixtures/entry-points-22/a/index.ts"],"names":[],"mappings":"AAAA,SAAS,kBAAkB"}
 ```
 ## a/index.js
 
@@ -64,16 +67,17 @@ export { ComponentA } from './ComponentA/ComponentA/index.js';
 ```ts
 import React from "react";
 interface ComponentBProps {
-    test: string;
+	test: string;
 }
 export declare function ComponentB(props: ComponentBProps): React.JSX.Element;
 export {};
+
 //# sourceMappingURL=index.d.ts.map
 ```
 ## b/ComponentB/ComponentB/index.d.ts.map
 
 ```map
-{"version":3,"file":"index.d.ts","sourceRoot":"","sources":["../../../../../../fixtures/entry-points-22/b/ComponentB/ComponentB.tsx"],"names":[],"mappings":"AAAA,OAAO,KAAK,MAAM,OAAO,CAAC;AAE1B,UAAU,eAAe;IACvB,IAAI,EAAE,MAAM,CAAC;CACd;AAED,wBAAgB,UAAU,CAAC,KAAK,EAAE,eAAe,GAAG,KAAK,CAAC,GAAG,CAAC,OAAO,CAGpE"}
+{"version":3,"file":"index.d.ts","sourceRoot":"","sources":["../../../../../../fixtures/entry-points-22/b/ComponentB/ComponentB.tsx"],"names":[],"mappings":"AAAA,OAAO,WAAW,OAAQ;UAEhB,gBAAgB;CACxB;AACD;AAED,OAAO,iBAAS,WAAWA,OAAO,kBAAkB,MAAM,IAAI"}
 ```
 ## b/ComponentB/ComponentB/index.js
 
@@ -93,12 +97,13 @@ export { ComponentB };
 
 ```ts
 export { ComponentB } from "./ComponentB/ComponentB/index.js";
+
 //# sourceMappingURL=index.d.ts.map
 ```
 ## b/index.d.ts.map
 
 ```map
-{"version":3,"file":"index.d.ts","sourceRoot":"","sources":["../../../../fixtures/entry-points-22/b/index.ts"],"names":[],"mappings":"AAAA,OAAO,EAAE,UAAU,EAAE,MAAM,yBAAyB,CAAC"}
+{"version":3,"file":"index.d.ts","sourceRoot":"","sources":["../../../../fixtures/entry-points-22/b/index.ts"],"names":[],"mappings":"AAAA,SAAS,kBAAkB"}
 ```
 ## b/index.js
 
