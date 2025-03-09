@@ -1,7 +1,7 @@
 {
   "name": "unplugin-isolated-decl",
   "version": "0.13.1",
-  "packageManager": "pnpm@10.5.2",
+  "packageManager": "pnpm@10.6.1",
   "description": "A blazing-fast tool for generating isolated declarations.",
   "type": "module",
   "keywords": [
@@ -73,35 +73,35 @@
   "dependencies": {
     "debug": "^4.4.0",
     "magic-string": "^0.30.17",
-    "oxc-parser": "^0.54.0",
-    "oxc-transform": "^0.54.0",
+    "oxc-parser": "^0.56.5",
+    "oxc-transform": "^0.56.5",
     "unplugin": "^2.2.0",
     "unplugin-utils": "^0.2.4"
   },
   "devDependencies": {
-    "@farmfe/core": "^1.6.6",
-    "@oxc-project/types": "^0.55.0",
+    "@farmfe/core": "^1.6.7",
+    "@oxc-project/types": "^0.56.5",
     "@rollup/plugin-alias": "^5.1.1",
-    "@swc/core": "^1.11.7",
-    "@sxzz/eslint-config": "^5.2.0",
-    "@sxzz/prettier-config": "^2.2.0",
+    "@swc/core": "^1.11.8",
+    "@sxzz/eslint-config": "^5.3.0",
+    "@sxzz/prettier-config": "^2.2.1",
     "@sxzz/test-utils": "^0.5.1",
     "@types/debug": "^4.1.12",
-    "@types/node": "^22.13.9",
+    "@types/node": "^22.13.10",
     "bumpp": "^10.0.3",
     "esbuild": "^0.25.0",
-    "eslint": "^9.21.0",
+    "eslint": "^9.22.0",
     "fast-glob": "^3.3.3",
     "prettier": "^3.5.3",
     "rolldown": "^1.0.0-beta.3",
-    "rollup": "^4.34.9",
+    "rollup": "^4.35.0",
     "tinyglobby": "^0.2.12",
-    "tsdown": "^0.6.3",
+    "tsdown": "^0.6.4",
     "tsx": "^4.19.3",
     "typescript": "^5.8.2",
-    "unplugin-oxc": "^0.2.6",
-    "vite": "^6.2.0",
-    "vitest": "^3.0.7"
+    "unplugin-oxc": "^0.2.7",
+    "vite": "^6.2.1",
+    "vitest": "^3.0.8"
   },
   "engines": {
     "node": ">=18.12.0"

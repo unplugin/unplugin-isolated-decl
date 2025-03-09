@@ -23,7 +23,7 @@ import { jsxs, Fragment } from 'react/jsx-runtime';
 
 function ComponentA(props) {
 	const { test } = props;
-	return jsxs(Fragment, { children: ["ComponentA: ", test] });
+	return /* @__PURE__ */ jsxs(Fragment, { children: ["ComponentA: ", test] });
 }
 
 export { ComponentA };
@@ -87,7 +87,7 @@ import { jsxs, Fragment } from 'react/jsx-runtime';
 
 function ComponentB(props) {
 	const { test } = props;
-	return jsxs(Fragment, { children: ["ComponentB: ", test] });
+	return /* @__PURE__ */ jsxs(Fragment, { children: ["ComponentB: ", test] });
 }
 
 export { ComponentB };

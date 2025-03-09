@@ -27,7 +27,7 @@ export declare let num: Num;
 import { jsx } from 'react/jsx-runtime';
 
 function Component() {
-	return jsx("div", { children: "I'm a div in a tsx component!" });
+	return /* @__PURE__ */ jsx("div", { children: "I'm a div in a tsx component!" });
 }
 
 function hello(s) {
