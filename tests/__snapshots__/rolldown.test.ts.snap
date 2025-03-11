@@ -6,7 +6,7 @@ import { jsx } from "react/jsx-runtime";
 
 //#region tests/fixtures/basic/component.tsx
 function Component() {
-	return jsx("div", { children: "I'm a div in a tsx component!" });
+	return /* @__PURE__ */ jsx("div", { children: "I'm a div in a tsx component!" });
 }
 
 //#endregion
