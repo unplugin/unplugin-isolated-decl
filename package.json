@@ -1,7 +1,7 @@
 {
   "name": "unplugin-isolated-decl",
   "version": "0.13.5",
-  "packageManager": "pnpm@10.6.5",
+  "packageManager": "pnpm@10.7.0",
   "description": "A blazing-fast tool for generating isolated declarations.",
   "type": "module",
   "keywords": [
@@ -83,25 +83,25 @@
     "@oxc-project/types": "^0.61.2",
     "@rollup/plugin-alias": "^5.1.1",
     "@swc/core": "^1.11.13",
-    "@sxzz/eslint-config": "^6.1.0",
+    "@sxzz/eslint-config": "^6.1.1",
     "@sxzz/prettier-config": "^2.2.1",
-    "@sxzz/test-utils": "^0.5.2",
+    "@sxzz/test-utils": "^0.5.4",
     "@types/debug": "^4.1.12",
-    "@types/node": "^22.13.13",
+    "@types/node": "^22.13.14",
     "bumpp": "^10.1.0",
-    "esbuild": "^0.25.1",
+    "esbuild": "^0.25.2",
     "eslint": "^9.23.0",
     "fast-glob": "^3.3.3",
     "prettier": "^3.5.3",
     "rolldown": "^1.0.0-beta.7",
-    "rollup": "^4.37.0",
+    "rollup": "^4.38.0",
     "tinyglobby": "^0.2.12",
-    "tsdown": "^0.6.9",
+    "tsdown": "^0.6.10",
     "tsx": "^4.19.3",
     "typescript": "^5.8.2",
     "unplugin-oxc": "^0.3.2",
-    "vite": "^6.2.3",
-    "vitest": "^3.0.9"
+    "vite": "^6.2.4",
+    "vitest": "^3.1.1"
   },
   "engines": {
     "node": ">=18.12.0"
