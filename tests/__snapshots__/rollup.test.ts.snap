@@ -49,12 +49,12 @@ export type Num2 = number;
 
 exports[`rollup > keep ext 1`] = `
 "// main.d.ts
-export type  {} from "./types.js";
-export type  {} from "./types.js";
-export type  {} from "./tsx.js";
-export type  {} from "./tsx.js";
-export type  {} from "./tsx.js";
-export type  {} from "./tsx.js";
+export {} from "./types.js";
+export {} from "./types.js";
+export {} from "./tsx.js";
+export {} from "./tsx.js";
+export {} from "./tsx.js";
+export {} from "./tsx.js";
 
 // main.js
 
