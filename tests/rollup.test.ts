@@ -189,4 +189,20 @@ describe.concurrent('rollup', () => {
 
     await expectSnapshot(dist, `rollup/${dir}`, expect)
   })
+
+  test('type only imports', async ({ expect }) => {
+    const dir = 'type-only'
+    const input = path.resolve(fixtures, dir, 'main.ts')
+    const dist = path.resolve(TEST_SANDBOX_FOLDER, dir)
+
+    const bundle = await rollup({
+      input,
+      plugins: [UnpluginIsolatedDecl(), Oxc()],
+      logLevel: 'silent',
+    })
+
+    await bundle.write({ dir: dist })
+
+    await expectSnapshot(dist, `rollup/${dir}`, expect)
+  })
 })

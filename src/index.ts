@@ -173,27 +173,8 @@ export const IsolatedDecl: UnpluginInstance<Options | undefined, false> =
 
       addOutput(id, { s, imports, map })
 
-      const typeImports = program.body.filter((node): node is OxcImport => {
-        if (!('source' in node) || !node.source) return false
-        if ('importKind' in node && node.importKind === 'type') return true
-        if ('exportKind' in node && node.exportKind === 'type') return true
-
-        if (node.type === 'ImportDeclaration') {
-          return (
-            !!node.specifiers &&
-            node.specifiers.every(
-              (spec) =>
-                spec.type === 'ImportSpecifier' && spec.importKind === 'type',
-            )
-          )
-        }
-        return (
-          node.type === 'ExportNamedDeclaration' &&
-          node.specifiers &&
-          node.specifiers.every((spec) => spec.exportKind === 'type')
-        )
-      })
-      for (const { source } of typeImports) {
+      const importsInDts = filterImports(program)
+      for (const { source } of importsInDts) {
         const resolved = (await resolve(context, source.value, id))?.id
         if (resolved && filter(resolved) && !outputFiles[stripExt(resolved)]) {
           let source: string

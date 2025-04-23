@@ -14,11 +14,7 @@ export type OxcImport = (
 
 export function filterImports(program: OxcTypes.Program): OxcImport[] {
   return program.body.filter(
-    (node): node is OxcImport =>
-      (node.type === 'ImportDeclaration' ||
-        node.type === 'ExportAllDeclaration' ||
-        node.type === 'ExportNamedDeclaration') &&
-      !!node.source,
+    (node): node is OxcImport => !!('source' in node && node.source),
   )
 }
 
