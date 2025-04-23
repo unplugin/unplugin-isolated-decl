@@ -1,7 +1,7 @@
 {
   "name": "unplugin-isolated-decl",
   "version": "0.13.7",
-  "packageManager": "pnpm@10.8.1",
+  "packageManager": "pnpm@10.9.0",
   "description": "A blazing-fast tool for generating isolated declarations.",
   "type": "module",
   "keywords": [
@@ -74,14 +74,14 @@
   "dependencies": {
     "debug": "^4.4.0",
     "magic-string": "^0.30.17",
-    "oxc-parser": "^0.64.0",
-    "oxc-transform": "^0.64.0",
+    "oxc-parser": "^0.65.0",
+    "oxc-transform": "^0.65.0",
     "unplugin": "^2.3.2",
     "unplugin-utils": "^0.2.4"
   },
   "devDependencies": {
     "@farmfe/core": "^1.7.4",
-    "@oxc-project/types": "^0.64.0",
+    "@oxc-project/types": "^0.65.0",
     "@rollup/plugin-alias": "^5.1.1",
     "@swc/core": "^1.11.21",
     "@sxzz/eslint-config": "^6.1.2",
@@ -90,19 +90,19 @@
     "@types/debug": "^4.1.12",
     "@types/node": "^22.14.1",
     "bumpp": "^10.1.0",
-    "esbuild": "^0.25.2",
-    "eslint": "^9.25.0",
+    "esbuild": "^0.25.3",
+    "eslint": "^9.25.1",
     "fast-glob": "^3.3.3",
     "prettier": "^3.5.3",
-    "rolldown": "^1.0.0-beta.7",
+    "rolldown": "^1.0.0-beta.8",
     "rollup": "^4.40.0",
     "tinyglobby": "^0.2.13",
-    "tsdown": "^0.9.1",
+    "tsdown": "^0.9.5",
     "tsx": "^4.19.3",
     "typescript": "^5.8.3",
-    "unplugin-oxc": "^0.3.4",
+    "unplugin-oxc": "^0.3.5",
     "vite": "^6.3.2",
-    "vitest": "^3.1.1"
+    "vitest": "^3.1.2"
   },
   "engines": {
     "node": ">=18.12.0"
