@@ -7,7 +7,7 @@ export type Dep = "dep";
 ## main.d.ts
 
 ```ts
-export { Dep } from "./dep.js";
+export type { Dep } from "./dep.js";
 export declare const main = "main";
 
 ```
