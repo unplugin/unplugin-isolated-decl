@@ -3,8 +3,8 @@ import IsolatedDecl from './src/rolldown'
 
 export default defineConfig({
   entry: ['./src/*.ts'],
-  format: ['esm'],
-  clean: true,
+  dts: false,
   plugins: [IsolatedDecl()],
+  target: false,
   publint: true,
 })
