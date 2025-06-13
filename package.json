@@ -1,7 +1,7 @@
 {
   "name": "unplugin-isolated-decl",
   "version": "0.14.3",
-  "packageManager": "pnpm@10.11.1",
+  "packageManager": "pnpm@10.12.1",
   "description": "A blazing-fast tool for generating isolated declarations.",
   "type": "module",
   "keywords": [
@@ -74,35 +74,35 @@
   "dependencies": {
     "debug": "^4.4.1",
     "magic-string": "^0.30.17",
-    "oxc-parser": "^0.72.2",
-    "oxc-transform": "^0.72.2",
+    "oxc-parser": "^0.73.0",
+    "oxc-transform": "^0.73.0",
     "unplugin": "^2.3.5",
     "unplugin-utils": "^0.2.4"
   },
   "devDependencies": {
     "@farmfe/core": "^1.7.5",
-    "@oxc-project/types": "^0.72.2",
+    "@oxc-project/types": "^0.73.0",
     "@rollup/plugin-alias": "^5.1.1",
-    "@swc/core": "^1.11.31",
+    "@swc/core": "^1.12.1",
     "@sxzz/eslint-config": "^7.0.2",
     "@sxzz/prettier-config": "^2.2.1",
     "@sxzz/test-utils": "^0.5.6",
     "@types/debug": "^4.1.12",
-    "@types/node": "^22.15.29",
+    "@types/node": "^22.15.31",
     "bumpp": "^10.1.1",
     "esbuild": "^0.25.5",
-    "eslint": "^9.28.0",
+    "eslint": "^9.29.0",
     "fast-glob": "^3.3.3",
     "prettier": "^3.5.3",
-    "rolldown": "1.0.0-beta.8-commit.534fde3",
-    "rollup": "^4.41.1",
+    "rolldown": "1.0.0-beta.9-commit.d91dfb5",
+    "rollup": "^4.43.0",
     "tinyglobby": "^0.2.14",
-    "tsdown": "^0.12.6",
-    "tsx": "^4.19.4",
+    "tsdown": "^0.12.7",
+    "tsx": "^4.20.3",
     "typescript": "^5.8.3",
     "unplugin-oxc": "^0.4.5",
     "vite": "^6.3.5",
-    "vitest": "^3.2.1"
+    "vitest": "^3.2.3"
   },
   "engines": {
     "node": ">=20.18.0"
