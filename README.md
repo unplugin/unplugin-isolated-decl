@@ -9,7 +9,10 @@
 - 🚀 **Fast**: Generates `.d.ts` files significantly faster than `tsc`.
 - 🎨 **Transformer**: Support Oxc, SWC, and TypeScript transformer.
 - 📦 **Zero Config**: No configuration required, works out of the box.
-- ✨ **Bundler Support**: Works with Vite, Rollup, esbuild and Farm. (PR of Webpack/Rspack support is welcome)
+- ✨ **Bundler Support**: Works with Vite, Rollup, esbuild and Farm.
+
+> [!TIP]
+> For Rolldown users, you can use the [`rolldown-plugin-dts`](https://github.com/sxzz/rolldown-plugin-dts) for a more powerful and flexible solution.
 
 ## Installation
 
