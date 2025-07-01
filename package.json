@@ -1,6 +1,6 @@
 {
   "name": "unplugin-isolated-decl",
-  "version": "0.14.4",
+  "version": "0.14.5",
   "packageManager": "pnpm@10.12.4",
   "description": "A blazing-fast tool for generating isolated declarations.",
   "type": "module",
