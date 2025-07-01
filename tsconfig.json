@@ -7,10 +7,12 @@
     "moduleResolution": "bundler",
     "resolveJsonModule": true,
     "types": ["node"],
+    "allowImportingTsExtensions": true,
     "strict": true,
     "noUnusedLocals": true,
     "declaration": true,
     "isolatedDeclarations": true,
+    "noEmit": true,
     "esModuleInterop": true,
     "isolatedModules": true,
     "skipLibCheck": true

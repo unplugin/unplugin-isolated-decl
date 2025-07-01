@@ -14,8 +14,8 @@ import {
   type UnpluginInstance,
 } from 'unplugin'
 import { createFilter } from 'unplugin-utils'
-import { filterImports, rewriteImports, type OxcImport } from './core/ast'
-import { resolveOptions, type Options } from './core/options'
+import { filterImports, rewriteImports, type OxcImport } from './core/ast.ts'
+import { resolveOptions, type Options } from './core/options.ts'
 import {
   appendMapUrl,
   generateDtsMap,
@@ -23,14 +23,14 @@ import {
   swcTransform,
   tsTransform,
   type TransformResult,
-} from './core/transformer'
+} from './core/transformer.ts'
 import {
   debug,
   lowestCommonAncestor,
   resolveEntry,
   shouldAddIndex,
   stripExt,
-} from './core/utils'
+} from './core/utils.ts'
 import type {
   JsPlugin,
   NormalizedConfig,

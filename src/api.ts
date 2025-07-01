@@ -1,1 +1,1 @@
-export { oxcTransform, swcTransform, tsTransform } from './core/transformer'
+export { oxcTransform, swcTransform, tsTransform } from './core/transformer.ts'

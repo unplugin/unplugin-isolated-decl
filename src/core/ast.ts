@@ -1,5 +1,5 @@
 import path from 'node:path'
-import { debug, stripExt } from './utils'
+import { debug, stripExt } from './utils.ts'
 import type * as OxcTypes from '@oxc-project/types'
 import type MagicString from 'magic-string'
 

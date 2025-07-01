@@ -4,7 +4,7 @@
  * @module
  */
 
-import { IsolatedDecl } from './index'
+import { IsolatedDecl } from './index.ts'
 
 /**
  * Esbuild plugin
