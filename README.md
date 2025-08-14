@@ -120,7 +120,6 @@ export interface Options {
    */
   sourceMap?: boolean
 
-  /** Only for typescript transformer */
   transformOptions?: TranspileOptions
   ignoreErrors?: boolean
   /** An extra directory layer for output files. */
