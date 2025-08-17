@@ -56,7 +56,7 @@
     "dev": "tsdown --watch",
     "test": "vitest",
     "typecheck": "tsc --noEmit",
-    "release": "bumpp && pnpm publish",
+    "release": "bumpp",
     "prepublishOnly": "pnpm run build"
   },
   "peerDependencies": {
@@ -74,23 +74,23 @@
   "dependencies": {
     "debug": "^4.4.1",
     "magic-string": "^0.30.17",
-    "oxc-parser": ">=0.82.0",
-    "oxc-transform": ">=0.82.0",
-    "unplugin": "^2.3.5",
+    "oxc-parser": ">=0.82.1",
+    "oxc-transform": ">=0.82.1",
+    "unplugin": "^2.3.6",
     "unplugin-utils": "^0.2.5"
   },
   "devDependencies": {
     "@farmfe/core": "^1.7.11",
-    "@oxc-project/types": "^0.82.0",
+    "@oxc-project/types": "^0.82.1",
     "@rollup/plugin-alias": "^5.1.1",
     "@swc/core": "^1.13.3",
     "@sxzz/eslint-config": "^7.1.2",
     "@sxzz/prettier-config": "^2.2.3",
     "@sxzz/test-utils": "^0.5.9",
     "@types/debug": "^4.1.12",
-    "@types/node": "^24.2.1",
+    "@types/node": "^24.3.0",
     "bumpp": "^10.2.3",
-    "esbuild": "^0.25.8",
+    "esbuild": "^0.25.9",
     "eslint": "^9.33.0",
     "fast-glob": "^3.3.3",
     "prettier": "^3.6.2",

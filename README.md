@@ -1,6 +1,9 @@
-# unplugin-isolated-decl [![npm](https://img.shields.io/npm/v/unplugin-isolated-decl.svg)](https://npmjs.com/package/unplugin-isolated-decl) [![jsr](https://jsr.io/badges/@unplugin/isolated-decl)](https://jsr.io/@unplugin/isolated-decl)
+# unplugin-isolated-decl
 
-[![Unit Test](https://github.com/unplugin/unplugin-isolated-decl/actions/workflows/unit-test.yml/badge.svg)](https://github.com/unplugin/unplugin-isolated-decl/actions/workflows/unit-test.yml)
+[![npm version][npm-version-src]][npm-version-href]
+[![npm downloads][npm-downloads-src]][npm-downloads-href]
+[![JSR][jsr-src]][jsr-href]
+[![Unit Test][unit-test-src]][unit-test-href]
 
 ⚡️ A blazing-fast tool for generating isolated declarations.
 
@@ -176,3 +179,14 @@ Patch `export default` in `.d.cts` to `export =`
 ## License
 
 [MIT](./LICENSE) License © 2024-PRESENT [三咲智子](https://github.com/sxzz)
+
+<!-- Badges -->
+
+[npm-version-src]: https://img.shields.io/npm/v/unplugin-isolated-decl.svg
+[npm-version-href]: https://npmjs.com/package/unplugin-isolated-decl
+[npm-downloads-src]: https://img.shields.io/npm/dm/unplugin-isolated-decl
+[npm-downloads-href]: https://www.npmcharts.com/compare/unplugin-isolated-decl?interval=30
+[jsr-src]: https://jsr.io/badges/@unplugin/isolated-decl
+[jsr-href]: https://jsr.io/@unplugin/isolated-decl
+[unit-test-src]: https://github.com/unplugin/unplugin-isolated-decl/actions/workflows/unit-test.yml/badge.svg
+[unit-test-href]: https://github.com/unplugin/unplugin-isolated-decl/actions/workflows/unit-test.yml
