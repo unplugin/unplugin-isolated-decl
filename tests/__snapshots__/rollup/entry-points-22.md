@@ -13,7 +13,7 @@ export declare function ComponentA(props: ComponentAProps): React.JSX.Element;
 ## a/ComponentA/ComponentA/index.d.ts.map
 
 ```map
-{"version":3,"file":"index.d.ts","sourceRoot":"","sources":["../../../../../../fixtures/entry-points-22/a/ComponentA/ComponentA.tsx"],"names":[],"mappings":"AAAA,OAAO,WAAW,OAAO;AACzB,SAAS,SAAS;UAER,gBAAgB;CACxB;AACD;AAED,OAAO,iBAAS,WAAWA,OAAO,kBAAkB,MAAM,IAAI"}
+{"version":3,"file":"index.d.ts","sourceRoot":"","sources":["../../../../../../fixtures/entry-points-22/a/ComponentA/ComponentA.tsx"],"names":[],"mappings":"AAAA,OAAO,WAAW;AAClB,SAAS,SAAS;UAER,gBAAgB;CACxB;AACD;AAED,OAAO,iBAAS,WAAW,OAAO,kBAAkB,MAAM,IAAI"}
 ```
 ## a/ComponentA/ComponentA/index.js
 
@@ -77,7 +77,7 @@ export {};
 ## b/ComponentB/ComponentB/index.d.ts.map
 
 ```map
-{"version":3,"file":"index.d.ts","sourceRoot":"","sources":["../../../../../../fixtures/entry-points-22/b/ComponentB/ComponentB.tsx"],"names":[],"mappings":"AAAA,OAAO,WAAW,OAAQ;UAEhB,gBAAgB;CACxB;AACD;AAED,OAAO,iBAAS,WAAWA,OAAO,kBAAkB,MAAM,IAAI"}
+{"version":3,"file":"index.d.ts","sourceRoot":"","sources":["../../../../../../fixtures/entry-points-22/b/ComponentB/ComponentB.tsx"],"names":[],"mappings":"AAAA,OAAO,WAAW;UAER,gBAAgB;CACxB;AACD;AAED,OAAO,iBAAS,WAAW,OAAO,kBAAkB,MAAM,IAAI"}
 ```
 ## b/ComponentB/ComponentB/index.js
 

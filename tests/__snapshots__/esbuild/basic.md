@@ -24,7 +24,7 @@ export declare let num: Num;
 ## main.d.ts.map
 
 ```map
-{"version":3,"file":"main.d.ts","sourceRoot":"","sources":["../../../../fixtures/basic/main.ts"],"names":[],"mappings":"AAAA,cAAc,WAAW,SAAS;AAElC,YAAY;AAEZ,OAAO,iBAAS,MAAMA,GAAG,MAAM;AAI/B,OAAO,YAAIC,GAAG,MAAM,IAAI;AAExB,OAAO,YAAIC,KAAK"}
+{"version":3,"file":"main.d.ts","sourceRoot":"","sources":["../../../../fixtures/basic/main.ts"],"names":[],"mappings":"AAAA,cAAc,WAAW;AAEzB,YAAY;AAEZ,OAAO,iBAAS,MAAM,GAAG,MAAM;AAI/B,OAAO,YAAIA,GAAG,MAAM,IAAI;AAExB,OAAO,YAAIC,KAAK"}
 ```
 ## types.d.ts
 
@@ -37,7 +37,7 @@ export type Num = Num2;
 ## types.d.ts.map
 
 ```map
-{"version":3,"file":"types.d.ts","sourceRoot":"","sources":["../../../../fixtures/basic/types.ts"],"names":[],"mappings":"AAAA,cAAc,YAAY,UAAU;AACpC,YAAY,MAAM"}
+{"version":3,"file":"types.d.ts","sourceRoot":"","sources":["../../../../fixtures/basic/types.ts"],"names":[],"mappings":"AAAA,cAAc,YAAY;AAC1B,YAAY,MAAM"}
 ```
 ## types2.d.ts
 
