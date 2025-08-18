@@ -178,7 +178,7 @@ Patch `export default` in `.d.cts` to `export =`
 
 ## License
 
-[MIT](./LICENSE) License © 2024-PRESENT [三咲智子](https://github.com/sxzz)
+[MIT](./LICENSE) License © 2024-PRESENT [Kevin Deng](https://github.com/sxzz)
 
 <!-- Badges -->
 
