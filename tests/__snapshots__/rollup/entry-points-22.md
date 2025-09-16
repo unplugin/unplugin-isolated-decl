@@ -10,11 +10,13 @@ export declare function ComponentA(props: ComponentAProps): React.JSX.Element;
 
 //# sourceMappingURL=index.d.ts.map
 ```
+
 ## a/ComponentA/ComponentA/index.d.ts.map
 
 ```map
-{"version":3,"file":"index.d.ts","sourceRoot":"","sources":["../../../../../../fixtures/entry-points-22/a/ComponentA/ComponentA.tsx"],"names":[],"mappings":"AAAA,OAAO,WAAW;AAClB,SAAS,SAAS;UAER,gBAAgB;CACxB;AACD;AAED,OAAO,iBAAS,WAAW,OAAO,kBAAkB,MAAM,IAAI"}
+{"version":3,"file":"index.d.ts","sourceRoot":"","sources":["../../../../../../fixtures/entry-points-22/a/ComponentA/ComponentA.tsx"],"names":[],"mappings":"AAAA,OAAO,WAAW;AAClB,SAAS,SAAS;UAER,gBAAgB;CACxB;;AAGF,OAAO,iBAAS,WAAW,OAAO,kBAAkB,MAAM,IAAI"}
 ```
+
 ## a/ComponentA/ComponentA/index.js
 
 ```js
@@ -29,6 +31,7 @@ function ComponentA(props) {
 export { ComponentA };
 
 ```
+
 ## a/Models/model/index.d.ts
 
 ```ts
@@ -39,11 +42,13 @@ export declare const a = "b";
 
 //# sourceMappingURL=index.d.ts.map
 ```
+
 ## a/Models/model/index.d.ts.map
 
 ```map
-{"version":3,"file":"index.d.ts","sourceRoot":"","sources":["../../../../../../fixtures/entry-points-22/a/Models/model.ts"],"names":[],"mappings":"AAAA,iBAAiB,QAAQ;CACvB;AACD;AACD,OAAO,cAAM,IAAI"}
+{"version":3,"file":"index.d.ts","sourceRoot":"","sources":["../../../../../../fixtures/entry-points-22/a/Models/model.ts"],"names":[],"mappings":"AAAA,iBAAiB,QAAQ;CACvB;;AAEF,OAAO,cAAM,IAAI"}
 ```
+
 ## a/index.d.ts
 
 ```ts
@@ -51,17 +56,20 @@ export { ComponentA } from "./ComponentA/ComponentA/index.js";
 
 //# sourceMappingURL=index.d.ts.map
 ```
+
 ## a/index.d.ts.map
 
 ```map
 {"version":3,"file":"index.d.ts","sourceRoot":"","sources":["../../../../fixtures/entry-points-22/a/index.ts"],"names":[],"mappings":"AAAA,SAAS,kBAAkB"}
 ```
+
 ## a/index.js
 
 ```js
 export { ComponentA } from './ComponentA/ComponentA/index.js';
 
 ```
+
 ## b/ComponentB/ComponentB/index.d.ts
 
 ```ts
@@ -74,11 +82,13 @@ export {};
 
 //# sourceMappingURL=index.d.ts.map
 ```
+
 ## b/ComponentB/ComponentB/index.d.ts.map
 
 ```map
-{"version":3,"file":"index.d.ts","sourceRoot":"","sources":["../../../../../../fixtures/entry-points-22/b/ComponentB/ComponentB.tsx"],"names":[],"mappings":"AAAA,OAAO,WAAW;UAER,gBAAgB;CACxB;AACD;AAED,OAAO,iBAAS,WAAW,OAAO,kBAAkB,MAAM,IAAI"}
+{"version":3,"file":"index.d.ts","sourceRoot":"","sources":["../../../../../../fixtures/entry-points-22/b/ComponentB/ComponentB.tsx"],"names":[],"mappings":"AAAA,OAAO,WAAW;UAER,gBAAgB;CACxB;;AAGF,OAAO,iBAAS,WAAW,OAAO,kBAAkB,MAAM,IAAI"}
 ```
+
 ## b/ComponentB/ComponentB/index.js
 
 ```js
@@ -93,6 +103,7 @@ function ComponentB(props) {
 export { ComponentB };
 
 ```
+
 ## b/index.d.ts
 
 ```ts
@@ -100,11 +111,13 @@ export { ComponentB } from "./ComponentB/ComponentB/index.js";
 
 //# sourceMappingURL=index.d.ts.map
 ```
+
 ## b/index.d.ts.map
 
 ```map
 {"version":3,"file":"index.d.ts","sourceRoot":"","sources":["../../../../fixtures/entry-points-22/b/index.ts"],"names":[],"mappings":"AAAA,SAAS,kBAAkB"}
 ```
+
 ## b/index.js
 
 ```js

@@ -6,6 +6,7 @@ export declare class Test {
 }
 
 ```
+
 ## main.js
 
 ```js

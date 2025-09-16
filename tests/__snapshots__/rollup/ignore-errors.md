@@ -4,6 +4,7 @@
 export declare function foo(): number;
 
 ```
+
 ## main.js
 
 ```js
