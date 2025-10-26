@@ -42,14 +42,14 @@ export function resolveEntry(
   if (typeof input === 'string') {
     input = [input]
   }
-  const entryMap = !Array.isArray(input)
-    ? Object.fromEntries(
+  const entryMap = Array.isArray(input)
+    ? undefined
+    : Object.fromEntries(
         Object.entries(input).map(([k, v]) => [
           path.resolve(stripExt(v as string)),
           k,
         ]),
       )
-    : undefined
   const arr = Array.isArray(input) && input ? input : Object.values(input)
   const inputBase = userInputBase || lowestCommonAncestor(...arr)
 
