@@ -82,7 +82,7 @@
   "devDependencies": {
     "@farmfe/core": "^1.7.11",
     "@oxc-project/types": "^0.95.0",
-    "@rollup/plugin-alias": "^5.1.1",
+    "@rollup/plugin-alias": "^6.0.0",
     "@swc/core": "^1.13.21",
     "@sxzz/eslint-config": "^7.2.7",
     "@sxzz/prettier-config": "^2.2.4",
