@@ -72,8 +72,8 @@
     }
   },
   "dependencies": {
-    "debug": "^4.4.3",
     "magic-string": "^0.30.21",
+    "obug": "^0.1.1",
     "oxc-parser": ">=0.96.0",
     "oxc-transform": ">=0.96.0",
     "unplugin": "^2.3.10",
@@ -87,7 +87,6 @@
     "@sxzz/eslint-config": "^7.2.8",
     "@sxzz/prettier-config": "^2.2.4",
     "@sxzz/test-utils": "^0.5.12",
-    "@types/debug": "^4.1.12",
     "@types/node": "^24.10.0",
     "bumpp": "^10.3.1",
     "esbuild": "^0.25.12",

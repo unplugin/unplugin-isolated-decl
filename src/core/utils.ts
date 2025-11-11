@@ -1,7 +1,7 @@
 import path from 'node:path'
-import Debug from 'debug'
+import Debug, { type Debugger } from 'obug'
 
-export const debug: Debug.Debugger = Debug('unplugin-isolated-decl')
+export const debug: Debugger = Debug('unplugin-isolated-decl')
 
 export function lowestCommonAncestor(...filepaths: string[]): string {
   if (filepaths.length === 0) return ''
