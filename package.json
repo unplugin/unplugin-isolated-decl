@@ -1,7 +1,7 @@
 {
   "name": "unplugin-isolated-decl",
   "version": "0.15.4",
-  "packageManager": "pnpm@10.21.0",
+  "packageManager": "pnpm@10.22.0",
   "description": "A blazing-fast tool for generating isolated declarations.",
   "type": "module",
   "keywords": [
@@ -83,7 +83,7 @@
     "@farmfe/core": "^1.7.11",
     "@oxc-project/types": "^0.97.0",
     "@rollup/plugin-alias": "^6.0.0",
-    "@swc/core": "^1.15.1",
+    "@swc/core": "^1.15.2",
     "@sxzz/eslint-config": "^7.2.10",
     "@sxzz/prettier-config": "^2.2.4",
     "@sxzz/test-utils": "^0.5.12",
@@ -94,15 +94,15 @@
     "fast-glob": "^3.3.3",
     "prettier": "^3.6.2",
     "publint": "^0.3.15",
-    "rolldown": "^1.0.0-beta.49",
+    "rolldown": "^1.0.0-beta.50",
     "rollup": "^4.53.2",
     "tinyglobby": "^0.2.15",
-    "tsdown": "^0.16.3",
+    "tsdown": "^0.16.4",
     "tsx": "^4.20.6",
     "typescript": "^5.9.3",
-    "unplugin-oxc": "^0.5.3",
+    "unplugin-oxc": "^0.5.4",
     "vite": "^7.2.2",
-    "vitest": "^4.0.8"
+    "vitest": "^4.0.9"
   },
   "engines": {
     "node": ">=20.18.0"
