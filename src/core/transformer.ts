@@ -29,7 +29,7 @@ export async function oxcTransform(
       ],
     }
   }
-  const result = oxc.isolatedDeclaration(id, code, transformOptions)
+  const result = await oxc.isolatedDeclaration(id, code, transformOptions)
   return {
     ...result,
     map: result.map?.mappings,

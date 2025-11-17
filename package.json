@@ -74,14 +74,14 @@
   "dependencies": {
     "magic-string": "^0.30.21",
     "obug": "^2.0.0-beta.1",
-    "oxc-parser": ">=0.97.0",
-    "oxc-transform": ">=0.97.0",
+    "oxc-parser": ">=0.98.0",
+    "oxc-transform": ">=0.98.0",
     "unplugin": "^2.3.10",
     "unplugin-utils": "^0.3.1"
   },
   "devDependencies": {
     "@farmfe/core": "^1.7.11",
-    "@oxc-project/types": "^0.97.0",
+    "@oxc-project/types": "^0.98.0",
     "@rollup/plugin-alias": "^6.0.0",
     "@swc/core": "^1.15.2",
     "@sxzz/eslint-config": "^7.2.10",
@@ -97,12 +97,11 @@
     "rolldown": "^1.0.0-beta.50",
     "rollup": "^4.53.2",
     "tinyglobby": "^0.2.15",
-    "tsdown": "^0.16.4",
-    "tsx": "^4.20.6",
+    "tsdown": "^0.16.5",
     "typescript": "^5.9.3",
-    "unplugin-oxc": "^0.5.4",
+    "unplugin-oxc": "^0.5.5",
     "vite": "^7.2.2",
-    "vitest": "^4.0.9"
+    "vitest": "^4.0.10"
   },
   "engines": {
     "node": ">=20.18.0"

@@ -6,7 +6,7 @@
 import { mkdir, readFile, writeFile } from 'node:fs/promises'
 import path from 'node:path'
 import MagicString from 'magic-string'
-import { parseAsync } from 'oxc-parser'
+import { parse } from 'oxc-parser'
 import {
   createUnplugin,
   type UnpluginBuildContext,
@@ -147,7 +147,7 @@ export const IsolatedDecl: UnpluginInstance<Options | undefined, false> =
         }
       }
 
-      const { program } = await parseAsync(id, dts)
+      const { program } = await parse(id, dts)
       const imports = filterImports(program)
 
       const s = new MagicString(dts)
