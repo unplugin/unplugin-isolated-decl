@@ -73,7 +73,7 @@
   },
   "dependencies": {
     "magic-string": "^0.30.21",
-    "obug": "^2.0.0-beta.1",
+    "obug": "^2.0.0",
     "oxc-parser": ">=0.98.0",
     "oxc-transform": ">=0.98.0",
     "unplugin": "^2.3.10",
