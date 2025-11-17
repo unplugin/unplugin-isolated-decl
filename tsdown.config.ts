@@ -7,5 +7,5 @@ export default defineConfig({
   plugins: [IsolatedDecl()],
   target: false,
   publint: true,
-  fixedExtension: false,
+  exports: true,
 })
