@@ -50,7 +50,7 @@
     "access": "public"
   },
   "engines": {
-    "node": ">=20.18.0"
+    "node": ">=20.19.0"
   },
   "scripts": {
     "lint": "eslint --cache .",
