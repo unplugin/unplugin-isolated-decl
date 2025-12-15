@@ -67,9 +67,6 @@ importers:
       eslint:
         specifier: ^9.39.2
         version: 9.39.2(jiti@2.6.1)
-      fast-glob:
-        specifier: ^3.3.3
-        version: 3.3.3
       prettier:
         specifier: ^3.7.4
         version: 3.7.4
