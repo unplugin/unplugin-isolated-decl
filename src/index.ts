@@ -87,9 +87,16 @@ export const IsolatedDecl: UnpluginInstance<Options | undefined, false> =
         outputFiles = Object.create(null)
       },
 
-      transformInclude: (id) => filter(id),
-      transform(code, id): Promise<undefined> {
-        return transform(this, code, id)
+      transform: {
+        filter: {
+          id: {
+            include: options.include,
+            exclude: options.exclude,
+          },
+        },
+        handler(code, id): Promise<undefined> {
+          return transform(this, code, id)
+        },
       },
 
       esbuild: { setup: esbuildSetup },

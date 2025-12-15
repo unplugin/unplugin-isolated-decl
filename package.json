@@ -58,7 +58,7 @@
     "build": "tsdown",
     "dev": "tsdown --watch",
     "test": "vitest",
-    "typecheck": "tsc --noEmit",
+    "typecheck": "tsgo --noEmit",
     "release": "bumpp",
     "prepublishOnly": "pnpm run build"
   },
@@ -91,6 +91,7 @@
     "@sxzz/prettier-config": "^2.2.6",
     "@sxzz/test-utils": "^0.5.14",
     "@types/node": "^25.0.2",
+    "@typescript/native-preview": "7.0.0-dev.20251215.1",
     "bumpp": "^10.3.2",
     "esbuild": "^0.27.1",
     "eslint": "^9.39.2",

@@ -1,6 +1,6 @@
 import type { IsolatedDeclarationsOptions } from 'oxc-transform'
 import type { TranspileOptions } from 'typescript'
-import type { FilterPattern } from 'unplugin-utils'
+import type { FilterPattern } from 'unplugin'
 
 /**
  * Represents the options for the plugin.
