@@ -6,6 +6,6 @@ export default defineConfig({
   dts: false,
   plugins: [IsolatedDecl()],
   target: false,
-  publint: true,
+  publint: 'ci-only',
   exports: true,
 })
