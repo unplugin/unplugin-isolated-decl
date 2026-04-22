@@ -80,6 +80,7 @@
     "unplugin-utils": "^0.3.1"
   },
   "devDependencies": {
+    "@arethetypeswrong/core": "^0.18.2",
     "@farmfe/core": "^1.7.11",
     "@oxc-project/types": "^0.127.0",
     "@rollup/plugin-alias": "^6.0.0",

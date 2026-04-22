@@ -105,7 +105,7 @@ export const IsolatedDecl: UnpluginInstance<Options | undefined, false> =
       vite: {
         apply: 'build',
         enforce: 'pre',
-        ...rollup,
+        ...(rollup as any),
       },
       farm,
     }
