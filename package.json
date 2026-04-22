@@ -1,7 +1,7 @@
 {
   "name": "unplugin-isolated-decl",
   "type": "module",
-  "version": "0.15.7",
+  "version": "0.16.0",
   "packageManager": "pnpm@10.33.1",
   "description": "A blazing-fast tool for generating isolated declarations.",
   "author": "Kevin Deng <sxzz@sxzz.moe>",
