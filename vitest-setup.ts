@@ -4,4 +4,4 @@ import path from 'node:path'
 await rm(path.resolve(__dirname, 'tests/temp'), {
   force: true,
   recursive: true,
-})
+}).catch(() => {})
