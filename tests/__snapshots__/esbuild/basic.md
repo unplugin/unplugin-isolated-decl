@@ -27,7 +27,7 @@ export declare let num: Num;
 ## main.d.ts.map
 
 ```map
-{"version":3,"file":"main.d.ts","sourceRoot":"","sources":["../../../../fixtures/basic/main.ts"],"names":[],"mappings":"AAAA,cAAc,WAAW;AAEzB,YAAY;AAEZ,OAAO,iBAAS,MAAM,GAAG,MAAM;AAI/B,OAAO,YAAIA,GAAG,MAAM,IAAI;AAExB,OAAO,YAAIC,KAAK"}
+{"version":3,"file":"main.d.ts","sourceRoot":"","sources":["../../../../fixtures/basic/main.ts"],"names":[],"mappings":"AAAA,cAAc,WAAW;AAEzB,YAAY;AAEZ,OAAO,iBAAS,MAAM,GAAG,MAAM;AAI/B,OAAO,YAAI,GAAG,MAAM,IAAI;AAExB,OAAO,YAAI,KAAK"}
 ```
 
 ## types.d.ts

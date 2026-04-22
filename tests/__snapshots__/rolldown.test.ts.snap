@@ -3,12 +3,10 @@
 exports[`rolldown 1`] = `
 "// main.js
 import { jsx } from "react/jsx-runtime";
-
 //#region tests/fixtures/basic/component.tsx
 function Component() {
 	return /* @__PURE__ */ jsx("div", { children: "I'm a div in a tsx component!" });
 }
-
 //#endregion
 //#region tests/fixtures/basic/main.ts
 function hello(s) {
@@ -16,9 +14,9 @@ function hello(s) {
 }
 let c = Component;
 let num = 1;
-
 //#endregion
 export { c, hello, num };
+
 // temp/component.d.ts
 export declare function Component(): React.JSX.Element;
 
