@@ -92,7 +92,7 @@
     "@sxzz/test-utils": "^0.5.14",
     "@types/node": "^25.0.2",
     "@typescript/native-preview": "7.0.0-dev.20251215.1",
-    "bumpp": "^10.3.2",
+    "bumpp": "^11.0.0",
     "esbuild": "^0.27.1",
     "eslint": "^9.39.2",
     "prettier": "^3.7.4",
