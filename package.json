@@ -47,11 +47,12 @@
     "access": "public"
   },
   "engines": {
-    "node": "^20.19.0 || >=22.12.0"
+    "node": "^22.18.0 || ^24.11.0 || >=26.0.0"
   },
   "scripts": {
     "lint": "eslint --cache .",
     "lint:fix": "pnpm run lint --fix",
+    "format": "prettier --write .",
     "build": "tsdown",
     "dev": "tsdown --watch",
     "test": "vitest",
