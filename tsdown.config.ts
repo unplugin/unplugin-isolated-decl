@@ -8,5 +8,8 @@ export default defineConfig({
   target: false,
   exports: true,
   publint: 'ci-only',
-  attw: 'ci-only',
+  attw: {
+    enabled: 'ci-only',
+    profile: 'esm-only',
+  },
 })
