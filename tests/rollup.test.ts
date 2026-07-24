@@ -120,10 +120,12 @@ describe.concurrent('rollup', () => {
         }),
         UnpluginIsolatedDecl({
           rewriteImports(id, _importer) {
-            if (id[0] === '~') {
-              importer = _importer
-              return `.${id.slice(1)}`
+            if (id[0] !== '~') {
+              return
             }
+
+            importer = _importer
+            return `.${id.slice(1)}`
           },
         }),
         Oxc(),

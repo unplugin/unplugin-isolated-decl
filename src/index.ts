@@ -354,7 +354,7 @@ export const IsolatedDecl: UnpluginInstance<Options | undefined, false> =
         if (
           !entries ||
           !Array.isArray(entries) ||
-          !entries.every((entry) => typeof entry === 'string')
+          entries.some((entry) => typeof entry !== 'string')
         )
           throw new Error('unsupported entryPoints, must be an string[]')
 

@@ -14,7 +14,7 @@ export declare function ComponentA(props: ComponentAProps): React.JSX.Element;
 ## a/ComponentA/ComponentA/index.d.ts.map
 
 ```map
-{"version":3,"file":"index.d.ts","sourceRoot":"","sources":["../../../../../../fixtures/entry-points-22/a/ComponentA/ComponentA.tsx"],"names":[],"mappings":"AAAA,OAAO,WAAW;AAClB,SAAS,SAAS;UAER,gBAAgB;CACxB;;AAGF,OAAO,iBAAS,WAAW,OAAO,kBAAkB,MAAM,IAAI"}
+{"version":3,"file":"index.d.ts","sourceRoot":"","sources":["../../../../../../fixtures/entry-points-22/a/ComponentA/ComponentA.tsx"],"names":[],"mappings":"AAAA,OAAO,WAAW;AAClB,SAAS,SAAS;UAER,gBAAgB;CACxB;AACF;AAEA,OAAO,iBAAS,WAAW,OAAO,kBAAkB,MAAM,IAAI"}
 ```
 
 ## a/ComponentA/ComponentA/index.js
@@ -46,7 +46,7 @@ export declare const a = "b";
 ## a/Models/model/index.d.ts.map
 
 ```map
-{"version":3,"file":"index.d.ts","sourceRoot":"","sources":["../../../../../../fixtures/entry-points-22/a/Models/model.ts"],"names":[],"mappings":"AAAA,iBAAiB,QAAQ;CACvB;;AAEF,OAAO,cAAM,IAAI"}
+{"version":3,"file":"index.d.ts","sourceRoot":"","sources":["../../../../../../fixtures/entry-points-22/a/Models/model.ts"],"names":[],"mappings":"AAAA,iBAAiB,QAAQ;CACvB;AACF;AACA,OAAO,cAAM,IAAI"}
 ```
 
 ## a/index.d.ts
@@ -86,7 +86,7 @@ export {};
 ## b/ComponentB/ComponentB/index.d.ts.map
 
 ```map
-{"version":3,"file":"index.d.ts","sourceRoot":"","sources":["../../../../../../fixtures/entry-points-22/b/ComponentB/ComponentB.tsx"],"names":[],"mappings":"AAAA,OAAO,WAAW;UAER,gBAAgB;CACxB;;AAGF,OAAO,iBAAS,WAAW,OAAO,kBAAkB,MAAM,IAAI"}
+{"version":3,"file":"index.d.ts","sourceRoot":"","sources":["../../../../../../fixtures/entry-points-22/b/ComponentB/ComponentB.tsx"],"names":[],"mappings":"AAAA,OAAO,WAAW;UAER,gBAAgB;CACxB;AACF;AAEA,OAAO,iBAAS,WAAW,OAAO,kBAAkB,MAAM,IAAI"}
 ```
 
 ## b/ComponentB/ComponentB/index.js
