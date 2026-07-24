@@ -358,7 +358,13 @@ export const IsolatedDecl: UnpluginInstance<Options | undefined, false> =
         )
           throw new Error('unsupported entryPoints, must be an string[]')
 
-        const inputBase = options.inputBase || lowestCommonAncestor(...entries)
+        const inputBase =
+          options.inputBase ||
+          lowestCommonAncestor(
+            ...entries.map((entry) =>
+              typeof entry === 'string' ? entry : entry.in,
+            ),
+          )
         debug('[esbuild] input base:', inputBase)
 
         const jsExt = esbuildOptions.outExtension?.['.js']
