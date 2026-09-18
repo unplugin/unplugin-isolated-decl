@@ -8,4 +8,4 @@ trustLockfile: true
 trustPolicy: no-downgrade
 trustPolicyExclude:
   - ua-parser-js@1.0.41
-trustPolicyIgnoreAfter: 604800 # 7 days
+trustPolicyIgnoreAfter: 10080 # 7 days
